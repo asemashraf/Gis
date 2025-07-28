@@ -83,22 +83,24 @@
         © Asem 2023 <br>
         All rights reserved
     </footer>
+<script>
+  const mySection = document.querySelector('.my');
 
-    <script>
-        require([
-            "esri/config", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer",
-            "esri/widgets/ScaleBar", "esri/widgets/Legend", "esri/widgets/Editor"
-        ], function (esriConfig, Map, MapView, FeatureLayer, ScaleBar, Legend, Editor) {
-            esriConfig.apiKey = "AAPK64e6f646f3f9477d881667ec0432fad8SR4AArUarvmtFw9fNob0D2c9SRKDxEgDRadwBBtB1sYQWp93KuQfr8GM6S8aLU0K";
-            const map = new Map({ basemap: "arcgis-topographic" });
-            const view = new MapView({ container: "viewDiv", map: map, center: [31.447849, 30.228001], zoom: 3 });
-            view.ui.add(new ScaleBar({ view: view }), "bottom-left");
-            view.ui.add(new Legend({ view: view }), "top-right");
-            view.ui.add(new Editor({ view: view }), "top-right");
-            map.add(new FeatureLayer({ url: "https://services7.arcgis.com/8xUpDr7La9nmiulS/arcgis/rest/services/MyMapSe/FeatureServer/0" }), 0);
-            map.add(new FeatureLayer({ url: "https://services7.arcgis.com/8xUpDr7La9nmiulS/arcgis/rest/services/MyMapSe/FeatureServer/1" }), 0);
-        });
-    </script>
+  mySection.addEventListener("touchstart", function () {
+    mySection.classList.add("zoomed");
+  });
+
+  document.addEventListener("touchstart", function (e) {
+    if (!mySection.contains(e.target)) {
+      mySection.classList.remove("zoomed");
+    }
+  });
+</script>
 
 </body>
 </html>
+
+
+
+
+
