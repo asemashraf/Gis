@@ -124,8 +124,15 @@ body {
 }
 
 .Container {
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
+}
+
+.frame {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
 .my {
@@ -133,17 +140,14 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
-    transition: 30s;
-    padding: 0;
-    margin: 0;
-    font-size: 1em;
+    width: 100%;
+    height: 100%;
+    transition: transform 5s ease;
 }
 
 .my:hover {
-    transform: scale(1.1);
-    padding: 0;
-    margin: 0;
+    transform: scale(1.2); /* بيكبر جوا الإطار فقط */
+}
 }
 
 span{
