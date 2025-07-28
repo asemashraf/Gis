@@ -24,53 +24,48 @@ body {
     padding-bottom: 58px;
 }
 
-.menu{
-    position:fixed;
-    left:0;
-    top:0;
-    font-family:TechnicBold;
-    width:100%;
-    color:red;
-    height:60px;
+.menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    font-family: TechnicBold;
+    width: 100%;
+    color: red;
+    height: 60px;
 }
 
 .menu #logo {
     float: left;
     height: 60px;
     padding: 5px 30px;
-    font-size: 1.5em;
+    font-size: 20px;
     line-height: 30px;
     color: white;
     font-weight: bold;
-    font-size:20px;
 }
 
-.menu > ul{
-    margin:0;
-    padding:0;
-    float:left;
-    list-style-type:none;
+.menu > ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style-type: none;
 }
 
 .menu > ul > li {
-    float:left;
+    float: left;
 }
 
-.menu-item{
-    display:inline-block;
-    padding:15px 20px;
-    height:30px;
-    line-height:40px;
-    text-decoration:none;
-    color:white;
-    font-size:1em;
+.menu-item {
+    display: inline-block;
+    padding: 15px 20px;
+    height: 30px;
+    line-height: 40px;
+    text-decoration: none;
+    color: white;
+    font-size: 1em;
 }
 
-.menu-item:hover{
-    background-color:darkblue;
-    color:white;
-}
-
+.menu-item:hover,
 .menu-item:focus {
     background-color: darkblue;
     color: white;
@@ -80,48 +75,48 @@ body {
     position: absolute;
     top: 60px;
     overflow: hidden;
-    background-color:darkred;
-    list-style-type:none;
-    max-height:0;
+    background-color: darkred;
+    list-style-type: none;
+    max-height: 0;
 }
 
 .sup-contant a {
     color: white;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .sup-drop {
-    padding:0;
+    padding: 0;
 }
 
 .sup-drop ul {
-    width:100%;
-    padding:0;
-    margin:0;
-    list-style-type:none;
-    font-family:Arial;
-    font-size:11px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-family: Arial;
+    font-size: 11px;
 }
 
 .sup-drop ul li a {
-    display:inline-block;
-    padding:10px 20px;
+    display: inline-block;
+    padding: 10px 20px;
 }
 
-.sup-drop ul li a:hover{
-    background-color:darkblue;
+.sup-drop ul li a:hover {
+    background-color: darkblue;
 }
 
-.menu ul li:hover .sup-contant{
+.menu ul li:hover .sup-contant {
     max-height: 400px;
     transition: max-height 1s ease-in;
-    -webkit-transition: max-height 1s ease-in;
-    -moz-transition: max-height 1s ease-in;
 }
 
-#rmenu{
-    float:right;
+#rmenu {
+    float: right;
 }
+
+/* --- تعديلات Container و my --- */
 
 .Container {
     height: 100vh;
@@ -149,17 +144,17 @@ body {
     transform: scale(1.2);
 }
 
+/* --- تنسيقات إضافية --- */
+
+span {
+    color: red;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
 }
 
-span{
-    color:red;
-    margin:0;
-    padding:0;
-    font-size:1em;
-}
-
-.contantpt-text{
-    padding:0 0 40vh;
+.contantpt-text {
+    padding: 0 0 40vh;
     font-weight: bold;
 }
 
@@ -177,46 +172,46 @@ main {
     margin: 0 auto;
 }
 
-article{
-    color:white;
-    padding:20px;
-    border-radius:5px;
-    margin-bottom:20px;
+article {
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
-h7{
-    position:center;
-    font-weight:bold;
+h7 {
+    position: center;
+    font-weight: bold;
 }
 
-.cv{
-    width:200px;
-    padding:15px 0; 
-    text-align:center;
-    margin:0 10px;
-    border-radius:25px;
-    font-weight:bold;
-    border:2px solid darkblue;
-    background-color:darkblue;
-    color:white;
+.cv {
+    width: 200px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 0 10px;
+    border-radius: 25px;
+    font-weight: bold;
+    border: 2px solid darkblue;
+    background-color: darkblue;
+    color: white;
 }
 
-.cv:hover{
-    background-color:darkred;
-    transition:2s;
+.cv:hover {
+    background-color: darkred;
+    transition: 2s;
 }
 
-.con{
-    padding:10px;
+.con {
+    padding: 10px;
 }
 
-.icon3{
-    margin:2em;  
+.icon3 {
+    margin: 2em;
 }
 
-.icon3 img{
-    width:3em;
-    margin:0 5px 0 5px;
+.icon3 img {
+    width: 3em;
+    margin: 0 5px;
 }
 
 .icon3 img:hover {
@@ -230,8 +225,8 @@ h7{
     margin: 2em;
 }
 
-h4{
-    color:red;
+h4 {
+    color: red;
 }
 
 p {
@@ -241,9 +236,7 @@ p {
     word-break: break-word;
 }
 
-
-
-
+/* ✅ ميديا كويري للموبايل */
 @media (max-width: 768px) {
     h1 {
         font-size: 1.5em;
@@ -262,5 +255,16 @@ p {
     .my:hover {
         transform: none; /* مفيش تكبير على الموبايل */
     }
-}
 
+    .frame {
+        height: auto;
+    }
+
+    .Container {
+        height: auto;
+    }
+
+    .my {
+        height: auto;
+    }
+}
