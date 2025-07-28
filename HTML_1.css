@@ -252,9 +252,6 @@ p {
         padding: 10px;
     }
 
-    .my:hover {
-        transform: none; /* مفيش تكبير على الموبايل */
-    }
 
     .frame {
         height: auto;
@@ -268,3 +265,11 @@ p {
         height: auto;
     }
 }
+
+
+
+
+.my.zoomed {
+    transform: scale(1.2);
+}
+
