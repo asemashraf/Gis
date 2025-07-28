@@ -1,15 +1,11 @@
-﻿
-
 * body, html {
     margin: 0;
     padding: 0;
     font-family: "Audiowide", sans-serif;
     box-sizing: border-box;
-    font: 1.03em;
+    font-size: 1.03em;
     background-color: black;
 }
-
-
 
 footer {
     background-color:firebrick;
@@ -26,10 +22,7 @@ body {
     position: relative;
     min-height: 100vh;
     padding-bottom: 58px;
-
-
 }
-
 
 .menu{
     position:fixed;
@@ -39,19 +32,17 @@ body {
     width:100%;
     color:red;
     height:60px;
-
 }
 
 .menu #logo {
-        float: left;
-        height: 60px;
-        padding: 5px 30px;
-        font-size: 1.5em;
-        line-height: 30px;
-        color: white;
-        font-weight: bold;
-        font-size:20px;
-        
+    float: left;
+    height: 60px;
+    padding: 5px 30px;
+    font-size: 1.5em;
+    line-height: 30px;
+    color: white;
+    font-weight: bold;
+    font-size:20px;
 }
 
 .menu > ul{
@@ -59,13 +50,10 @@ body {
     padding:0;
     float:left;
     list-style-type:none;
-
-
 }
 
 .menu > ul > li {
     float:left;
-
 }
 
 .menu-item{
@@ -76,42 +64,34 @@ body {
     text-decoration:none;
     color:white;
     font-size:1em;
-
-
 }
 
 .menu-item:hover{
     background-color:darkblue;
     color:white;
-
-
 }
 
-    .menu-item:focus {
-        background-color: darkblue;
-        color: white;
-    }
+.menu-item:focus {
+    background-color: darkblue;
+    color: white;
+}
 
 .sup-contant {
-position: absolute;
-top: 60px;
-overflow: hidden;
-background-color:darkred;
-list-style-type:none;
-max-height:0;
-
+    position: absolute;
+    top: 60px;
+    overflow: hidden;
+    background-color:darkred;
+    list-style-type:none;
+    max-height:0;
 }
 
 .sup-contant a {
-color: white;
-text-decoration:none;
-
+    color: white;
+    text-decoration:none;
 }
 
 .sup-drop {
     padding:0;
-    
-
 }
 
 .sup-drop ul {
@@ -121,21 +101,16 @@ text-decoration:none;
     list-style-type:none;
     font-family:Arial;
     font-size:11px;
-
 }
 
 .sup-drop ul li a {
     display:inline-block;
     padding:10px 20px;
-
 }
 
 .sup-drop ul li a:hover{
     background-color:darkblue;
-
 }
-
-
 
 .menu ul li:hover .sup-contant{
     max-height: 400px;
@@ -144,23 +119,17 @@ text-decoration:none;
     -moz-transition: max-height 1s ease-in;
 }
 
-
 #rmenu{
     float:right;
-
 }
 
-
-.Container{
-    height:100vh;
-    overflow:hidden;
-
+.Container {
+    min-height: 100vh;
+    overflow: visible;
 }
-
-
 
 .my {
-    background-image: url(linked.png);
+    background-image: url(world.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position:center;
@@ -169,42 +138,25 @@ text-decoration:none;
     padding:0;
     margin:0;
     font-size: 1em;
-
-
-    
-    
 }
 
-    .my:hover {
-        transform: scale(1.7);
-        padding: 0;
-        margin: 0;
-    }
-
-span{
-    color:darkred;
-    margin:0;
-    padding:0;
-    font-size:1em;
-
-
-
+.my:hover {
+    transform: scale(1.7);
+    padding: 0;
+    margin: 0;
 }
-
 
 span{
     color:red;
-
+    margin:0;
+    padding:0;
+    font-size:1em;
 }
 
 .contantpt-text{
     padding:0 0 40vh;
     font-weight: bold;
-
 }
-
-
-
 
 h1 {
     font-size: 2em;
@@ -219,8 +171,6 @@ main {
     width: 90vw;
     margin: 0 auto;
 }
-
-
 
 article{
     color:white;
@@ -249,7 +199,6 @@ h7{
 .cv:hover{
     background-color:darkred;
     transition:2s;
-
 }
 
 .con{
@@ -257,35 +206,32 @@ h7{
 }
 
 .icon3{
-  margin:2em;  
-
+    margin:2em;  
 }
 
 .icon3 img{
-    
-width:3em;
-margin:0 5px 0 5px;
-    
-
+    width:3em;
+    margin:0 5px 0 5px;
 }
-    .icon3 img:hover {
-        transform: scale(.5);
-        transition: 2s;
-    }
+
+.icon3 img:hover {
+    transform: scale(.5);
+    transition: 2s;
+}
 
 .rr {
     color: white;
     font-size: 1em;
     margin: 2em;
-   
 }
 
 h4{
     color:red;
 }
 
-
-
-
-
-
+p {
+    max-width: 100%;
+    overflow: visible;
+    white-space: normal;
+    word-break: break-word;
+}
