@@ -146,8 +146,9 @@ body {
 }
 
 .my:hover {
-    transform: scale(1.2); /* بيكبر جوا الإطار فقط */
+    transform: scale(1.2);
 }
+
 }
 
 span{
