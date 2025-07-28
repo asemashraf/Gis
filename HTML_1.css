@@ -240,3 +240,27 @@ p {
     white-space: normal;
     word-break: break-word;
 }
+
+
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .menu-item {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    #logo {
+        font-size: 1em;
+        padding: 10px;
+    }
+
+    .my:hover {
+        transform: none; /* مفيش تكبير على الموبايل */
+    }
+}
+
