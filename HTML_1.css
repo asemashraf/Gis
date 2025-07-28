@@ -147,11 +147,12 @@ body {
 /* --- تنسيقات إضافية --- */
 
 span {
-    color: red;
+    color: white;
     margin: 0;
     padding: 0;
     font-size: 1em;
 }
+
 
 .contantpt-text {
     padding: 0 0 40vh;
