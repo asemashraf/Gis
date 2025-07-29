@@ -237,6 +237,16 @@ p {
     word-break: break-word;
 }
 
+.h9{
+    font-size: 2em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: white;
+    height: 50vh;
+}
+
+
 @media (max-width: 768px) {
     h1 {
         font-size: 1.5em;
@@ -272,4 +282,6 @@ p {
 .my.zoomed {
     transform: scale(1.5);
 }
+
+
 
