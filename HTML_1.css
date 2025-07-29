@@ -121,7 +121,9 @@ body {
 .Container {
     height: 100vh;
     overflow: hidden;
+    margin-top: 60px; 
 }
+
 
 .frame {
     width: 100%;
@@ -339,3 +341,8 @@ h9 {
     }
 }
 
+@media (max-width: 768px) {
+    .Container {
+        margin-top: 60px;
+    }
+}
