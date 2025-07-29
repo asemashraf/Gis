@@ -149,6 +149,8 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+    transition: transform 2s ease-in-out;
+
 }
 
 .my:hover {
