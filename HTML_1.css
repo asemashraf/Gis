@@ -299,35 +299,32 @@ h9 {
 }
 
 @media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
+  .my h1 {
+    font-size: 28px;
+  }
 
-    h1 {
-        font-size: 1.5em;
-    }
+  .tagline {
+    font-size: 14px;
+  }
 
-    .menu-item {
-        padding: 10px;
-        font-size: 0.9em;
-    }
+  .frame {
+    height: 60vh;
+  }
 
-    #logo {
-        font-size: 1em;
-        padding: 10px;
-    }
+  .cv {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
 
-    .Container {
-        height: auto;
-        margin-top: 70px;
-    }
+  .rr {
+    font-size: 18px;
+  }
 
-    .frame {
-        height: 40vh;
-        margin-top: 20px;
-    }
+  .icon3 img {
+    width: 32px;
+  }
 
-    .my {
-        height: 100%;
-    }
+  main article p {
+    font-size: 14px;
+  }
 }
