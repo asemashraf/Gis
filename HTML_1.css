@@ -283,32 +283,72 @@ h9 {
 }
 
 @media (max-width: 768px) {
-  .my h1 {
-    font-size: 28px;
+  .menu {
+    height: 50px;
   }
 
-  .tagline {
-    font-size: 14px;
+  .menu #logo {
+    font-size: 16px;
+    padding: 0 15px;
+    line-height: 50px;
+  }
+
+  .menu-item {
+    padding: 10px 12px;
+    font-size: 0.9em;
   }
 
   .frame {
-    height: 60vh;
+    height: 55vh; /* نخلي الفريم أصغر شوية على الموبايل */
+    border-radius: 10px;
+  }
+
+  .my {
+    background-size: cover; /* نرجعها cover عشان تملأ الفريم على الموبايل */
+  }
+
+  .my h1 {
+    font-size: 1.5em;
+  }
+
+  .tagline {
+    font-size: 1em;
+    padding: 0 10px;
   }
 
   .cv {
-    font-size: 14px;
-    padding: 10px 20px;
+    font-size: 0.9em;
+    padding: 10px 15px;
+    width: 160px;
+    margin: 10px auto;
   }
 
-  .rr {
-    font-size: 18px;
+  .icon3 {
+    margin: 1em;
+    text-align: center;
   }
 
   .icon3 img {
-    width: 32px;
+    width: 2.5em;
+    margin: 5px;
+  }
+
+  .rr {
+    font-size: 0.9em;
+    text-align: center;
+    margin: 1.5em 0;
   }
 
   main article p {
-    font-size: 14px;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+
+  h1, h9 {
+    font-size: 1.8em;
+  }
+
+  .intro h1 {
+    font-size: 2em;
   }
 }
