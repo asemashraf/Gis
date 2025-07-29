@@ -21,10 +21,8 @@ footer {
 body {
     position: relative;
     min-height: 100vh;
-    padding-top: 70px; /* لازم يكون على الأقل = ارتفاع الهيدر */
-    padding-bottom: 58px; /* للـ footer */
-}
-
+    padding-top: 70px;
+    padding-bottom: 58px;
 }
 
 .menu {
@@ -33,17 +31,16 @@ body {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: black; /* مهم لتغطي أي حاجة تحتها */
-    z-index: 1000; /* ده يخليها فوق أي حاجة تانية */
+    background-color: black;
+    z-index: 2000; /* زودنا الـ z-index */
 }
-
 
 .menu #logo {
     float: left;
     height: 60px;
-    padding: 5px 30px;
+    padding: 0px 30px; /* خفضنا البادينج علشان يطلع فوق */
     font-size: 20px;
-    line-height: 30px;
+    line-height: 60px; /* ظبطنا مكان النص عموديًا */
     color: white;
     font-weight: bold;
 }
@@ -82,6 +79,7 @@ body {
     background-color: darkred;
     list-style-type: none;
     max-height: 0;
+    z-index: 1500;
 }
 
 .sup-contant a {
@@ -120,14 +118,11 @@ body {
     float: right;
 }
 
-/* --- تعديلات Container و my --- */
-
 .Container {
     min-height: auto;
-    margin-top: 80px; /* بعد الهيدر */
+    margin-top: 80px;
     padding: 20px;
 }
-
 
 .frame {
     display: flex;
@@ -139,6 +134,7 @@ body {
     margin: auto;
     margin-top: 20px;
     border-radius: 20px;
+    z-index: 100; /* مهم جداً علشان يفضل تحت المنيو */
 }
 
 .my {
@@ -146,10 +142,8 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    
     width: 100%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,13 +151,9 @@ body {
     text-align: center;
 }
 
-
-
-
 .my:hover {
     transform: scale(1.2);
 }
-
 
 span {
     color: white;
@@ -171,8 +161,6 @@ span {
     padding: 0;
     font-size: 1em;
 }
-
-
 
 .contantpt-text {
     padding: 0;
@@ -185,9 +173,7 @@ h1 {
     padding: 0;
     text-align: center;
     color: white;
-    /* احذف height ده خالص */
 }
-
 
 main {
     width: 90vw;
@@ -267,11 +253,6 @@ h9 {
     height: 50vh;
 }
 
-
-
-
-
-
 .intro {
     text-align: center;
     margin-top: 20px;
@@ -288,12 +269,6 @@ h9 {
     color: #ccc;
     margin-top: 10px;
 }
-
-
-
-
-
-
 
 .my.zoomed {
     transform: scale(1.5);
