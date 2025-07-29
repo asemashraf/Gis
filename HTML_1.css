@@ -21,21 +21,22 @@ footer {
 body {
     position: relative;
     min-height: 100vh;
-    padding-bottom: 58px;
-    padding-top: 70px; /* أو حسب ارتفاع الهيدر */
+    padding-top: 70px; /* لازم يكون على الأقل = ارتفاع الهيدر */
+    padding-bottom: 58px; /* للـ footer */
 }
 
 }
 
 .menu {
     position: fixed;
-    left: 0;
     top: 0;
-    font-family: TechnicBold;
+    left: 0;
     width: 100%;
-    color: red;
     height: 60px;
+    background-color: black; /* مهم لتغطي أي حاجة تحتها */
+    z-index: 1000; /* ده يخليها فوق أي حاجة تانية */
 }
+
 
 .menu #logo {
     float: left;
@@ -123,7 +124,7 @@ body {
 
 .Container {
     min-height: auto;
-    margin-top: 70px; /* بعد الهيدر */
+    margin-top: 80px; /* بعد الهيدر */
     padding: 20px;
 }
 
