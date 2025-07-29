@@ -134,18 +134,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 60vh;
+    height: 75vh; 
     position: relative;
     overflow: hidden;
     margin: auto;
     margin-top: 20px;
     border-radius: 20px;
-    z-index: 100; /* مهم جداً علشان يفضل تحت المنيو */
+    z-index: 100;
 }
 
 .my {
     background-image: url(world.png);
-    background-size: cover;
+    background-size: contain; 
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
@@ -155,9 +155,9 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: transform 2s ease-in-out;
-
+    transition: transform 2.5s ease-in-out;
 }
+
 
 .my:hover {
     transform: scale(1.2);
