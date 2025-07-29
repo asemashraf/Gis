@@ -283,5 +283,12 @@ h9 {
     transform: scale(1.5);
 }
 
-
+@media screen and (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 22px;
+  }
+}
 
