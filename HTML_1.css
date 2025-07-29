@@ -137,8 +137,14 @@ body {
     background-position: center;
     width: 100%;
     height: 100%;
+    display: flex;                
+    justify-content: center;      
+    align-items: center;          
+    flex-direction: column;      
+    text-align: center;           
     transition: transform 5s ease;
 }
+
 
 .my:hover {
     transform: scale(1.2);
