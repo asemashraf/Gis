@@ -22,6 +22,9 @@ body {
     position: relative;
     min-height: 100vh;
     padding-bottom: 58px;
+    padding-top: 70px; /* أو حسب ارتفاع الهيدر */
+}
+
 }
 
 .menu {
@@ -119,33 +122,41 @@ body {
 /* --- تعديلات Container و my --- */
 
 .Container {
-    height: 100vh;
-    overflow: hidden;
-    margin-top: 60px; 
+    min-height: auto;
+    margin-top: 70px; /* بعد الهيدر */
+    padding: 20px;
 }
 
 
 .frame {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
     position: relative;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 20px;
 }
 
 .my {
     background-image: url(world.png);
     background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
+    background-repeat: no-repeat;
+    
     width: 100%;
     height: 100%;
-    display: flex;                
-    justify-content: center;      
-    align-items: center;          
-    flex-direction: column;      
-    text-align: center;           
-    transition: transform 5s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
+
+
 
 
 .my:hover {
@@ -281,7 +292,17 @@ h9 {
 
 
 
+
+
+.my.zoomed {
+    transform: scale(1.5);
+}
+
 @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
     h1 {
         font-size: 1.5em;
     }
@@ -296,53 +317,17 @@ h9 {
         padding: 10px;
     }
 
-
-    .frame {
-        height: auto;
-    }
-
     .Container {
         height: auto;
+        margin-top: 70px;
+    }
+
+    .frame {
+        height: 40vh;
+        margin-top: 20px;
     }
 
     .my {
-        height: auto;
-    }
-}
-
-
-
-
-.my.zoomed {
-    transform: scale(1.5);
-}
-
-@media screen and (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-  h1 {
-    font-size: 22px;
-  }
-}
-
-
-@media (max-width: 768px) {
-    .frame {
-        height: auto;
-    }
-
-    .Container {
-        height: auto;
-    }
-
-    .my {
-        height: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .Container {
-        margin-top: 60px;
+        height: 100%;
     }
 }
