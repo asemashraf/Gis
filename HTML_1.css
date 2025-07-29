@@ -324,3 +324,18 @@ h9 {
   }
 }
 
+
+@media (max-width: 768px) {
+    .frame {
+        height: auto;
+    }
+
+    .Container {
+        height: auto;
+    }
+
+    .my {
+        height: auto;
+    }
+}
+
