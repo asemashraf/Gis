@@ -145,7 +145,7 @@ body {
     width: 100%;
     height: 100%;
     background-image: url("world.png");
-    background-size: cover;
+    background-size: 130%;
     background-position: center;
     transition: transform 2s ease;
     text-align: center;
