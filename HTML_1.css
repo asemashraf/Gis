@@ -277,6 +277,33 @@ h9 {
     transform: scale(1.5);
 }
 
+
+
+
+.gis-section {
+  position: relative;
+  background-image: url('your-image-path.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 40px auto;
+  max-width: 900px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.gis-overlay {
+  background-color: rgba(0, 0, 0, 0.55); /* ← طبقة شفافة على الخلفية */
+  padding: 30px 40px;
+  color: white;
+  font-family: 'Segoe UI', 'Poppins', sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+
 @media (max-width: 768px) {
   .frame {
     width: 100vw;
