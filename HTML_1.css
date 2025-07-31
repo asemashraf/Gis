@@ -32,15 +32,15 @@ body {
     width: 100%;
     height: 60px;
     background-color: black;
-    z-index: 2000; /* زودنا الـ z-index */
+    z-index: 2000; 
 }
 
 .menu #logo {
     float: left;
     height: 60px;
-    padding: 0px 30px; /* خفضنا البادينج علشان يطلع فوق */
+    padding: 0px 30px; 
     font-size: 20px;
-    line-height: 60px; /* ظبطنا مكان النص عموديًا */
+    line-height: 60px; 
     color: white;
     font-weight: bold;
 }
@@ -282,7 +282,7 @@ h9 {
 
 .gis-section {
   position: relative;
-  background-image: url('your-image-path.jpg');
+  background-image: url('ChatGPT Image Jul 31, 2025, 12_00_28 PM.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
