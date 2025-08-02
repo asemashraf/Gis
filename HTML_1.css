@@ -5,6 +5,8 @@
     box-sizing: border-box;
     font-size: 1.03em;
     background-color: black;
+    overflow-x:hidden;
+
 }
 
 footer {
@@ -298,10 +300,6 @@ h9 {
 
 
 
-
-
-
-
 .gis-overlay {
   background-color: rgba(0, 0, 0, 0.55);
   padding: 35px 45px;
@@ -495,6 +493,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
