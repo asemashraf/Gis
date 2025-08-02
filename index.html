@@ -30,17 +30,20 @@
     }
   }
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !started) {
-        started = true;
-        typeWriter();
-      }
-    });
-  });
+  function startIfVisible() {
+    const rect = element.getBoundingClientRect();
+    const isVisible = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
 
-  observer.observe(document.getElementById("typewriter"));
+    if (isVisible && !started) {
+      started = true;
+      typeWriter();
+    }
+  }
+
+  window.addEventListener("scroll", startIfVisible);
+  window.addEventListener("load", startIfVisible);
 </script>
+
 
 
 
@@ -224,6 +227,7 @@ Today, GIS has transformed agriculture into a data-driven science. It enables re
     
 </body>
 </html>
+
 
 
 
