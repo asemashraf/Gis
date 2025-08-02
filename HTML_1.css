@@ -9,6 +9,23 @@
 
 }
 
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+
+
+
+
+
+
+
 footer {
     background-color:firebrick;
     color: white;
@@ -127,17 +144,18 @@ body {
 }
 
 .frame {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 85vh;        
-    width: 100vw;         
-    position: relative;
-    overflow: hidden;
-    margin: 0;
-    border-radius: 0;    
-    z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 85vh;
+  width: 100%; 
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 0;
+  z-index: 100;
 }
+
 
 .my {
     display: flex;
@@ -157,8 +175,10 @@ body {
 
 
 .my:hover {
-    transform: scale(1.2);
+  transform: scale(1.05); 
+  transform-origin: center center;
 }
+
 
 span {
     color: white;
@@ -348,14 +368,14 @@ h9 {
   font-size: 20px;
   text-align: center;
   padding: 20px;
-  min-height: 40px;
-  white-space: nowrap;
+  max-width: 90vw; 
+  white-space: normal; 
   overflow: hidden;
   border-right: 2px solid white;
-  width: fit-content;
   margin: 0 auto;
   animation: blink-caret 0.75s step-end infinite;
 }
+
 
 @keyframes blink-caret {
   from, to {
@@ -493,6 +513,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
