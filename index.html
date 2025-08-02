@@ -41,16 +41,22 @@
   <div class="frame">
     <div class="my">
      <h1><span style="color: darkred;">Hello</span> World</h1>
-     <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
-     <style>
-        .tagline {
-          font-family: 'Segoe UI', 'Poppins', sans-serif;
-          font-weight: bold;
-          color: white;
-          font-size: 20px;
-          margin: 10px 0;
-        }
-     </style>
+
+      <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
+
+<style>
+.tagline {
+  font-family: 'Segoe UI', 'Poppins', sans-serif;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+   margin: 10px 0;
+}
+</style>
+
+
+
+        
     </div>
   </div>
 </div>
@@ -73,43 +79,32 @@
 
 <main>
     <article>
+        
+            <center><img src="Gis.png" height="200"><br></center>
 
-        <!-- تم استبدال الصورة بكرة أرضية متحركة -->
-        <center>
-          <div id="globeViz" style="height: 200px; width: 200px;"></div>
-        </center>
+       
+     <div class="gis-section">
+  <div class="gis-overlay">
+      <h7>Geographic Information System Today</h7>
 
-        <script src="https://unpkg.com/three"></script>
-        <script src="https://unpkg.com/globe.gl"></script>
-        <script>
-          const globe = Globe()
-            (document.getElementById('globeViz'))
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
-            .backgroundColor(null)
-            .autoRotate(true)
-            .autoRotateSpeed(0.5)
-            .showAtmosphere(true)
-            .atmosphereColor('#3a228a')
-            .atmosphereAltitude(0.1);
-        </script>
+    <p>
+      GIS and programming are two powerful tools in the modern world, and combining both of them can be a great way to get more out of the data you have. Web GIS programming involves creating, extending, utilizing, Web GIS or web mapping solutions to solve specific problems, build complete applications, or consume or produce data and geospatial processing services. With the expansion of the internet and availability of Web GIS or Web mapping options, web GIS programming is becoming a commonly required skill set in many organizations.
+    </p>
 
-        <div class="gis-section">
-          <div class="gis-overlay">
-              <h7>Geographic Information System Today</h7>
-              <p>
-                  GIS and programming are two powerful tools in the modern world, and combining both of them can be a great way to get more out of the data you have. Web GIS programming involves creating, extending, utilizing, Web GIS or web mapping solutions to solve specific problems, build complete applications, or consume or produce data and geospatial processing services. With the expansion of the internet and availability of Web GIS or Web mapping options, web GIS programming is becoming a commonly required skill set in many organizations.
-              </p>
-          </div>
-        </div>
 
-        <p>
-            If you’re going to be working as a GIS software developer, you’re pretty much going to be a software developer with a concentration in GIS
-        </p>
-        <img src="progis.png" height="100"><br>
-        <p>
-            Programmers need to be focused because you’re going to be writing, examining, and error-checking code. GIS developers need to learn fast on their feet. GIS programming skills like learning <span>Python, .NET, and C++</span> are essential. Alternatively, you could be building web applications using <span>JavaScript, HTML, and CSS</span>. There is also potential to design geospatial applications for field collection, reporting, and other GIS-related activities.
-        </p>
+  </div>
+</div>
 
+
+
+    <p>
+      If you’re going to be working as a GIS software developer, you’re pretty much going to be a software developer with a concentration in GIS
+    </p>
+    <img src="progis.png" height="100"><br>
+    <p>
+      Programmers need to be focused because you’re going to be writing, examining, and error-checking code. GIS developers need to learn fast on their feet. GIS programming skills like learning <span>Python, .NET, and C++</span> are essential. Alternatively, you could be building web applications using <span>JavaScript, HTML, and CSS</span>. There is also potential to design geospatial applications for field collection, reporting, and other GIS-related activities.
+    </p>
+        
     </article>
 </main>
 
@@ -134,6 +129,7 @@
   });
 </script>
 
+
 <script>
   window.addEventListener("DOMContentLoaded", () => {
     const menuHeight = document.querySelector(".menu").offsetHeight;
@@ -141,5 +137,13 @@
   });
 </script>
 
+
+
+
+
+
+
+
+    
 </body>
 </html>
