@@ -314,31 +314,22 @@ h9 {
 
 
 
-
 .gis-section2 {
   position: relative;
+  background-image: url('meshes-arcgis-js.gif'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 12px;
   overflow: hidden;
   margin: 40px auto;
   max-width: 1000px;
-  height: 400px; /* أو أي ارتفاع يناسبك */
+  height: 400px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
-.gis-section2 video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-
 .gis-overlay2 {
-  position: relative;
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0.55); /* نفس التراكب */
+  background-color: rgba(0, 0, 0, 0.55);
   padding: 35px 45px;
   color: gray;
   font-family: 'Segoe UI', 'Poppins', sans-serif;
@@ -350,8 +341,6 @@ h9 {
   flex-direction: column;
   justify-content: center;
 }
-
-
 
 
 
@@ -451,6 +440,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
