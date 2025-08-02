@@ -344,6 +344,53 @@ h9 {
 
 
 
+.typewriter-container {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  min-height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid white;
+  width: fit-content;
+  margin: 0 auto;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -448,6 +495,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
