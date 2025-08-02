@@ -175,7 +175,7 @@ body {
 
 
 .my:hover {
-  transform: scale(1.05); 
+  transform: scale(1.5); 
   transform-origin: center center;
 }
 
@@ -516,6 +516,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
