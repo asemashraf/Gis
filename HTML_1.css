@@ -433,6 +433,7 @@ h9 {
     margin: 0;
     padding: 0;
     border-radius: 0;
+    font-size:24px;
   }
 
   .Container {
@@ -462,12 +463,12 @@ h9 {
   }
 
   .frame {
-    height: 55vh; /* نخلي الفريم أصغر شوية على الموبايل */
+    height: 55vh; 
     border-radius: 10px;
   }
 
   .my {
-    background-size: cover; /* نرجعها cover عشان تملأ الفريم على الموبايل */
+    background-size: cover; 
   }
 
   .my h1 {
@@ -515,6 +516,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
