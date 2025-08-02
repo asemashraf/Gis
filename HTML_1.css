@@ -315,38 +315,6 @@ h9 {
 
 
 
-.gis-section2 {
-  position: relative;
-  background-image: url('ChatGPT Image Jul 31, 2025, 12_00_28 PM.png'); 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 12px;
-  overflow: hidden;
-  margin: 40px auto;
-  max-width: 1000px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-
-    
-}
-
-
-
-
-
-
-
-
-.gis-overlay2 {
-  background-color: rgba(0, 0, 0, 0.55);
-  padding: 35px 45px;
-  color: gray;
-  font-family: 'Segoe UI', 'Poppins', sans-serif;
-  font-size: 17px;
-  line-height: 1.8;
-  text-align: justify;
-}
-
 
 
 
@@ -448,4 +416,5 @@ h9 {
     font-size: 2em;
   }
 }
+
 
