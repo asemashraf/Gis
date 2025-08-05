@@ -156,6 +156,124 @@
 
 
 
+
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coordinate Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>🌍 Coordinate Converter</h2>
+
+    <label>Latitude:</label>
+    <input type="number" id="lat" placeholder="مثال: 30.05" step="any" />
+
+    <label>Longitude:</label>
+    <input type="number" id="lon" placeholder="مثال: 31.23" step="any" />
+
+    <button onclick="convertToUTM()">🔁 Lat/Lon → UTM</button>
+
+    <label>UTM X (East):</label>
+    <input type="number" id="utm_x" placeholder="مثال: 320000" step="any" />
+
+    <label>UTM Y (North):</label>
+    <input type="number" id="utm_y" placeholder="مثال: 3330000" step="any" />
+
+    <label>Zone:</label>
+    <input type="number" id="utm_zone" placeholder="مثال: 36" step="any" />
+
+    <button onclick="convertToLatLon()">🔁 UTM → Lat/Lon</button>
+    <button onclick="copyResult()">📋 نسخ الإحداثيات</button>
+    <button onclick="fillExample()">🧪 نقطة تجريبية</button>
+
+    <div class="output" id="result"></div>
+    <div id="map"></div>
+  </div>
+
+  <script>
+    let map = L.map('map').setView([30, 31], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    let marker;
+
+    function convertToUTM() {
+      const lat = parseFloat(document.getElementById("lat").value);
+      const lon = parseFloat(document.getElementById("lon").value);
+      const zone = Math.floor((lon + 180) / 6) + 1;
+      const utm = `+proj=utm +zone=${zone} +datum=WGS84 +units=m +no_defs`;
+      const [x, y] = proj4('EPSG:4326', utm, [lon, lat]);
+
+      document.getElementById("utm_x").value = x.toFixed(2);
+      document.getElementById("utm_y").value = y.toFixed(2);
+      document.getElementById("utm_zone").value = zone;
+      document.getElementById("result").innerText = `UTM: X = ${x.toFixed(2)}, Y = ${y.toFixed(2)}, Zone = ${zone}`;
+      showOnMap(lat, lon);
+    }
+
+    function convertToLatLon() {
+      const x = parseFloat(document.getElementById("utm_x").value);
+      const y = parseFloat(document.getElementById("utm_y").value);
+      const zone = parseInt(document.getElementById("utm_zone").value);
+      const utm = `+proj=utm +zone=${zone} +datum=WGS84 +units=m +no_defs`;
+      const [lon, lat] = proj4(utm, 'EPSG:4326', [x, y]);
+
+      document.getElementById("lat").value = lat.toFixed(6);
+      document.getElementById("lon").value = lon.toFixed(6);
+      document.getElementById("result").innerText = `Lat = ${lat.toFixed(6)}, Lon = ${lon.toFixed(6)}`;
+      showOnMap(lat, lon);
+    }
+
+    function copyResult() {
+      const result = document.getElementById("result").innerText;
+      navigator.clipboard.writeText(result);
+      alert("✅ تم نسخ الإحداثيات");
+    }
+
+    function fillExample() {
+      document.getElementById("lat").value = 30.033;
+      document.getElementById("lon").value = 31.233;
+      convertToUTM();
+    }
+
+    function showOnMap(lat, lon) {
+      if (marker) map.removeLayer(marker);
+      marker = L.marker([lat, lon]).addTo(map);
+      map.setView([lat, lon], 13);
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
         
         
             <center><img src="Gis.png" height="200"><br></center>
@@ -236,6 +354,7 @@ Today, GIS has transformed agriculture into a data-driven science. It enables re
     
 </body>
 </html>
+
 
 
 
