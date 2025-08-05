@@ -341,7 +341,7 @@ h9 {
   overflow: hidden;
   margin: 40px auto;
   max-width: 1000px;
-  height: 400px;
+  height: 100vh;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
@@ -511,6 +511,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
