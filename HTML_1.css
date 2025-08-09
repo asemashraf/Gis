@@ -341,6 +341,7 @@ h9 {
 
 
 .gis-section2 {
+     display: none !important;
   position: relative;
   background-image: url('meshes-arcgis-js.gif'); 
   background-size: cover;
@@ -523,6 +524,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
