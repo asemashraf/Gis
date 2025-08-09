@@ -304,14 +304,17 @@ h9 {
 
 .gis-section {
   width: 100%;
-  margin: 40px 0; 
+  margin: 40px 0;
   position: relative;
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
-  background-size: cover; 
+  background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 
 .gis-overlay {
   background-color: rgba(0, 0, 0, 0.55);
@@ -321,7 +324,10 @@ h9 {
   font-size: 17px;
   line-height: 1.8;
   text-align: justify;
+  max-width: 90%; 
+  box-sizing: border-box;
 }
+
 
 
 
@@ -508,6 +514,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
