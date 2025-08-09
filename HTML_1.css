@@ -337,25 +337,14 @@ h9 {
 }
 
 .cards-container {
-  animation: none !important; /* إلغاء حركة السلايد السابقة */
+  animation: slide-left 20s linear infinite; /* حركة السلايد */
   display: flex;
   gap: 20px;
   justify-content: center;
   flex-wrap: nowrap;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  animation: rotate360 2s linear infinite;
 }
-
-@keyframes rotate360 {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
 
 .card {
   background-color: rgba(0,0,0,0.8);
@@ -369,6 +358,10 @@ h9 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  animation: rotate360 2s linear infinite; /* دوران كل كرت لوحده */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .card img {
@@ -391,6 +384,15 @@ h9 {
   margin: 0;
 }
 
+@keyframes rotate360 {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
 @keyframes slide-left {
   0% {
     transform: translateX(0);
@@ -399,6 +401,7 @@ h9 {
     transform: translateX(-50%);
   }
 }
+
 
 
 .gis-section::before {
@@ -611,6 +614,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
