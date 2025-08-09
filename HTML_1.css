@@ -326,7 +326,6 @@ h9 {
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
 }
 
-/* Carousel container */
 .carousel {
   width: 100%;
   max-width: 1000px;
@@ -337,14 +336,27 @@ h9 {
   background-color: rgba(0,0,0,0.7);
 }
 
-/* Cards container in flex row, but width is big for animation */
 .cards-container {
+  animation: none !important; /* إلغاء حركة السلايد السابقة */
   display: flex;
-  width: calc(240px * 8); /* 4 cards * 2 for looping */
-  animation: slide-left 20s linear infinite;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  animation: rotate360 2s linear infinite;
 }
 
-/* Each card */
+@keyframes rotate360 {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+
 .card {
   background-color: rgba(0,0,0,0.8);
   border-radius: 15px;
@@ -379,7 +391,6 @@ h9 {
   margin: 0;
 }
 
-/* Animation keyframes */
 @keyframes slide-left {
   0% {
     transform: translateX(0);
@@ -600,6 +611,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
