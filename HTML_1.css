@@ -311,6 +311,7 @@ h9 {
   background-size: cover; 
   background-position: center;
   background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .gis-section::before {
@@ -522,6 +523,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
