@@ -165,7 +165,7 @@ body {
     width: 100%;
     height: 100%;
     background-image: url("ASA.png");
-    background-size: 110%;
+    background-size: 50%;
     background-position: center;
     transition: transform 2.3s ease;
 
@@ -602,6 +602,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
