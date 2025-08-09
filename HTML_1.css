@@ -310,17 +310,10 @@ h9 {
   background-repeat: no-repeat;
   border-radius: 12px;
   overflow: hidden;
-  margin: 40px auto;
-  max-width: 1000px;
+  width: 100vw;
+  margin: 40px 0; 
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    margin: 40px 0;
-    width: 100vw;
-
-    
 }
-
-
-
 
 .gis-overlay {
   background-color: rgba(0, 0, 0, 0.55);
@@ -517,6 +510,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
