@@ -368,17 +368,19 @@ h9 {
   color: white;
   font-size: 20px;
   text-align: center;
-  padding: 10px 5vw; 
+  padding: 10px 5vw;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   white-space: normal;
-  overflow: visible; 
-  border-right: 2px solid white;
+  overflow: visible;
   margin: 0 auto;
-  animation: blink-caret 0.75s step-end infinite;
 }
 
+#typed-text {
+  border-right: 2px solid white;
+  animation: blink-caret 0.75s step-end infinite;
+}
 
 @keyframes blink-caret {
   from, to {
@@ -514,6 +516,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
