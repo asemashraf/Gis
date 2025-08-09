@@ -165,9 +165,10 @@ body {
     width: 100%;
     height: 100%;
     background-image: url("world.png");
-    background-size: 200%;
+    background-size: 110%;
     background-position: center;
-    transition: transform 2.3s ease;
+    transition: transform 2.3s ease, background-size 2.3s ease;
+
     text-align: center;
 }
 
@@ -175,7 +176,8 @@ body {
 
 
 .my:hover {
-  transform: scale(1.1); 
+  transform: scale(1.05);         
+  background-size: 120%;
 }
 
 
@@ -512,6 +514,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
