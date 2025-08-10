@@ -163,13 +163,13 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 150%;
+    height: 500px;
     background-image: url("snapedit.png.jpg");
     background-position: center;
     background-size: cover;
     transition: transform 2.3s ease;
     text-align: center;
-    position: relative; /* مهم عشان النص يبقى جواها */
+    position: relative; 
 }
 
 .my:hover {
@@ -616,6 +616,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
