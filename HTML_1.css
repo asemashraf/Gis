@@ -1,4 +1,4 @@
-body, html {
+* body, html {
     margin: 0;
     padding: 0;
     font-family: "Audiowide", sans-serif;
@@ -6,7 +6,9 @@ body, html {
     font-size: 1.03em;
     background-color: black;
     overflow-x:hidden;
+
 }
+
 
 * {
   box-sizing: border-box;
@@ -17,6 +19,12 @@ html, body {
   padding: 0;
   overflow-x: hidden; 
 }
+
+
+
+
+
+
 
 footer {
     background-color:firebrick;
@@ -148,6 +156,7 @@ body {
   z-index: 100;
 }
 
+
 .my {
     display: flex;
     flex-direction: column;
@@ -158,12 +167,17 @@ body {
     background-image: url("ASA.png");
     background-position: center;
     transition: transform 2.3s ease;
+
     text-align: center;
 }
+
+
+
 
 .my:hover {
   transform: scale(1.05);         
 }
+
 
 span {
     color: white;
@@ -274,56 +288,29 @@ h9 {
     color: white;
 }
 
+.intro .tagline {
+    font-size: 1.2em;
+    color: #ccc;
+    margin-top: 10px;
+}
+
 .my.zoomed {
     transform: scale(1.5);
 }
 
-/* ------------------ GIS SECTION ------------------ */
+
+
+
 .gis-section {
   position: relative;
-  padding: 40px 20px 0 20px;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-sizing: border-box;
-  background: none;
-}
-
-.gis-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  min-height: calc(100% + 40px);
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
-}
-
-.gis-section::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  min-height: calc(100% + 40px);
-  background-color: rgba(0, 0, 0, 0.55);
-  z-index: 1;
-}
-
-.gis-overlay {
-  position: relative; 
-  z-index: 2;
-  padding: 35px 45px;
-  color: gray;
-  font-family: 'Segoe UI', 'Poppins', sans-serif;
-  font-size: 17px;
-  line-height: 1.8;
-  text-align: justify;
+  padding: 40px 20px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 700px;
+  box-sizing: border-box;
 }
 
 .main-text {
@@ -336,32 +323,35 @@ h9 {
   padding: 20px 30px;
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-  position: relative;
-  z-index: 3;
 }
 
 .carousel {
-  position: relative;
-  z-index: 4;
-  background-color: transparent;
-  padding: 20px 10px 40px 10px;
-  margin-top: -20px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.7);
 }
 
 .cards-container {
-  width: auto;
-  gap: 15px;
+  display: flex;
+  gap: 20px;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+
+  width: calc(240px * 8 + 20px * 7); 
+  animation: slide-left 20s linear infinite;
 }
 
 .card {
   background-color: rgba(0,0,0,0.8);
   border-radius: 15px;
-  padding: 10px 10px 20px 10px;
-  width: 180px;
+  padding: 15px 15px 25px 15px;
+  width: 240px;
   margin: 10px 0; 
   box-sizing: border-box;
   flex-shrink: 0;
@@ -373,7 +363,7 @@ h9 {
 
 .card img {
   width: 100%;
-  height: 110px;
+  height: 140px;
   object-fit: cover;
   border-radius: 12px;
   margin-bottom: 15px;
@@ -392,12 +382,43 @@ h9 {
 }
 
 @keyframes slide-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50%)); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50%));
+  }
 }
 
+
+.gis-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55); 
+  z-index: 1;
+}
+
+.gis-overlay {
+  position: relative; 
+  z-index: 2;
+  padding: 35px 45px;
+  color: gray;
+  font-family: 'Segoe UI', 'Poppins', sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+
+
+
+
 .gis-section2 {
-  display: none !important;
+     display: none !important;
   position: relative;
   background-image: url('meshes-arcgis-js.gif'); 
   background-size: cover;
@@ -409,6 +430,7 @@ h9 {
   max-width: 1000px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
+
 
 .gis-overlay2 {
   background-color: rgba(0, 0, 0, 0.55);
@@ -423,6 +445,8 @@ h9 {
   flex-direction: column;
   justify-content: center;
 }
+
+
 
 .typewriter-container {
   font-family: 'Poppins', sans-serif;
@@ -444,9 +468,49 @@ h9 {
 }
 
 @keyframes blink-caret {
-  from, to { border-color: transparent; }
-  50% { border-color: white; }
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 768px) {
   .frame {
@@ -457,12 +521,20 @@ h9 {
     font-size:24px;
   }
 
-  .Container { padding: 0; margin: 0; }
-
-  .gis-section::before,
-  .gis-section::after {
-    height: 40vh;
+  .Container {
+    padding: 0;
+    margin: 0;
   }
+}
+
+
+
+
+.gis-overlay2 {
+  padding: 20px 20px;
+}
+
+
 
   .menu #logo {
     font-size: 16px;
@@ -475,25 +547,110 @@ h9 {
     font-size: 0.9em;
   }
 
-  .frame { height: 55vh; border-radius: 10px; }
+  .frame {
+    height: 55vh; 
+    border-radius: 10px;
+  }
 
-  .my { background-size: cover; }
+  .my {
+    background-size: cover; 
+  }
 
-  .my h1 { font-size: 1.5em; }
+  .my h1 {
+    font-size: 1.5em;
+  }
 
-  .tagline { font-size: 1em; padding: 0 10px; }
+  .tagline {
+    font-size: 1em;
+    padding: 0 10px;
+  }
 
-  .cv { font-size: 0.9em; padding: 10px 15px; width: 160px; margin: 10px auto; }
+  .cv {
+    font-size: 0.9em;
+    padding: 10px 15px;
+    width: 160px;
+    margin: 10px auto;
+  }
 
-  .icon3 { margin: 1em; text-align: center; }
+  .icon3 {
+    margin: 1em;
+    text-align: center;
+  }
 
-  .icon3 img { width: 2.5em; margin: 5px; }
+  .icon3 img {
+    width: 2.5em;
+    margin: 5px;
+  }
 
-  .rr { font-size: 0.9em; text-align: center; margin: 1.5em 0; }
+  .rr {
+    font-size: 0.9em;
+    text-align: center;
+    margin: 1.5em 0;
+  }
 
-  main article p { font-size: 0.9em; line-height: 1.6; }
+  main article p {
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
 
-  h1, h9 { font-size: 1.8em; }
+  h1, h9 {
+    font-size: 1.8em;
+  }
 
-  .intro h1 { font-size: 2em; }
+  .intro h1 {
+    font-size: 2em;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
