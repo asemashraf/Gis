@@ -321,7 +321,7 @@ h9 {
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
   background-size: cover;
   background-position: center;
-  padding: 40px 0;
+  padding: 40px 20px;
  width: 100vw;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -617,6 +617,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
