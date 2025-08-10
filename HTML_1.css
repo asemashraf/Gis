@@ -163,35 +163,20 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 500px;
-    background-image: url("snapedit.png.jpg");
+    height: 100%;
+    background-image: url("ASA.png");
     background-position: center;
-    background-size: cover;
     transition: transform 2.3s ease;
+
     text-align: center;
-    position: relative; 
 }
+
+
+
 
 .my:hover {
   transform: scale(1.05);         
 }
-
-.static-text {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    background: rgba(0,0,0,0.6);
-    padding: 8px 15px;
-    border-radius: 10px;
-    pointer-events: none;
-    user-select: none;
-    z-index: 10;
-}
-
 
 
 span {
@@ -322,7 +307,6 @@ h9 {
   background-size: cover;
   background-position: center;
   padding: 40px 20px;
- width: 100vw;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 700px;
@@ -617,13 +601,6 @@ h9 {
     font-size: 2em;
   }
 }
-
-
-
-
-
-
-
 
 
 
