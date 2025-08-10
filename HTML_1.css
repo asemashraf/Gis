@@ -148,7 +148,6 @@ body {
   z-index: 100;
 }
 
-
 .my {
     display: flex;
     flex-direction: column;
@@ -159,16 +158,12 @@ body {
     background-image: url("ASA.png");
     background-position: center;
     transition: transform 2.3s ease;
-
     text-align: center;
 }
-
-
 
 .my:hover {
   transform: scale(1.05);         
 }
-
 
 span {
     color: white;
@@ -283,50 +278,46 @@ h9 {
     transform: scale(1.5);
 }
 
-
-/* ------------------ GIS SECTION: background that ends at cards ------------------ */
+/* ------------------ GIS SECTION ------------------ */
 .gis-section {
   position: relative;
-  padding: 40px 20px 0 20px; /* keep top padding for the hero text */
+  padding: 40px 20px 0 20px;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
-  /* remove background-image from here and use ::before to control vertical extent */
   background: none;
 }
 
-/* ::before will show the background image and control how far it extends vertically.
-   Adjust the height value (55vh) to push the image further down or up. */
 .gis-section::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 55vh; /* <-- controls where the image ends (try 50vh / 60vh / 700px if you want fixed) */
+  height: auto;
+  min-height: calc(100% + 40px);
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0; /* behind overlay and content */
+  z-index: 0;
 }
 
-/* dark overlay on top of the image but under the content */
 .gis-section::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 55vh; /* match ::before height so overlay aligns */
+  height: auto;
+  min-height: calc(100% + 40px);
   background-color: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* main text (hero) sits above background and overlay */
 .gis-overlay {
   position: relative; 
-  z-index: 2; /* above the image and overlay */
+  z-index: 2;
   padding: 35px 45px;
   color: gray;
   font-family: 'Segoe UI', 'Poppins', sans-serif;
@@ -346,38 +337,31 @@ h9 {
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
   position: relative;
-  z-index: 3; /* ensures it sits above overlay */
+  z-index: 3;
 }
 
-/* The carousel will be above the background (so it visually "stops" at this point).
-   We give it its own background to hide the image that would otherwise continue. */
 .carousel {
   position: relative;
-  z-index: 4; /* on top of the image and overlay */
-  background-color: rgba(0,0,0,0.7);
+  z-index: 4;
+  background-color: transparent;
   padding: 20px 10px 40px 10px;
-  margin-top: 0; /* keep it tight under the hero */
+  margin-top: -20px;
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
 }
 
 .cards-container {
-  display: flex;
-  gap: 20px;
+  width: auto;
+  gap: 15px;
   justify-content: center;
-  flex-wrap: nowrap;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-
-  width: calc(240px * 8 + 20px * 7);
-  animation: slide-left 20s linear infinite;
+  flex-wrap: wrap;
 }
 
 .card {
   background-color: rgba(0,0,0,0.8);
   border-radius: 15px;
-  padding: 15px 15px 25px 15px;
-  width: 240px;
+  padding: 10px 10px 20px 10px;
+  width: 180px;
   margin: 10px 0; 
   box-sizing: border-box;
   flex-shrink: 0;
@@ -389,7 +373,7 @@ h9 {
 
 .card img {
   width: 100%;
-  height: 140px;
+  height: 110px;
   object-fit: cover;
   border-radius: 12px;
   margin-bottom: 15px;
@@ -408,20 +392,12 @@ h9 {
 }
 
 @keyframes slide-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-50%));
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50%)); }
 }
 
-/* If you want the image to end exactly at a pixel height instead of vh,
-   change "height: 55vh;" in ::before and ::after to something like "height: 700px;" */
-
-
 .gis-section2 {
-     display: none !important;
+  display: none !important;
   position: relative;
   background-image: url('meshes-arcgis-js.gif'); 
   background-size: cover;
@@ -433,7 +409,6 @@ h9 {
   max-width: 1000px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
-
 
 .gis-overlay2 {
   background-color: rgba(0, 0, 0, 0.55);
@@ -448,7 +423,6 @@ h9 {
   flex-direction: column;
   justify-content: center;
 }
-
 
 .typewriter-container {
   font-family: 'Poppins', sans-serif;
@@ -470,12 +444,8 @@ h9 {
 }
 
 @keyframes blink-caret {
-  from, to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: white;
-  }
+  from, to { border-color: transparent; }
+  50% { border-color: white; }
 }
 
 @media (max-width: 768px) {
@@ -487,12 +457,8 @@ h9 {
     font-size:24px;
   }
 
-  .Container {
-    padding: 0;
-    margin: 0;
-  }
+  .Container { padding: 0; margin: 0; }
 
-  /* reduce hero height on small screens */
   .gis-section::before,
   .gis-section::after {
     height: 40vh;
@@ -509,57 +475,25 @@ h9 {
     font-size: 0.9em;
   }
 
-  .frame {
-    height: 55vh; 
-    border-radius: 10px;
-  }
+  .frame { height: 55vh; border-radius: 10px; }
 
-  .my {
-    background-size: cover; 
-  }
+  .my { background-size: cover; }
 
-  .my h1 {
-    font-size: 1.5em;
-  }
+  .my h1 { font-size: 1.5em; }
 
-  .tagline {
-    font-size: 1em;
-    padding: 0 10px;
-  }
+  .tagline { font-size: 1em; padding: 0 10px; }
 
-  .cv {
-    font-size: 0.9em;
-    padding: 10px 15px;
-    width: 160px;
-    margin: 10px auto;
-  }
+  .cv { font-size: 0.9em; padding: 10px 15px; width: 160px; margin: 10px auto; }
 
-  .icon3 {
-    margin: 1em;
-    text-align: center;
-  }
+  .icon3 { margin: 1em; text-align: center; }
 
-  .icon3 img {
-    width: 2.5em;
-    margin: 5px;
-  }
+  .icon3 img { width: 2.5em; margin: 5px; }
 
-  .rr {
-    font-size: 0.9em;
-    text-align: center;
-    margin: 1.5em 0;
-  }
+  .rr { font-size: 0.9em; text-align: center; margin: 1.5em 0; }
 
-  main article p {
-    font-size: 0.9em;
-    line-height: 1.6;
-  }
+  main article p { font-size: 0.9em; line-height: 1.6; }
 
-  h1, h9 {
-    font-size: 1.8em;
-  }
+  h1, h9 { font-size: 1.8em; }
 
-  .intro h1 {
-    font-size: 2em;
-  }
+  .intro h1 { font-size: 2em; }
 }
