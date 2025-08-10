@@ -147,7 +147,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 150vh;
   width: 100%; 
   position: relative;
   overflow: hidden;
@@ -601,6 +601,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
