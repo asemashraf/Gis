@@ -166,17 +166,32 @@ body {
     height: 150%;
     background-image: url("snapedit.png.jpg");
     background-position: center;
+    background-size: cover;
     transition: transform 2.3s ease;
-
     text-align: center;
+    position: relative; /* مهم عشان النص يبقى جواها */
 }
-
-
-
 
 .my:hover {
   transform: scale(1.05);         
 }
+
+.static-text {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    background: rgba(0,0,0,0.6);
+    padding: 8px 15px;
+    border-radius: 10px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 10;
+}
+
 
 
 span {
@@ -601,6 +616,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
