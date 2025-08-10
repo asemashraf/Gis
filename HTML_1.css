@@ -1,4 +1,4 @@
-* body, html {
+body, html {
     margin: 0;
     padding: 0;
     font-family: "Audiowide", sans-serif;
@@ -6,9 +6,7 @@
     font-size: 1.03em;
     background-color: black;
     overflow-x:hidden;
-
 }
-
 
 * {
   box-sizing: border-box;
@@ -19,12 +17,6 @@ html, body {
   padding: 0;
   overflow-x: hidden; 
 }
-
-
-
-
-
-
 
 footer {
     background-color:firebrick;
@@ -173,7 +165,6 @@ body {
 
 
 
-
 .my:hover {
   transform: scale(1.05);         
 }
@@ -288,25 +279,60 @@ h9 {
     color: white;
 }
 
-.intro .tagline {
-    font-size: 1.2em;
-    color: #ccc;
-    margin-top: 10px;
-}
-
 .my.zoomed {
     transform: scale(1.5);
 }
 
 
-
-
+/* ------------------ GIS SECTION: background that ends at cards ------------------ */
 .gis-section {
+  position: relative;
+  padding: 40px 20px 0 20px; /* keep top padding for the hero text */
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  /* remove background-image from here and use ::before to control vertical extent */
+  background: none;
+}
+
+/* ::before will show the background image and control how far it extends vertically.
+   Adjust the height value (55vh) to push the image further down or up. */
+.gis-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55vh; /* <-- controls where the image ends (try 50vh / 60vh / 700px if you want fixed) */
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-bottom: 0; /* تمنع امتداد الخلفية تحت */
+  z-index: 0; /* behind overlay and content */
+}
+
+/* dark overlay on top of the image but under the content */
+.gis-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55vh; /* match ::before height so overlay aligns */
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+/* main text (hero) sits above background and overlay */
+.gis-overlay {
+  position: relative; 
+  z-index: 2; /* above the image and overlay */
+  padding: 35px 45px;
+  color: gray;
+  font-family: 'Segoe UI', 'Poppins', sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+  text-align: justify;
 }
 
 .main-text {
@@ -319,16 +345,20 @@ h9 {
   padding: 20px 30px;
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 3; /* ensures it sits above overlay */
 }
 
+/* The carousel will be above the background (so it visually "stops" at this point).
+   We give it its own background to hide the image that would otherwise continue. */
 .carousel {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  overflow: hidden;
+  position: relative;
+  z-index: 4; /* on top of the image and overlay */
+  background-color: rgba(0,0,0,0.7);
+  padding: 20px 10px 40px 10px;
+  margin-top: 0; /* keep it tight under the hero */
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-  background-color: rgba(0,0,0,0.7);
 }
 
 .cards-container {
@@ -339,7 +369,7 @@ h9 {
   transform-style: preserve-3d;
   backface-visibility: hidden;
 
-  width: calc(240px * 8 + 20px * 7); 
+  width: calc(240px * 8 + 20px * 7);
   animation: slide-left 20s linear infinite;
 }
 
@@ -386,31 +416,8 @@ h9 {
   }
 }
 
-
-.gis-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.55); 
-  z-index: 1;
-}
-
-.gis-overlay {
-  position: relative; 
-  z-index: 2;
-  padding: 35px 45px;
-  color: gray;
-  font-family: 'Segoe UI', 'Poppins', sans-serif;
-  font-size: 17px;
-  line-height: 1.8;
-  text-align: justify;
-}
-
-
-
+/* If you want the image to end exactly at a pixel height instead of vh,
+   change "height: 55vh;" in ::before and ::after to something like "height: 700px;" */
 
 
 .gis-section2 {
@@ -443,7 +450,6 @@ h9 {
 }
 
 
-
 .typewriter-container {
   font-family: 'Poppins', sans-serif;
   color: white;
@@ -472,42 +478,6 @@ h9 {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (max-width: 768px) {
   .frame {
     width: 100vw;
@@ -521,16 +491,12 @@ h9 {
     padding: 0;
     margin: 0;
   }
-}
 
-
-
-
-.gis-overlay2 {
-  padding: 20px 20px;
-}
-
-
+  /* reduce hero height on small screens */
+  .gis-section::before,
+  .gis-section::after {
+    height: 40vh;
+  }
 
   .menu #logo {
     font-size: 16px;
@@ -597,58 +563,3 @@ h9 {
     font-size: 2em;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
