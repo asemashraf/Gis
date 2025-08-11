@@ -167,6 +167,7 @@ body {
     background-image: url("cairo.png");
     background-position: center;
     transition: transform 2.3s ease;
+    background-size: cover;
 
     text-align: center;
 }
@@ -601,6 +602,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
