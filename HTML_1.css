@@ -518,6 +518,7 @@ h9 {
 @media (max-width: 768px) {
   body, html {
     overflow-x: hidden;
+      padding-top: 40px;
   }
 
   .Container {
@@ -619,6 +620,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
