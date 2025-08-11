@@ -161,14 +161,19 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     width: 100%;
-    height: auto;
+    padding: 20px 0;
+
     background-image: url("cairo.png");
-    background-position: top center;
+    background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 70vh;
-    transition: transform 2.3s ease;
+    background-size: cover; /* أو contain لو عايز الصورة كاملة */
+    
+    height: auto;           /* الطول حسب المحتوى */
+    min-height: 70vh;       /* أقل طول مناسب للشاشات الكبيرة */
+    box-sizing: border-box; /* عشان البادينج يتحسب صح */
+    
     text-align: center;
 }
 
@@ -532,13 +537,11 @@ h9 {
     padding: 15px;
   }
 
-  .my {
-    height: auto;
-    min-height: auto;
-          padding: 20px 0;
-
-    background-size: cover; 
-  }
+  @media (max-width: 768px) {
+    .my {
+        min-height: 50vh; /* أقل شوية للموبايل */
+        padding: 10px 0;
+        background-size: contain; /* عشان الصورة ما تتقطعش */
 
   main article {
     padding: 10px;
@@ -621,6 +624,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
