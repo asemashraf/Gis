@@ -553,9 +553,7 @@ h9 {
     border-radius: 10px;
   }
 
-  .my {
-    background-size: cover; 
-  }
+  
 
   .my h1 {
     font-size: 1.5em;
@@ -602,6 +600,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
