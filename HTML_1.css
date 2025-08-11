@@ -6,7 +6,6 @@
     font-size: 1.03em;
     background-color: black;
     overflow-x:hidden;
-padding-top: 60px;
 }
 
 
@@ -21,6 +20,11 @@ html, body {
 }
 
 
+
+.cairo-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
 
 
 
@@ -620,6 +624,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
