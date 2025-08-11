@@ -6,6 +6,7 @@
     font-size: 1.03em;
     background-color: black;
     overflow-x:hidden;
+
 }
 
 
@@ -138,7 +139,7 @@ body {
 
 .Container {
     min-height: auto;
-    margin-top: 0;
+    margin-top: 80px;
     padding: 20px;
 }
 
@@ -161,23 +162,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     width: 100%;
-    padding: 0;
-  margin: 0;
-
+    height: 100%;
     background-image: url("cairo.png");
     background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover; /* أو contain لو عايز الصورة كاملة */
-    
-    height: auto;           /* الطول حسب المحتوى */
-    min-height: 70vh;       /* أقل طول مناسب للشاشات الكبيرة */
-    box-sizing: border-box; /* عشان البادينج يتحسب صح */
-    
+    transition: transform 2.3s ease;
+
     text-align: center;
 }
-
 
 
 
@@ -521,48 +513,19 @@ h9 {
 
 
 @media (max-width: 768px) {
-  body, html {
-    overflow-x: hidden;
-      padding-top: 40px;
+  .frame {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    font-size:24px;
   }
 
   .Container {
-    padding: 10px;
-    margin: 0 auto;
-    width: 100vw;
-  }
-
-  .frame {
-    height: auto;
-    min-height: 60vh;
-    padding: 15px;
-  }
-
- @media (max-width: 768px) {
-  .my {
-    height: auto;   /* على قد المحتوى */
-    min-height: unset;
+    padding: 0;
+    margin: 0;
   }
 }
-
-/* على الشاشات الكبيرة */
-@media (min-width: 769px) {
-  .my {
-    height: 100vh; /* تملى الشاشة بالظبط */
-  }
-}ورة ما تتقطعش */
-
-  main article {
-    padding: 10px;
-    font-size: 0.9em; 
-  }
-
-  .menu #logo, .menu-item {
-    font-size: 14px; 
-    padding: 10px 12px;
-  }
-}
-
 
 
 
@@ -584,9 +547,14 @@ h9 {
     font-size: 0.9em;
   }
 
-  
+  .frame {
+    height: 55vh; 
+    border-radius: 10px;
+  }
 
-  
+  .my {
+    background-size: cover; 
+  }
 
   .my h1 {
     font-size: 1.5em;
@@ -633,17 +601,6 @@ h9 {
     font-size: 2em;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
