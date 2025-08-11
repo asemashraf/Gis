@@ -307,6 +307,62 @@ Today, GIS has transformed agriculture into a data-driven science. It enables re
     const menuHeight = document.querySelector(".menu").offsetHeight;
     document.body.style.paddingTop = menuHeight + "px";
   });
+
+
+
+
+
+
+const slider = document.querySelector('.cards-container');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.style.animationPlayState = 'paused'; // وقف الحركة التلقائية
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  slider.style.animationPlayState = 'running'; // رجع الحركة التلقائية
+});
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.style.animationPlayState = 'running';
+});
+slider.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2; // سرعة السحب
+  slider.scrollLeft = scrollLeft - walk;
+});
+
+slider.addEventListener('touchstart', (e) => {
+  isDown = true;
+  slider.style.animationPlayState = 'paused';
+  startX = e.touches[0].pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('touchend', () => {
+  isDown = false;
+  slider.style.animationPlayState = 'running';
+});
+slider.addEventListener('touchmove', (e) => {
+  if (!isDown) return;
+  const x = e.touches[0].pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2;
+  slider.scrollLeft = scrollLeft - walk;
+});
+
+
+
+
+
+
+    
 </script>
 
 
@@ -318,6 +374,7 @@ Today, GIS has transformed agriculture into a data-driven science. It enables re
     
 </body>
 </html>
+
 
 
 
