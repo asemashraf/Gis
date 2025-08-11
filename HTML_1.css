@@ -516,19 +516,39 @@ h9 {
 
 
 @media (max-width: 768px) {
-  .frame {
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-    font-size:24px;
+  body, html {
+    overflow-x: hidden;
   }
 
   .Container {
-    padding: 0;
-    margin: 0;
+    padding: 10px;
+    margin: 0 auto;
+    width: 100vw;
+  }
+
+  .frame {
+    height: auto;
+    min-height: 60vh;
+    padding: 15px;
+  }
+
+  .my {
+    height: auto;
+    min-height: 50vh;
+    background-size: contain; 
+  }
+
+  main article {
+    padding: 10px;
+    font-size: 0.9em; 
+  }
+
+  .menu #logo, .menu-item {
+    font-size: 14px; 
+    padding: 10px 12px;
   }
 }
+
 
 
 
@@ -550,14 +570,9 @@ h9 {
     font-size: 0.9em;
   }
 
-  .frame {
-    height: 55vh; 
-    border-radius: 10px;
-  }
+  
 
-  .my {
-    background-size: cover; 
-  }
+  
 
   .my h1 {
     font-size: 1.5em;
@@ -604,6 +619,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
