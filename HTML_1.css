@@ -168,6 +168,8 @@ body {
     background-position: center;
     transition: transform 2.3s ease;
     background-size: contain;
+    background-repeat: no-repeat;
+
 
     text-align: center;
 }
@@ -602,6 +604,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
