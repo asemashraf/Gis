@@ -163,7 +163,8 @@ body {
     align-items: center;
 
     width: 100%;
-    padding: 20px 0;
+    padding: 0;
+  margin: 0;
 
     background-image: url("cairo.png");
     background-position: center;
@@ -537,11 +538,19 @@ h9 {
     padding: 15px;
   }
 
-  @media (max-width: 768px) {
-    .my {
-        min-height: 50vh; /* أقل شوية للموبايل */
-        padding: 10px 0;
-        background-size: contain; /* عشان الصورة ما تتقطعش */
+ @media (max-width: 768px) {
+  .my {
+    height: auto;   /* على قد المحتوى */
+    min-height: unset;
+  }
+}
+
+/* على الشاشات الكبيرة */
+@media (min-width: 769px) {
+  .my {
+    height: 100vh; /* تملى الشاشة بالظبط */
+  }
+}ورة ما تتقطعش */
 
   main article {
     padding: 10px;
@@ -624,6 +633,7 @@ h9 {
     font-size: 2em;
   }
 }
+
 
 
 
