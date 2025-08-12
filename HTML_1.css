@@ -6,9 +6,6 @@
     font-size: 1.03em;
     background-color: black;
     overflow-x:hidden;
-
-
-     padding-top: 60px; /* نفس ارتفاع navbar */
     position: relative;
     min-height: 100vh;
     overflow-x: hidden;
@@ -623,6 +620,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
