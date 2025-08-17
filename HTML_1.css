@@ -318,6 +318,7 @@ h9 {
 background-size: 100% auto;
     width: 100%
     min-height: calc(100vh - 60px);
+    background-attachment: fixed; 
 }
 
 
@@ -625,6 +626,7 @@ background-size: 100% auto;
     font-size: 12px;
   }
 }
+
 
 
 
