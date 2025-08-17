@@ -317,7 +317,7 @@ h9 {
   min-height: 700px;
   box-sizing: border-box;
 background-size: 100% auto;
-    width: 100vh
+    width: 100%
 }
 
 
@@ -625,6 +625,7 @@ background-size: 100% auto;
     font-size: 12px;
   }
 }
+
 
 
 
