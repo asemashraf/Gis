@@ -1,17 +1,14 @@
-* body, html {
-    margin: 0;
-    padding: 0;
-    font-family: "Audiowide", sans-serif;
-    box-sizing: border-box;
-    font-size: 1.03em;
-    background-color: black;
-    overflow-x:hidden;
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
-
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Audiowide", sans-serif;
+  box-sizing: border-box;
+  font-size: 1.03em;
+  background-color: black;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
 }
-
 
 * {
   box-sizing: border-box;
@@ -169,10 +166,9 @@ body {
   background-image: url("cairo.png");
   background-position: center top;
   background-repeat: no-repeat;
-transition: transform 2.3s ease;
-    background-size: cover;
+  transition: transform 2.3s ease;
+  background-size: cover;
 }
-
 
 
 
@@ -624,6 +620,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
