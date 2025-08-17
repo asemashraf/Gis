@@ -168,7 +168,6 @@ body {
   min-height: calc(100vh - 60px); 
   background-image: url("cairo.png");
   background-position: center top;
-  background-size: cover;
   background-repeat: no-repeat;
 transition: transform 2.3s ease;
     background-size: 100% auto;
@@ -626,6 +625,7 @@ background-size: 100% auto;
     font-size: 12px;
   }
 }
+
 
 
 
