@@ -198,8 +198,9 @@ h1 {
 }
 
 main {
-    width: 90vw;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 article {
@@ -620,6 +621,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
