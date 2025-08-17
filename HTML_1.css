@@ -507,7 +507,7 @@ h9 {
 }
 
 .my .card {
-  flex: 0 0 250px; 
+  flex: 0 0 250px; /* حجم الكارت */
   background: rgba(0,0,0,0.6);
   padding: 20px;
   border-radius: 10px;
@@ -515,13 +515,8 @@ h9 {
   color: white;
   scroll-snap-align: center;
   position: relative;
-  transition: none; 
-}
-
-.my .card:hover,
-.my .card:focus,
-.my .card:active {
-  transform: none; 
+  transform: none !important;      
+  transition: none !important;     
 }
 
 .my .card img {
@@ -533,6 +528,7 @@ h9 {
 .my .cards::-webkit-scrollbar {
   display: none;
 }
+
 
 
 
@@ -652,6 +648,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
