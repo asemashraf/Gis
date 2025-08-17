@@ -496,19 +496,20 @@ h9 {
 
 .my .cards {
   display: flex;
-  justify-content: center;
-  align-items: stretch;
   gap: 20px;
   margin-top: 30px;
-}
+  overflow-x: auto;      
+  scroll-snap-type: x mandatory; 
+  -webkit-overflow-scrolling: touch; 
 
 .my .card {
+  flex: 0 0 250px;       
   background: rgba(0,0,0,0.6);
   padding: 20px;
   border-radius: 10px;
-  width: 250px;
   text-align: center;
   color: white;
+  scroll-snap-align: center; 
 }
 
 .my .card img {
@@ -516,11 +517,6 @@ h9 {
   border-radius: 8px;
   margin-bottom: 15px;
 }
-
-
-
-
-
 
 
 
@@ -643,6 +639,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
