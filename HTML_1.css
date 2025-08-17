@@ -307,12 +307,13 @@ h9 {
 .gis-section {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;   /* الصورة تغطي الشاشة بالكامل */
 
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
-  background-size: 100% auto;
-  background-position: top center;
+  background-size: cover;        /* تغطي العرض والارتفاع */
+  background-position: center top;
   background-repeat: no-repeat;
+
   padding: 40px 20px;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -624,6 +625,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
