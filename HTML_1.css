@@ -308,7 +308,7 @@ h9 {
 .gis-section {
   position: relative;
   background-image: url("ChatGPT Image Jul 31, 2025, 12_00_28 PM.png");
-  background-size: cover;
+  background-size: cover 100vh;
   background-position: center top;
   background-repeat: no-repeat;
   padding: 40px 20px;
@@ -625,6 +625,7 @@ background-size: 100% auto;
     font-size: 12px;
   }
 }
+
 
 
 
