@@ -316,6 +316,8 @@ h9 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 700px;
   box-sizing: border-box;
+background-size: 100% auto;
+    width: 100%
 }
 
 
@@ -623,6 +625,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
