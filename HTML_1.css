@@ -494,6 +494,30 @@ h9 {
 
 
 
+.my .cards {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px; 
+  width: 80%;
+  max-width: 1200px;
+  margin-top: 30px;
+}
+
+.my .card {
+  background: rgba(0,0,0,0.6); 
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1;
+}
+
+.my .card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px;
+}
 
 
 
@@ -621,6 +645,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
