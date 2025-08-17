@@ -498,18 +498,29 @@ h9 {
   display: flex;
   gap: 20px;
   margin-top: 30px;
-  overflow-x: auto;      
-  scroll-snap-type: x mandatory; 
-  -webkit-overflow-scrolling: touch; 
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-left: calc(50vw - 125px); /* يخلي الكارت الأول في النص */
+  padding-right: calc(50vw - 125px); /* يخلي الكارت الأخير ممكن يوصل للنص */
+}
 
 .my .card {
-  flex: 0 0 250px;       
+  flex: 0 0 250px; /* حجم الكارت */
   background: rgba(0,0,0,0.6);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   color: white;
-  scroll-snap-align: center; 
+  scroll-snap-align: center;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+/* لو حابب تضيف تأثير تكبير الكارت اللي في النص */
+.my .card:focus,
+.my .card:active {
+  transform: scale(1.05);
 }
 
 .my .card img {
@@ -518,6 +529,10 @@ h9 {
   margin-bottom: 15px;
 }
 
+/* إزالة الـ scrollbar (اختياري) */
+.my .cards::-webkit-scrollbar {
+  display: none;
+}
 
 
 
@@ -639,6 +654,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
