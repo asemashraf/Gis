@@ -313,8 +313,6 @@ h9 {
   background-size: 100% auto;
   background-position: top center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-
   padding: 40px 20px;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -626,6 +624,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
