@@ -170,8 +170,7 @@ body {
   background-position: center top;
   background-repeat: no-repeat;
 transition: transform 2.3s ease;
-    background-size: 100% auto;
-
+    background-size: cover;
 }
 
 
@@ -625,6 +624,7 @@ h9 {
     font-size: 12px;
   }
 }
+
 
 
 
