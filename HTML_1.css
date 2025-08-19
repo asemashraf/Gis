@@ -41,77 +41,14 @@ body {
 }
 
 .menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: black;
-  color: white;
-  position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: black;
+    z-index: 2000; 
 }
-
-#logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#logo img {
-  height: 30px;
-}
-
-#rmenu {
-  display: flex;
-  gap: 20px;
-}
-
-.menu-toggle {
-  display: none;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-
-
-
-
-<style>
-  /* زر الموبايل */
-  .menu-toggle {
-    display: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: white;
-  }
-
-  /* الموبايل */
-  @media (max-width: 768px) {
-    .menu-item { display: none; }   /* نخفي كلمة menu */
-    .menu-toggle { display: block; } /* نظهر زر ☰ */
-    #rmenu {
-      display: none;
-      flex-direction: column;
-      background: #111;
-      width: 100%;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      padding: 15px 0;
-      z-index: 1000;
-    }
-    #rmenu.show {
-      display: flex;
-    }
-    #rmenu li {
-      text-align: center;
-      margin: 10px 0;
-    }
-  }
-</style>
-
-
-
-
 
 .menu #logo {
     float: left;
@@ -232,43 +169,28 @@ body {
   background-size: cover;
   position: relative;
   overflow: hidden;
-  animation: zoomPan 25s infinite linear;
 }
 
-@keyframes zoomPan {
-  0% {
-    transform: scale(1) translate(0, 0);
-  }
-  25% {
-    transform: scale(1.1) translate(-10px, -10px);
-  }
-  50% {
-    transform: scale(1.15) translate(10px, -15px);
-  }
-  75% {
-    transform: scale(1.1) translate(-15px, 10px);
-  }
-  100% {
-    transform: scale(1) translate(0, 0);
-  }
+.my:hover {
+  background-size: 110%;
+  background-position: center;
+  transition: background-size 2.3s ease;
 }
 
 .my::before {
   content: "";
-  position: absolute;  
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%;
-  background: rgba(0,0,0,0.2); 
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.45); /* ممكن تزود أو تقلل الشفافية */
   z-index: 1;
 }
 
+/* خلي النصوص والكروت فوق overlay */
 .my > * {
   position: relative;
   z-index: 2;
 }
-
 
 
 span {
@@ -767,62 +689,6 @@ h9 {
 
 
 
-
-
-
-
-
-
-
-
-/* ====== Responsive Fix for Text + Cards ====== */
-
-.my h1 {
-  font-size: clamp(1.2em, 5vw, 2.5em);
-}
-
-.tagline {
-  font-size: clamp(0.9em, 3vw, 1.2em);
-}
-
-.my h1, 
-.my p, 
-.my span {
-  max-width: 90%;  
-  word-wrap: break-word;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (max-width: 768px) {
-  .my h1 {
-    font-size: 1.5em;
-  }
-  .tagline {
-    font-size: 1em;
-  }
-  .my .cards {
-    padding-left: 10px;
-    padding-right: 10px;
-    gap: 10px;
-  }
-  .my .card {
-    flex: 0 0 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .my h1 {
-    font-size: 1.2em;
-  }
-  .tagline {
-    font-size: 0.9em;
-  }
-  .my .card {
-    flex: 0 0 160px;
-  }
-}
 
 
 
