@@ -739,21 +739,23 @@ h9 {
   padding: 15px 20px;
 }
 
-/* إخفاء القائمة في الموبايل */
 @media (max-width: 768px) {
   #rmenu {
     display: none;
     position: fixed;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 60px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.95);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     z-index: 3000;
+    width: 80%; 
+    height: auto; 
+    padding: 20px;
+    border-radius: 15px;
   }
 
   #rmenu li {
@@ -789,3 +791,6 @@ h9 {
 #rmenu.show {
   display: flex !important;
 }
+ #rmenu li a:hover {
+    color: darkred !important;
+  }
