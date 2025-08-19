@@ -740,57 +740,48 @@ h9 {
 }
 
 @media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    z-index: 4000;
+  }
+
   #rmenu {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.95);
+    top: 60px; /* تحت navbar */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px); /* تملي كل الشاشة */
+    background-color: rgba(0,0,0,0.95);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     z-index: 3000;
-    width: 80%; 
-    height: auto; 
     padding: 20px;
-    border-radius: 15px;
   }
 
   #rmenu li {
-    float: none;
     margin: 20px 0;
   }
 
-  .menu-toggle {
-    display: block;
-  }
-
-  /* اخفي كلمة menu في الموبايل */
-  .menu-item {
-    display: none;
-  }
-
-  /* لينكات القائمة في الموبايل */
   #rmenu li a {
-    color: white !important;
+    color: white;
     font-size: 22px;
     text-decoration: none;
     display: block;
     padding: 10px 0;
     text-align: center;
+    transition: color 0.3s;
   }
 
   #rmenu li a:hover {
-    color: darkred !important;
+    color: darkred;
   }
-}
 
-/* لما القائمة تتفتح */
-#rmenu.show {
-  display: flex !important;
-}
- #rmenu li a:hover {
-    color: darkred !important;
+  #rmenu.show {
+    display: flex;
   }
