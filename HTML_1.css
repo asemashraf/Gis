@@ -169,12 +169,13 @@ body {
   background-size: cover;
   position: relative;
   overflow: hidden;
+    transition: background-size 8s ease-in-out, background-position 8s ease-in-out;
+
 }
 
 .my:hover {
   background-size: 110%;
   background-position: center;
- transition: background-size 8s ease-in-out;
 }
 
 .my::before {
@@ -894,6 +895,7 @@ h9 {
     text-align: center;      /* النصوص في النص */
   }
 }
+
 
 
 
