@@ -44,8 +44,11 @@
 
 <nav class="menu">
     <div id="logo">
-        <span style="color: darkred !important;">Asem</span><span> Ashraf</span><img src="logo.png" alt="">
+        <span style="color: darkred !important;">Asem</span><span> Ashraf</span>
+        <img src="logo.png" alt="">
     </div>
+
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
 
     <ul id="rmenu">
         <li>
@@ -63,6 +66,7 @@
         </li>
     </ul>
 </nav>
+
 
 <div class="Container">
   <div class="frame">
@@ -389,11 +393,28 @@ slider.addEventListener('touchmove', (e) => {
 
 
 
+<script>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const rmenu = document.getElementById("rmenu");
+
+  toggleBtn.addEventListener("click", () => {
+    rmenu.classList.toggle("active");
+  });
+
+  document.querySelectorAll("#rmenu > li > a").forEach(item => {
+    item.addEventListener("click", e => {
+      const parent = item.parentElement;
+      parent.classList.toggle("open");
+      e.preventDefault();
+    });
+  });
+</script>
 
 
     
 </body>
 </html>
+
 
 
 
