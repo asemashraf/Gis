@@ -807,6 +807,62 @@ h9 {
 
 
 
+/* زرار الموبايل */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  padding: 15px 20px;
+}
+
+/* نسخة الموبايل */
+@media (max-width: 768px) {
+  #rmenu {
+    display: none;
+    flex-direction: column;
+    background: black;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 220px;
+    text-align: left;
+    padding: 10px 0;
+    z-index: 3000;
+  }
+
+  #rmenu li {
+    float: none;
+  }
+
+  .menu-item {
+    display: block;
+    padding: 12px 20px;
+    border-bottom: 1px solid darkred;
+  }
+
+  .menu-toggle {
+    display: block;
+    float: right;
+  }
+
+  /* لما نفتحه */
+  #rmenu.active {
+    display: flex;
+  }
+
+  /* خلي الـ dropdown يفتح بكليك */
+  .sup-contant {
+    position: static;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  li.open .sup-contant {
+    max-height: 300px;
+  }
+}
+
 
 
 
