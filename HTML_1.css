@@ -769,17 +769,8 @@ h9 {
   .menu-item {
     display: none;
   }
-}
 
-/* لما القائمة تتفتح */
-#rmenu.show {
-  display: flex !important;
-}
-
-
-
-
-@media (max-width: 768px) {
+  /* لينكات القائمة في الموبايل */
   #rmenu li a {
     color: white !important;
     font-size: 22px;
@@ -794,17 +785,7 @@ h9 {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* لما القائمة تتفتح */
+#rmenu.show {
+  display: flex !important;
+}
