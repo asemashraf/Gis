@@ -171,18 +171,19 @@ body {
 .my::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 0; 
   left: 0;
-  width: 100%;
+  width: 100%; 
   height: 100%;
-  background: rgba(0,0,0,0.45);
-  z-index: 1;
+  background: rgba(0,0,0,0.45); 
+  z-index: 1; 
 }
 
 .my > * {
   position: relative;
   z-index: 2;
 }
+
 
 span {
   color: white;
@@ -745,3 +746,4 @@ h1, h9 {
     text-align: center;
   }
 }
+
