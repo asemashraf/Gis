@@ -792,6 +792,28 @@ h9 {
 
 
 
+@media (max-width: 768px) {
+  #rmenu {
+    display: none; /* مخفي افتراضياً */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 999;
+  }
+
+  #rmenu.active {
+    display: flex; /* يظهر عند الضغط */
+  }
+
+  .menu-toggle {
+    display: block; /* يظهر زر ☰ */
+  }
 
 
 
