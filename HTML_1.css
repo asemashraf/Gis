@@ -779,6 +779,21 @@ h9 {
 
 
 
+@media (max-width: 768px) {
+  #rmenu li a {
+    color: white !important;
+    font-size: 22px;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  #rmenu li a:hover {
+    color: darkred !important;
+  }
+}
+
 
 
 
