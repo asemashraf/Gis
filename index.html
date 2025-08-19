@@ -47,6 +47,8 @@
         <span style="color: darkred !important;">Asem</span><span> Ashraf</span><img src="logo.png" alt="">
     </div>
 
+    <div class="menu-toggle">&#9776;</div> <!-- زرار الموبايل -->
+
     <ul id="rmenu">
         <li>
             <a class="menu-item" href="#">menu</a>
@@ -380,13 +382,22 @@ slider.addEventListener('touchmove', (e) => {
 
 
 
+<script>
 
+const menuToggle = document.querySelector('.menu-toggle');
+const rmenu = document.getElementById('rmenu');
 
+menuToggle.addEventListener('click', () => {
+  rmenu.classList.toggle('show');
+});
+
+</script>
 
 
     
 </body>
 </html>
+
 
 
 
