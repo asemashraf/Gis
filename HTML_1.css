@@ -182,15 +182,14 @@ body {
 .my .section-text,
 .my .cards {
   position: relative;
-  z-index: 2;
+  z-index: 2; /* يخليهم فوق الخلفية */
 }
 
-/* لو عايز تخلي الخلفية معتمة شوية عشان الكلام يبان */
 .my::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3); /* شفافية */
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.2); /* ظل خفيف لو حابب */
   z-index: 1;
 }
 
@@ -902,6 +901,7 @@ h9 {
     text-align: center;      /* النصوص في النص */
   }
 }
+
 
 
 
