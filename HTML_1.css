@@ -867,6 +867,38 @@ h9 {
 
 
 
+/* شكل القائمة على الكمبيوتر عادي */
+#rmenu li a {
+  display: block;
+  padding: 10px 20px;
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* شكل القائمة على الموبايل */
+@media (max-width: 768px) {
+  #rmenu {
+    width: 100%;             /* تملى الشاشة */
+    padding: 0;              /* نشيل المسافات حوالينها */
+    text-align: center;      /* نخلي المحتوى في النص */
+  }
+
+  #rmenu li {
+    width: 100%;             /* كل عنصر ياخد عرض الشاشة */
+  }
+
+  #rmenu li a {
+    display: block;
+    width: 100%;             /* الرابط نفسه يملى الشاشة */
+    padding: 15px 0;         /* مسافة فوق وتحت */
+    text-align: center;      /* النصوص في النص */
+  }
+}
+
+
+
+
+
 
 
 
