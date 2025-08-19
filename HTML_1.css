@@ -697,6 +697,55 @@ h9 {
 
 
 
+/* ====== Responsive Fix for Text + Cards ====== */
+
+.my h1 {
+  font-size: clamp(1.2em, 5vw, 2.5em);
+}
+
+.tagline {
+  font-size: clamp(0.9em, 3vw, 1.2em);
+}
+
+.my h1, 
+.my p, 
+.my span {
+  max-width: 90%;  
+  word-wrap: break-word;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .my h1 {
+    font-size: 1.5em;
+  }
+  .tagline {
+    font-size: 1em;
+  }
+  .my .cards {
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+  }
+  .my .card {
+    flex: 0 0 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .my h1 {
+    font-size: 1.2em;
+  }
+  .tagline {
+    font-size: 0.9em;
+  }
+  .my .card {
+    flex: 0 0 160px;
+  }
+}
+
 
 
 
