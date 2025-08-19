@@ -723,6 +723,53 @@ h9 {
 
 
 
+/* ====== النصوص (Hello World + tagline) ====== */
+.my .section-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+
+.my .section-text h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.my .section-text .tagline {
+  font-size: 1.3rem;
+  margin-top: 10px;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+.my .section-text {
+  animation-delay: 0.1s;
+}
+
+/* Responsive text */
+@media (max-width: 768px) {
+  .my .section-text h1 {
+    font-size: 2rem;
+  }
+  .my .section-text .tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .my .section-text h1 {
+    font-size: 1.6rem;
+  }
+  .my .section-text .tagline {
+    font-size: 0.9rem;
+  }
+}
+
 
 
 
