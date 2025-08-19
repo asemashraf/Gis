@@ -729,6 +729,53 @@ h9 {
 
 
 
+/* زرار الموبايل */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  float: right;
+  padding: 15px 20px;
+}
+
+/* إخفاء القائمة في الموبايل */
+@media (max-width: 768px) {
+  #rmenu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background-color: rgba(0, 0, 0, 0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 3000;
+  }
+
+  #rmenu li {
+    float: none;
+    margin: 20px 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  /* اخفي كلمة menu في الموبايل */
+  .menu-item {
+    display: none;
+  }
+}
+
+/* لما القائمة تتفتح */
+#rmenu.show {
+  display: flex !important;
+}
+
 
 
 
