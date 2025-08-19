@@ -703,34 +703,37 @@ h9 {
 
 
 
+/* زرار الموبايل */
+.menu-toggle {
+  display: none; /* يظهر فقط على الموبايل */
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  float: right;
+  padding: 15px 20px;
+  z-index: 9999;
+}
+
+/* الموبايل */
 @media (max-width: 768px) {
-  /* زرار الموبايل */
   .menu-toggle {
     display: block;
-    font-size: 28px;
-    color: white;
-    cursor: pointer;
-    float: right;
-    padding: 15px 20px;
-    z-index: 9999;
   }
 
-  /* نخفي القائمة الأصلية */
+  /* نخفي القائمة الرئيسية */
   #rmenu {
     display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 60px; /* تحت النيف بار */
+    right: 0;
     background-color: black;
-    width: 90%;
-    max-width: 300px;
-    padding: 20px;
-    border-radius: 12px;
-    z-index: 9998;
+    width: 100%;
     text-align: center;
+    z-index: 9998;
+    padding: 10px 0;
   }
 
+  /* لما نضغط على الزرار */
   #rmenu.show {
     display: block;
   }
@@ -757,21 +760,3 @@ h9 {
     max-height: none;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
