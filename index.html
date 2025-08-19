@@ -386,8 +386,11 @@ slider.addEventListener('touchmove', (e) => {
 
 
 <script>
-  document.querySelector(".menu-toggle").addEventListener("click", function() {
-    document.getElementById("rmenu").classList.toggle("active");
+  const toggle = document.getElementById('menuToggle');
+  const rmenu = document.getElementById('rmenu');
+
+  toggle.addEventListener('click', () => {
+    rmenu.classList.toggle('active');
   });
 </script>
 
@@ -397,6 +400,7 @@ slider.addEventListener('touchmove', (e) => {
     
 </body>
 </html>
+
 
 
 
