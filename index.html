@@ -52,6 +52,7 @@
 
   <ul id="rmenu">
     <li>
+      <a class="menu-item" href="#">menu</a>
       <div class="sup-contant">
         <div class="sup-drop">
           <ul>
@@ -65,6 +66,7 @@
     </li>
   </ul>
 </nav>
+
 
 
 <div class="Container">
@@ -386,16 +388,18 @@ slider.addEventListener('touchmove', (e) => {
 
 
 <script>
-  document.getElementById("menuToggle").addEventListener("click", function() {
-    document.getElementById("rmenu").classList.toggle("show");
+  const menuToggle = document.getElementById("menuToggle");
+  const rmenu = document.getElementById("rmenu");
+
+  menuToggle.addEventListener("click", () => {
+    rmenu.classList.toggle("show");
   });
 </script>
-
-      
 
     
 </body>
 </html>
+
 
 
 
