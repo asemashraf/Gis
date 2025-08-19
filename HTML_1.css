@@ -168,9 +168,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  overflow: hidden;
-    transition: background-size 8s ease-in-out, background-position 8s ease-in-out;
 
+  /* وقت الحركة */
+  transition: background-size 8s ease-in-out, background-position 8s ease-in-out;
 }
 
 .my:hover {
@@ -178,12 +178,19 @@ body {
   background-position: center;
 }
 
+/* نرفع المحتوى فوق الخلفية */
+.my .section-text,
+.my .cards {
+  position: relative;
+  z-index: 2;
+}
+
+/* لو عايز تخلي الخلفية معتمة شوية عشان الكلام يبان */
 .my::before {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.45); /* ممكن تزود أو تقلل الشفافية */
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* شفافية */
   z-index: 1;
 }
 
@@ -895,6 +902,7 @@ h9 {
     text-align: center;      /* النصوص في النص */
   }
 }
+
 
 
 
