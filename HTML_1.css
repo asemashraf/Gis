@@ -155,7 +155,6 @@ body {
 
 
 
-
 .my {
   display: flex;
   flex-direction: column;
@@ -164,18 +163,26 @@ body {
   width: 100%; 
   min-height: calc(100vh - 60px); 
   background-image: url("cairo.png");
-  background-position: center top;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
   overflow: hidden;
+
+  /* الانيميشن */
+  animation: zoomLoop 20s ease-in-out infinite alternate;
 }
 
-.my:hover {
-  background-size: 110%;
-  background-position: center;
-  transition: background-size 8s ease-in-out;
+/* حركة الزووم */
+@keyframes zoomLoop {
+  0% {
+    background-size: 100%;
+  }
+  100% {
+    background-size: 110%;
+  }
 }
+
 
 /* الـ overlay */
 .my::before {
@@ -896,6 +903,7 @@ h9 {
     text-align: center;      /* النصوص في النص */
   }
 }
+
 
 
 
