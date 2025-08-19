@@ -823,27 +823,41 @@ h9 {
 
 
 @media (max-width: 768px) {
+  /* نخفي كلمة menu الأصلية */
+  #rmenu > li > .menu-item {
+    display: none;
+  }
+
   #rmenu {
-    display: none; /* مخفي افتراضياً */
+    display: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    background: rgba(0,0,0,0.9);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
     z-index: 999;
   }
 
   #rmenu.active {
-    display: flex; /* يظهر عند الضغط */
+    display: flex;
+  }
+
+  #rmenu li a {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
   }
 
   .menu-toggle {
-    display: block; /* يظهر زر ☰ */
+    display: block;
+    font-size: 28px;
+    cursor: pointer;
   }
+}
+
 
 
 
