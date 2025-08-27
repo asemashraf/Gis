@@ -176,6 +176,15 @@ body {
   transform: scale(1.05);         
 }
 
+.my:hover .card {
+  transform: scale(0.9524);
+  transform-origin: center center;
+}
+
+
+
+
+
 
 span {
     color: white;
@@ -759,3 +768,4 @@ h9 {
     max-height: none;
   }
 }
+
