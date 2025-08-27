@@ -779,39 +779,95 @@ h9 {
     box-sizing: border-box;
   }
 
-  /* القائمة الفرعية .sup-contant */
+/* القائمة الفرعية container */
+.sup-contant {
+  position: relative;
+  width: 100%;
+  background-color: #111; /* لون خلفية غامق */
+  border-radius: 0 0 8px 8px; /* انحناء تحت */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+
+/* لما تظهر القائمة */
+.sup-contant.show {
+  max-height: 1000px; /* رقم كبير يكفي يظهر المحتوى كله */
+  transition: max-height 0.5s ease;
+}
+
+/* المحتوى الداخلي للقائمة */
+.sup-drop {
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+/* قائمة الروابط */
+.sup-drop ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* كل عنصر في القائمة */
+.sup-drop ul li {
+  border-bottom: 1px solid #333;
+}
+
+/* آخر عنصر بدون حدود */
+.sup-drop ul li:last-child {
+  border-bottom: none;
+}
+
+/* روابط القائمة */
+.sup-drop ul li a {
+  display: block;
+  padding: 12px 25px;
+  color: #eee;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Trirong', serif;
+}
+
+/* تأثير hover على الروابط */
+.sup-drop ul li a:hover {
+  background-color: #b22222; /* لون أحمر قاتم */
+  color: white;
+  font-weight: bold;
+  border-radius: 4px;
+  padding-left: 30px;
+}
+
+/* عرض القائمة كاملة بعرض الشاشة على الموبايل */
+@media (max-width: 768px) {
   .sup-contant {
-    width: 100%;
-    background-color: black;
-    padding: 0;
-    margin: 0;
+    position: fixed;
+    top: 50px; /* تحت الزرار */
+    left: 0;
+    width: 100vw;
+    max-height: 0;
+    background-color: #111;
+    border-radius: 0;
+    box-shadow: 0 0 15px rgba(0,0,0,0.9);
+    z-index: 9997;
+    transition: max-height 0.4s ease;
   }
 
-  .sup-drop {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-
-  .sup-drop ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-  }
-
-  .sup-drop ul li {
-    border-bottom: 1px solid #444;
+  .sup-contant.show {
+    max-height: 1000px;
   }
 
   .sup-drop ul li a {
-    display: block;
-    padding: 15px 20px;
-    font-size: 18px;
-    color: white;
-    text-decoration: none;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 18px 30px;
+    font-size: 20px;
+  }
+
+  .sup-drop ul li a:hover {
+    background-color: #b22222;
+    padding-left: 40px;
   }
 }
 
@@ -847,6 +903,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
