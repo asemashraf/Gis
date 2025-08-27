@@ -716,8 +716,7 @@ h9 {
   display: none; /* يظهر بس على الموبايل */
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0; /* بدل left: 50% وحطته على اليمين */
   font-size: 28px;
   color: white;
   cursor: pointer;
@@ -739,13 +738,11 @@ h9 {
     display: none;
     position: fixed;
     top: 50px; /* شوية تحت الزرار */
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0; /* يبدأ من بداية الشاشة */
+    width: 100vw; /* العرض كامل */
     background-color: black;
-    width: 90vw;
-    max-width: 400px;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px; /* انحناء بس من تحت */
     box-shadow: 0 0 10px rgba(0,0,0,0.7);
     text-align: center;
     z-index: 9998;
@@ -805,6 +802,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
