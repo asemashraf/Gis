@@ -66,13 +66,9 @@
     </ul>
 </nav>
 
-<div class="Container">
-  <div class="frame">
-   <section class="my">
-     <h1><span style="color: darkred;">Hello</span> World</h1>
-
-      <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
-        <div class="cards">
+<div class="cards">
+  <button class="prev">❮</button>
+  <div class="cards-container">
     <div class="card">
       <img src="ChatGPT Image Aug 17, 2025, 03_08_43 PM.png" alt="Agriculture">
       <h3>Agriculture</h3>
@@ -91,6 +87,15 @@
       <p>Monitoring and analyzing natural hazards such as floods and earthquakes.</p>
     </div>
   </div>
+  <button class="next">❯</button>
+</div>
+
+<div class="dots">
+  <span class="dot" data-index="0"></span>
+  <span class="dot" data-index="1"></span>
+  <span class="dot" data-index="2"></span>
+</div>
+
 </section>
 
 
@@ -397,6 +402,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
