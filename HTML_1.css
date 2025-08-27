@@ -921,3 +921,104 @@ h9 {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🔹 للموبايل فقط */
+@media only screen and (max-width: 768px) {
+  /* الفريم الأساسي */
+  .frame {
+    width: 100%;
+    height: auto;   /* بدل ما يكون ثابت */
+    min-height: 100vh; /* يغطي الشاشة */
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  /* الكونتينر */
+  .Container {
+    padding: 10px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* خلفية القاهرة */
+  .my {
+    background-image: url("cairo.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; /* تملى الشاشة من غير ما تبهدل */
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px 10px; /* شوية padding عشان المحتوى مايلزقش */
+  }
+
+  /* الكروت تتحول لسلايدر */
+  .my .cards {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  .my .card {
+    min-width: 240px;  /* عرض الكرت مناسب */
+    flex-shrink: 0;    /* مايصغرش */
+    scroll-snap-align: center; /* يقف مظبوط */
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  .my .card img {
+    width: 100%;
+    height: 150px; /* مقاس متناسق للصورة */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
