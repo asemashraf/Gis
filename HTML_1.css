@@ -757,6 +757,7 @@ h9 {
     margin: 10px 0;
   }
 
+  
   #rmenu li a {
     color: white;
     font-size: 18px;
@@ -768,4 +769,43 @@ h9 {
     max-height: none;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+  .my .cards {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .my .card {
+    min-width: 250px; /* حجم مناسب للكروت على الموبايل */
+    margin-right: 15px;
+    scroll-snap-align: start;
+    flex-shrink: 0; /* يمنع تصغير الكرت */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
