@@ -878,6 +878,12 @@ h9 {
   }
 }
 
+#rmenu {
+  display: none;
+}
+#rmenu.show {
+  display: block;
+}
 
 
 
@@ -903,6 +909,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
