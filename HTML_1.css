@@ -1090,7 +1090,23 @@ h9 {
 
 
 
+@media (max-width: 768px) {
+  .my .cards {
+    display: flex;
+    flex-wrap: nowrap;      /* عشان الكروت تيجي في صف واحد */
+    overflow-x: auto;       /* يخليها scroll بالعرض */
+    scroll-snap-type: x mandatory; /* يخلي السحب سلس */
+    -webkit-overflow-scrolling: touch; /* smooth scroll على الموبايل */
+  }
+
+  .my .card {
+    flex: 0 0 80%;          /* كل كارت ياخد 80% من عرض الشاشة */
+    scroll-snap-align: center;
+    margin-right: 15px;
+  }
+}
 
 
   
+
 
