@@ -716,7 +716,7 @@ h9 {
   display: none; /* يظهر بس على الموبايل */
   position: fixed;
   top: 0;
-  right: 0; /* بدل left: 50% وحطته على اليمين */
+  right: 0; /* على اليمين */
   font-size: 28px;
   color: white;
   cursor: pointer;
@@ -741,7 +741,7 @@ h9 {
     left: 0; /* يبدأ من بداية الشاشة */
     width: 100vw; /* العرض كامل */
     background-color: black;
-    padding: 20px;
+    padding: 0; /* هنقل البادينج للعناصر الداخلية */
     border-radius: 0 0 8px 8px; /* انحناء بس من تحت */
     box-shadow: 0 0 10px rgba(0,0,0,0.7);
     text-align: center;
@@ -752,30 +752,75 @@ h9 {
     display: block;
   }
 
-  #rmenu ul {
+  /* إزالة البادينج والمارجن من ul الرئيسي */
+  #rmenu > ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* تظبيط العناصر في القائمة الرئيسية */
+  #rmenu > li {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* الرابط اللي بيظهر كـ menu */
+  #rmenu > li > a.menu-item {
+    display: block;
+    padding: 15px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #222;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* القائمة الفرعية .sup-contant */
+  .sup-contant {
+    width: 100%;
+    background-color: black;
     padding: 0;
     margin: 0;
   }
 
-  #rmenu li {
-    margin: 15px 0;
+  .sup-drop {
+    width: 100%;
+    padding: 0;
+    margin: 0;
   }
 
-  #rmenu li a {
-    color: white;
+  .sup-drop ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .sup-drop ul li {
+    border-bottom: 1px solid #444;
+  }
+
+  .sup-drop ul li a {
+    display: block;
+    padding: 15px 20px;
     font-size: 18px;
+    color: white;
     text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
-
-  /* تعطيل hover القايمة الفرعية على الموبايل */
+/* تعطيل hover القايمة الفرعية على الموبايل */
+@media (max-width: 768px) {
   .menu ul li:hover .sup-contant {
     max-height: none;
   }
 }
-
 
 
 
@@ -802,6 +847,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
