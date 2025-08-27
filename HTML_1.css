@@ -714,17 +714,27 @@ h9 {
 
 .menu-toggle {
   display: none; /* يظهر فقط على الموبايل */
+  position: fixed;       /* مثبت فوق */
+  top: 0;               /* أعلى الشاشة */
+  left: 0;              /* من اليسار */
+  width: 100%;          /* كامل عرض الشاشة */
   font-size: 28px;
   color: white;
   cursor: pointer;
-  /* حذف float:right عشان نقدر نوسّط النص */
   padding: 15px 0;
-  width: 100%;             /* يعرض بعرض الشاشة */
-  text-align: center;      /* النص في الوسط */
-  z-index: 9999;
-  background-color: #333;  /* خلفية معتمة للزر */
-  user-select: none;
+  text-align: center;   /* النص في الوسط عرضيًا */
+  background-color: #333; /* خلفية معتمة */
+  z-index: 9999;        /* فوق كل شيء */
+  user-select: none;    /* لمنع تحديد النص */
 }
+
+/* فقط للموبايل */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+}
+
 
 /* الموبايل */
 @media (max-width: 768px) {
@@ -808,6 +818,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
