@@ -903,14 +903,13 @@ h9 {
 
 
 
-/* ✨ الديسكتوب يفضل زي ما هو */
 .my {
   background: url("cairo.png") center/cover no-repeat;
   min-height: 100vh;
   padding: 20px 10px;
   color: white;
   text-align: center;
-  background-attachment: fixed; /* ثابتة على الديسكتوب */
+  background-attachment: fixed; /* للخلفية على الكمبيوتر */
 }
 
 .my h1 {
@@ -951,20 +950,20 @@ h9 {
   margin-bottom: 8px;
 }
 
-/* 📱 الموبايل فقط */
+/* 📱 تعديل خاص للموبايل فقط */
 @media (max-width: 768px) {
   .my {
-    min-height: auto;            /* الطول حسب عدد الكروت */
+    min-height: auto;              /* الطول حسب الكروت */
     background-attachment: scroll; /* الخلفية تتحرك مع الكروت */
   }
 
   .my .cards {
-    flex-direction: column; /* الكروت تبقى تحت بعض */
+    flex-direction: column; /* الكروت تحت بعض */
     align-items: center;
   }
 
   .my .card {
-    width: 90%;        /* الكرت ياخد العرض */
-    max-width: 350px;  /* عشان يفضل شكله منظم */
+    width: 90%;        /* ياخد العرض كله */
+    max-width: 350px;  /* يفضل مناسب */
   }
 }
