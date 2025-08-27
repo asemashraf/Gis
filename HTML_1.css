@@ -894,21 +894,6 @@ h9 {
 
 
 
-@media only screen and (max-width: 768px) {
-  .my .cards {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .my .card {
-    min-width: 250px; /* حجم مناسب للكروت على الموبايل */
-    margin-right: 15px;
-    scroll-snap-align: start;
-    flex-shrink: 0; /* يمنع تصغير الكرت */
-  }
-}
 
 
 
@@ -918,13 +903,14 @@ h9 {
 
 
 
-
+/* ✨ الديسكتوب يفضل زي ما هو */
 .my {
   background: url("cairo.png") center/cover no-repeat;
   min-height: 100vh;
   padding: 20px 10px;
   color: white;
   text-align: center;
+  background-attachment: fixed; /* ثابتة على الديسكتوب */
 }
 
 .my h1 {
@@ -965,20 +951,20 @@ h9 {
   margin-bottom: 8px;
 }
 
-/* 🎯 الموبايل */
+/* 📱 الموبايل فقط */
 @media (max-width: 768px) {
+  .my {
+    min-height: auto;            /* الطول حسب عدد الكروت */
+    background-attachment: scroll; /* الخلفية تتحرك مع الكروت */
+  }
+
   .my .cards {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 15px;
-    padding-bottom: 10px;
+    flex-direction: column; /* الكروت تبقى تحت بعض */
+    align-items: center;
   }
 
   .my .card {
-    min-width: 250px;
-    flex-shrink: 0;
-    scroll-snap-align: center;
+    width: 90%;        /* الكرت ياخد العرض */
+    max-width: 350px;  /* عشان يفضل شكله منظم */
   }
 }
