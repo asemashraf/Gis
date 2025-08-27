@@ -967,3 +967,130 @@ h9 {
     max-width: 350px;  /* يفضل مناسب */
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.my {
+  background: url("cairo.png") center/cover no-repeat;
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+/* ✅ النص فوق الكروت */
+.my .overlay-text {
+  position: relative;
+  z-index: 5;
+  background: rgba(0,0,0,0.5); /* خلفية شفافة تبرز النص */
+  padding: 15px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+.my h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.my .tagline {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* الكروت */
+.my .cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+.my .card {
+  background: rgba(0,0,0,0.7);
+  border-radius: 14px;
+  padding: 15px;
+  width: 280px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.my .card:hover {
+  transform: translateY(-8px);
+}
+
+.my .card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.my .card h3 {
+  color: #ffd700;
+  margin-bottom: 8px;
+}
+
+/* 🎯 الموبايل */
+@media (max-width: 768px) {
+  .my h1 {
+    font-size: 22px;
+  }
+
+  .my .tagline {
+    font-size: 16px;
+  }
+
+  .my .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .my .card {
+    width: 90%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
