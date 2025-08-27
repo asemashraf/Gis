@@ -717,9 +717,13 @@ h9 {
   font-size: 28px;
   color: white;
   cursor: pointer;
-  float: right;
-  padding: 15px 20px;
+  /* حذف float:right عشان نقدر نوسّط النص */
+  padding: 15px 0;
+  width: 100%;             /* يعرض بعرض الشاشة */
+  text-align: center;      /* النص في الوسط */
   z-index: 9999;
+  background-color: #333;  /* خلفية معتمة للزر */
+  user-select: none;
 }
 
 /* الموبايل */
@@ -731,19 +735,25 @@ h9 {
   /* نخفي القائمة الرئيسية */
   #rmenu {
     display: none;
-    position: absolute;
-    top: 60px; /* تحت النيف بار */
-    left: 0;   /* بدل right: 0 */
-    width: 100%; /* يغطي عرض الشاشة كله */
-    background-color: black;
+    position: fixed;         /* مثبتة فوق كل شيء */
+    top: 0;
+    left: 0;
+    width: 100vw;            /* عرض كامل شاشة */
+    height: 100vh;           /* ارتفاع كامل شاشة */
+    background-color: rgba(0, 0, 0, 0.9); /* خلفية شفافة داكنة */
     text-align: center;
     z-index: 9998;
-    padding: 10px 0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* توسيط عمودي */
+    align-items: center;     /* توسيط أفقي */
   }
 
   /* لما نضغط على الزرار */
   #rmenu.show {
-    display: block;
+    display: flex;
   }
 
   #rmenu ul {
@@ -751,17 +761,19 @@ h9 {
     padding: 0;
     margin: 0;
     list-style: none;
+    width: 100%;
   }
 
   #rmenu li {
-    margin: 10px 0;
+    margin: 20px 0;
   }
 
-  
   #rmenu li a {
     color: white;
-    font-size: 18px;
+    font-size: 24px;
     text-decoration: none;
+    display: block;
+    width: 100%;
   }
 
   /* تعطيل hover القايمة الفرعية على الموبايل */
@@ -769,6 +781,7 @@ h9 {
     max-height: none;
   }
 }
+
 
 
 
@@ -795,6 +808,7 @@ h9 {
     flex-shrink: 0; /* يمنع تصغير الكرت */
   }
 }
+
 
 
 
