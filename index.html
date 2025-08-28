@@ -341,39 +341,13 @@ slider.addEventListener('mousedown', (e) => {
   startX = e.pageX - slider.offsetLeft;
   scrollLeft = slider.scrollLeft;
 });
-slider.addEventListener('mouseleave', () => {
-  isDown = false;
-  slider.style.animationPlayState = 'running'; // رجع الحركة التلقائية
-});
-slider.addEventListener('mouseup', () => {
-  isDown = false;
-  slider.style.animationPlayState = 'running';
-});
-slider.addEventListener('mousemove', (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // سرعة السحب
-  slider.scrollLeft = scrollLeft - walk;
-});
-
-slider.addEventListener('touchstart', (e) => {
-  isDown = true;
-  slider.style.animationPlayState = 'paused';
-  startX = e.touches[0].pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
-});
-slider.addEventListener('touchend', () => {
-  isDown = false;
-  slider.style.animationPlayState = 'running';
-});
+...
 slider.addEventListener('touchmove', (e) => {
   if (!isDown) return;
   const x = e.touches[0].pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 });
-
 
 
 
@@ -417,6 +391,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
