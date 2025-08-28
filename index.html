@@ -330,24 +330,6 @@
 
 
 
-const slider = document.querySelector('.cards-container');
-let isDown = false;
-let startX;
-let scrollLeft;
-
-slider.addEventListener('mousedown', (e) => {
-  isDown = true;
-  slider.style.animationPlayState = 'paused'; // وقف الحركة التلقائية
-  startX = e.pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
-});
-...
-slider.addEventListener('touchmove', (e) => {
-  if (!isDown) return;
-  const x = e.touches[0].pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2;
-  slider.scrollLeft = scrollLeft - walk;
-});
 
 
 
@@ -391,6 +373,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
