@@ -327,6 +327,77 @@
 
 
 
+  <script>
+  // ===============================
+  // 1) إظهار الكروت بأنيميشن عند ظهورها
+  // ===============================
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.my .card');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      cards.forEach(card => observer.observe(card));
+    } else {
+      const revealOnScroll = () => {
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            card.classList.add('show');
+          }
+        });
+      };
+      window.addEventListener('scroll', revealOnScroll);
+      revealOnScroll();
+    }
+
+    // ===============================
+    // 2) القائمة المنسدلة للموبايل (الهامبرجر)
+    // ===============================
+    const menuToggle = document.querySelector('.menu-toggle');
+    const rmenu = document.getElementById('rmenu');
+
+    if (menuToggle && rmenu) {
+      menuToggle.addEventListener('click', () => {
+        rmenu.classList.toggle('show');
+      });
+    }
+
+    // ===============================
+    // 3) تأثير التكبير عند اللمس في السيكشن .my
+    // ===============================
+    const mySection = document.querySelector('.my');
+    if (mySection) {
+      mySection.addEventListener("touchstart", function () {
+        mySection.classList.add("zoomed");
+      });
+
+      document.addEventListener("touchstart", function (e) {
+        if (!mySection.contains(e.target)) {
+          mySection.classList.remove("zoomed");
+        }
+      });
+    }
+
+    // ===============================
+    // 4) تحسين بسيط للـ horizontal scroll بالأسهم
+    // ===============================
+    const container = document.querySelector('.my .cards');
+    if (container) {
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') container.scrollBy({ left: 300, behavior: 'smooth' });
+        if (e.key === 'ArrowLeft')  container.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+    }
+  });
+  </script>
 
 
 
@@ -373,6 +444,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
