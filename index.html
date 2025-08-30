@@ -622,8 +622,209 @@ menuToggle.addEventListener('click', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Button to open the Dialog -->
+<button class="open-dialog-btn" onclick="openDialog()">Ask a Question</button>
+
+<!-- Dialog overlay -->
+<div id="dialog-overlay" class="dialog-overlay">
+  <div class="dialog-box">
+    <h2>Ask about GIS or Geography</h2>
+    <input type="text" id="userQuestion" placeholder="Type your question here..." />
+    <button onclick="askQuestion()">Submit Question</button>
+
+    <div id="answer" class="response"></div>
+
+    <!-- Close button -->
+    <button onclick="closeDialog()">Close</button>
+  </div>
+</div>
+
+<style>
+  /* Button to open the dialog */
+  .open-dialog-btn {
+    padding: 12px 20px;
+    background: #2E86AB;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .open-dialog-btn:hover {
+    background: #1B4F72;
+  }
+
+  /* Dialog box styles */
+  .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dialog-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .dialog-box h2 {
+    color: #2E86AB;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .dialog-box input {
+    padding: 12px;
+    width: 80%;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .dialog-box button {
+    padding: 12px 20px;
+    background: #2E86AB;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+  }
+
+  .dialog-box button:hover {
+    background: #1B4F72;
+  }
+
+  .response {
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 10px;
+    background: #222;
+    color: #fff;
+    border-radius: 8px;
+    display: none;
+  }
+</style>
+
+<script>
+  // Function to open the dialog
+  function openDialog() {
+    document.getElementById('dialog-overlay').style.display = 'flex';
+  }
+
+  // Function to close the dialog
+  function closeDialog() {
+    document.getElementById('dialog-overlay').style.display = 'none';
+  }
+
+  // Function to submit the question and get the answer
+  async function askQuestion() {
+    let question = document.getElementById("userQuestion").value;
+
+    if (question.trim() === "") {
+      alert("Please enter a question!");
+      return;
+    }
+
+    document.getElementById("answer").style.display = "none"; // Hide previous answer
+
+    // Make API call to OpenAI or GPT-3 to get an answer
+    const response = await fetch('https://api.openai.com/v1/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
+      },
+      body: JSON.stringify({
+        model: "text-davinci-003", // GPT-3 Model
+        prompt: question,
+        max_tokens: 150,
+        temperature: 0.7
+      })
+    });
+
+    const data = await response.json();
+    const answer = data.choices[0].text.trim();
+
+    // Display the answer in the response section
+    document.getElementById("answer").innerText = answer;
+    document.getElementById("answer").style.display = "block";
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+      
 </body>
 </html>
+
 
 
 
