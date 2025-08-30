@@ -666,7 +666,7 @@ menuToggle.addEventListener('click', () => {
 
 
 
-<!-- Button to open the Dialog -->
+<!-- Chatbot Icon (Button) -->
 <button class="chatbot-btn" onclick="openDialog()">💬</button>
 
 <!-- Chatbot Dialog Overlay -->
@@ -681,7 +681,7 @@ menuToggle.addEventListener('click', () => {
 </div>
 
 <style>
-  /* Button to open the dialog */
+  /* Chatbot button (icon) */
   .chatbot-btn {
     position: fixed;
     bottom: 20px;
@@ -708,13 +708,24 @@ menuToggle.addEventListener('click', () => {
     bottom: 70px;
     right: 20px;
     width: 280px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
     display: none;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 9999; /* Ensure it's on top of any background */
+  }
+
+  /* Dialog box styles */
+  .dialog-box {
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
     animation: slideIn 0.5s ease-out;
+    z-index: 10000; /* Ensures the dialog is above everything else */
   }
 
   /* Animation for the dialog box */
@@ -727,14 +738,6 @@ menuToggle.addEventListener('click', () => {
       transform: translateY(0);
       opacity: 1;
     }
-  }
-
-  .dialog-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
   }
 
   .dialog-box h2 {
@@ -837,12 +840,10 @@ menuToggle.addEventListener('click', () => {
 </script>
 
 
-
-
-
       
 </body>
 </html>
+
 
 
 
