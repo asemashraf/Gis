@@ -667,14 +667,14 @@ menuToggle.addEventListener('click', () => {
 
 
 <!-- Chatbot Icon (Button) -->
-<button class="chatbot-btn" onclick="openDialog()">💬</button>
+<button class="chatbot-btn" onclick="openDialog()">💬 مساعدك الآلي</button>
 
 <!-- Chatbot Dialog Overlay -->
 <div id="dialog-overlay" class="dialog-overlay">
   <div class="dialog-box">
-    <h2>Ask about GIS</h2>
-    <input type="text" id="userQuestion" placeholder="Type your question..." />
-    <button onclick="askQuestion()">Submit</button>
+    <h2>أسئلني عن أي شيء</h2>
+    <input type="text" id="userQuestion" placeholder="اكتب سؤالك هنا..." />
+    <button onclick="askQuestion()">إرسال</button>
     <div id="answer" class="response"></div>
     <button class="close-btn" onclick="closeDialog()">✖️</button>
   </div>
@@ -684,9 +684,9 @@ menuToggle.addEventListener('click', () => {
   /* Chatbot button (icon) */
   .chatbot-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px;
+    bottom: 30px;  /* تحت الصفحة */
+    right: 30px;
+    padding: 12px;
     background: #2E86AB;
     color: white;
     border: none;
@@ -705,8 +705,8 @@ menuToggle.addEventListener('click', () => {
   /* Dialog Overlay styles */
   .dialog-overlay {
     position: fixed;
-    bottom: 70px;
-    right: 20px;
+    bottom: 90px; /* Position the dialog box just above the button */
+    right: 30px;
     width: 280px;
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
     display: none;
@@ -791,6 +791,49 @@ menuToggle.addEventListener('click', () => {
 </style>
 
 <script>
+  // Questions and Answers in both English and Arabic
+  const qaData = {
+    "en": {
+      "What is GIS?": "GIS stands for Geographic Information Systems. It is used to analyze and visualize geographical data.",
+      "What is QGIS?": "QGIS is an open-source geographic information system used for mapping and spatial data analysis.",
+      "What are the benefits of GIS?": "The benefits of GIS include better decision-making, improved efficiency, and the ability to analyze spatial data."
+    },
+    "ar": {
+      "ما هو نظم المعلومات الجغرافية؟": "نظم المعلومات الجغرافية هو نظام يستخدم لتحليل وتصوير البيانات الجغرافية.",
+      "ما هو QGIS؟": "QGIS هو نظام معلومات جغرافية مفتوح المصدر يستخدم للرسم البياني وتحليل البيانات المكانية.",
+      "ما هي فوائد نظم المعلومات الجغرافية؟": "فوائد نظم المعلومات الجغرافية تشمل اتخاذ قرارات أفضل، وتحسين الكفاءة، والقدرة على تحليل البيانات المكانية."
+    }
+  };
+
+  let currentLanguage = 'en';  // Default language is English
+
+  // Function to change language
+  function changeLanguage() {
+    currentLanguage = document.getElementById('languageSelect').value;
+    document.getElementById('userQuestion').value = '';  // Clear the input box
+    document.getElementById('answer').style.display = 'none';  // Hide the previous answer
+  }
+
+  // Function to handle question and provide an answer
+  function askQuestion() {
+    const question = document.getElementById('userQuestion').value.trim();
+    const answerElement = document.getElementById('answer');
+    
+    if (!question) {
+      alert("Please enter a question!");
+      return;
+    }
+
+    // Check if the question exists in the selected language
+    if (qaData[currentLanguage][question]) {
+      answerElement.innerText = qaData[currentLanguage][question];
+      answerElement.style.display = 'block';
+    } else {
+      answerElement.innerText = "Sorry, I don't have an answer for that question.";
+      answerElement.style.display = 'block';
+    }
+  }
+
   // Function to open the dialog
   function openDialog() {
     document.getElementById('dialog-overlay').style.display = 'flex';
@@ -800,61 +843,13 @@ menuToggle.addEventListener('click', () => {
   function closeDialog() {
     document.getElementById('dialog-overlay').style.display = 'none';
   }
-
-  // Function to submit the question and get the answer
-  async function askQuestion() {
-    let question = document.getElementById("userQuestion").value;
-
-    if (question.trim() === "") {
-      alert("Please enter a question!");
-      return;
-    }
-
-    document.getElementById("answer").style.display = "none"; // Hide previous answer
-
-    console.log("Sending question: " + question); // Log the question to see it in the console
-
-    // Make API call to OpenAI or GPT-3 to get an answer
-    try {
-      const response = await fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
-        },
-        body: JSON.stringify({
-          model: "text-davinci-003", // GPT-3 Model
-          prompt: question,
-          max_tokens: 150,
-          temperature: 0.7
-        })
-      });
-
-      if (!response.ok) {
-        console.error("Error:", response.statusText);
-        alert("There was an error. Please try again.");
-        return;
-      }
-
-      const data = await response.json();
-      const answer = data.choices[0].text.trim();
-
-      console.log("Answer received:", answer); // Log the answer to see it in the console
-
-      // Display the answer in the response section
-      document.getElementById("answer").innerText = answer;
-      document.getElementById("answer").style.display = "block";
-    } catch (error) {
-      console.error("Request failed", error);
-      alert("There was an error with the request. Please try again.");
-    }
-  }
 </script>
 
 
       
 </body>
 </html>
+
 
 
 
