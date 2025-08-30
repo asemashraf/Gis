@@ -432,9 +432,11 @@ menuToggle.addEventListener('click', () => {
 
   <!-- إدخال اسم المستخدم -->
   <div id="startScreen">
-    <p>Enter your name:</p>
-    <input type="text" id="username" placeholder="Your name">
-    <button onclick="startQuiz()">Start Quiz</button>
+    <p class="name-label">Enter your name to start:</p>
+    <div class="name-box">
+      <input type="text" id="username" placeholder="Your name">
+      <button onclick="startQuiz()">🚀 Start</button>
+    </div>
   </div>
 
   <div id="quiz" style="display:none;">
@@ -467,6 +469,37 @@ menuToggle.addEventListener('click', () => {
     text-align: center;
     color: #2E86AB;
   }
+
+  /* ✅ تصميم شاشة الاسم */
+  #startScreen {
+    text-align: center;
+    margin: 30px 0;
+  }
+  .name-label {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .name-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  #username {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 60%;
+    background: #222;
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+  }
+  #username:focus {
+    background: #333;
+    box-shadow: 0 0 8px #2E86AB;
+  }
+
   .question {
     font-size: 20px;
     margin-bottom: 15px;
@@ -588,8 +621,10 @@ menuToggle.addEventListener('click', () => {
 </script>
 
 
+
 </body>
 </html>
+
 
 
 
