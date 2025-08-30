@@ -429,13 +429,22 @@ menuToggle.addEventListener('click', () => {
 <!-- GIS Quiz -->
 <div class="quiz-container">
   <h1>🗺️ GIS Quiz</h1>
-  <div id="quiz">
+
+  <!-- إدخال اسم المستخدم -->
+  <div id="startScreen">
+    <p>Enter your name:</p>
+    <input type="text" id="username" placeholder="Your name">
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
+
+  <div id="quiz" style="display:none;">
     <p class="question" id="question"></p>
     <div class="options" id="options"></div>
     <button onclick="submitAnswer()">Submit</button>
     <p class="feedback" id="feedback"></p>
     <button onclick="nextQuestion()" id="nextBtn" style="display:none;">Next ➡️</button>
   </div>
+
   <p class="result" id="result"></p>
 </div>
 
@@ -512,7 +521,19 @@ menuToggle.addEventListener('click', () => {
     { question: "Raster data represents:", options: ["Points, lines, polygons", "Continuous surfaces", "Tabular data", "Vector networks"], correct: "Continuous surfaces" }
   ];
 
-  let currentQuestion = 0, score = 0;
+  let currentQuestion = 0, score = 0, playerName = "";
+
+  function startQuiz() {
+    let nameInput = document.getElementById("username").value.trim();
+    if (nameInput === "") {
+      alert("Please enter your name!");
+      return;
+    }
+    playerName = nameInput;
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+    loadQuestion();
+  }
 
   function loadQuestion() {
     document.getElementById("feedback").innerHTML = "";
@@ -546,10 +567,6 @@ menuToggle.addEventListener('click', () => {
       feedback.innerHTML = `❌ Wrong! Correct answer: ${correct}`;
       feedback.style.color = "red";
     }
-
-    // 🟢 التعديل الوحيد: نقفل الاختيارات بعد ما يجاوب
-    document.querySelectorAll('input[name="option"]').forEach(opt => opt.disabled = true);
-
     document.getElementById("nextBtn").style.display = "inline-block";
   }
 
@@ -562,18 +579,18 @@ menuToggle.addEventListener('click', () => {
   function showResult() {
     document.getElementById("quiz").style.display = "none";
     let resultText = "";
-    if (score <= 2) resultText = `You scored ${score}/${quizData.length} → 🌱 Beginner`;
-    else if (score <= 4) resultText = `You scored ${score}/${quizData.length} → 🌍 Intermediate`;
-    else resultText = `You scored ${score}/${quizData.length} → 🚀 GIS Expert`;
+    if (score <= 2) resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌱 Beginner`;
+    else if (score <= 4) resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌍 Intermediate`;
+    else resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`;
 
     document.getElementById("result").innerText = resultText;
   }
-
-  loadQuestion();
 </script>
+
 
 </body>
 </html>
+
 
 
 
