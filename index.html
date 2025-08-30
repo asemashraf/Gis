@@ -714,18 +714,7 @@ menuToggle.addEventListener('click', () => {
     align-items: center;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    z-index: 9999; /* Ensure it's on top of any background */
-  }
-
-  /* Dialog box styles */
-  .dialog-box {
-    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
     animation: slideIn 0.5s ease-out;
-    z-index: 10000; /* Ensures the dialog is above everything else */
   }
 
   /* Animation for the dialog box */
@@ -738,6 +727,14 @@ menuToggle.addEventListener('click', () => {
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  .dialog-box {
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
   }
 
   .dialog-box h2 {
@@ -815,27 +812,42 @@ menuToggle.addEventListener('click', () => {
 
     document.getElementById("answer").style.display = "none"; // Hide previous answer
 
+    console.log("Sending question: " + question); // Log the question to see it in the console
+
     // Make API call to OpenAI or GPT-3 to get an answer
-    const response = await fetch('https://api.openai.com/v1/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
-      },
-      body: JSON.stringify({
-        model: "text-davinci-003", // GPT-3 Model
-        prompt: question,
-        max_tokens: 150,
-        temperature: 0.7
-      })
-    });
+    try {
+      const response = await fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
+        },
+        body: JSON.stringify({
+          model: "text-davinci-003", // GPT-3 Model
+          prompt: question,
+          max_tokens: 150,
+          temperature: 0.7
+        })
+      });
 
-    const data = await response.json();
-    const answer = data.choices[0].text.trim();
+      if (!response.ok) {
+        console.error("Error:", response.statusText);
+        alert("There was an error. Please try again.");
+        return;
+      }
 
-    // Display the answer in the response section
-    document.getElementById("answer").innerText = answer;
-    document.getElementById("answer").style.display = "block";
+      const data = await response.json();
+      const answer = data.choices[0].text.trim();
+
+      console.log("Answer received:", answer); // Log the answer to see it in the console
+
+      // Display the answer in the response section
+      document.getElementById("answer").innerText = answer;
+      document.getElementById("answer").style.display = "block";
+    } catch (error) {
+      console.error("Request failed", error);
+      alert("There was an error with the request. Please try again.");
+    }
   }
 </script>
 
@@ -843,6 +855,7 @@ menuToggle.addEventListener('click', () => {
       
 </body>
 </html>
+
 
 
 
