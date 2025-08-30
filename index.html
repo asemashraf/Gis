@@ -666,10 +666,10 @@ menuToggle.addEventListener('click', () => {
 
 
 
-<!-- Button to open the Dialog -->
-<button class="open-dialog-btn" onclick="openDialog()">Ask a Question</button>
+<!-- Chatbot Icon (Button) -->
+<button class="chatbot-btn" onclick="openDialog()">💬 Ask a Question</button>
 
-<!-- Dialog overlay -->
+<!-- Chatbot Dialog Overlay -->
 <div id="dialog-overlay" class="dialog-overlay">
   <div class="dialog-box">
     <h2>Ask about GIS or Geography</h2>
@@ -684,23 +684,29 @@ menuToggle.addEventListener('click', () => {
 </div>
 
 <style>
-  /* Button to open the dialog */
-  .open-dialog-btn {
-    padding: 12px 20px;
+  /* Chatbot button (icon) */
+  .chatbot-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px;
     background: #2E86AB;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 50%;
+    font-size: 24px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   }
 
-  .open-dialog-btn:hover {
+  /* Hover effect for chatbot button */
+  .chatbot-btn:hover {
     background: #1B4F72;
+    transform: scale(1.1);
   }
 
-  /* Dialog box styles */
+  /* Dialog Overlay styles */
   .dialog-overlay {
     position: fixed;
     top: 0;
@@ -713,6 +719,7 @@ menuToggle.addEventListener('click', () => {
     align-items: center;
   }
 
+  /* Dialog box styles */
   .dialog-box {
     background: #fff;
     padding: 25px;
@@ -721,6 +728,19 @@ menuToggle.addEventListener('click', () => {
     max-width: 600px;
     text-align: center;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.5s ease-out;
+  }
+
+  /* Animation for the dialog box */
+  @keyframes slideIn {
+    from {
+      transform: translateY(50%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .dialog-box h2 {
@@ -814,16 +834,10 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
-
-
-
-
-
-
       
 </body>
 </html>
+
 
 
 
