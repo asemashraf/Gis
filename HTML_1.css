@@ -912,62 +912,6 @@ h9 {
   background-attachment: fixed; /* للخلفية على الكمبيوتر */
 }
 
-.my h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.my .cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.my .card {
-  background: rgba(0,0,0,0.7);
-  border-radius: 14px;
-  padding: 15px;
-  width: 280px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease;
-}
-
-.my .card:hover {
-  transform: translateY(-8px);
-}
-
-.my .card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-
-.my .card h3 {
-  color: #ffd700;
-  margin-bottom: 8px;
-}
-
-/* 📱 تعديل خاص للموبايل فقط */
-@media (max-width: 768px) {
-  .my {
-    min-height: auto;              /* الطول حسب الكروت */
-    background-attachment: scroll; /* الخلفية تتحرك مع الكروت */
-  }
-
-  .my .cards {
-    flex-direction: column; /* الكروت تحت بعض */
-    align-items: center;
-  }
-
-  .my .card {
-    width: 90%;        /* ياخد العرض كله */
-    max-width: 350px;  /* يفضل مناسب */
-  }
-}
-
 
 
 
@@ -996,82 +940,17 @@ h9 {
   position: relative;
 }
 
-/* ✅ النص فوق الكروت */
-.my .overlay-text {
-  position: relative;
-  z-index: 5;
-  background: rgba(0,0,0,0.5); /* خلفية شفافة تبرز النص */
-  padding: 15px;
-  border-radius: 12px;
-  display: inline-block;
-  margin-bottom: 25px;
-}
 
-.my h1 {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
 
-.my .tagline {
-  font-size: 20px;
-  font-weight: bold;
-}
 
-/* الكروت */
-.my .cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  z-index: 1;
-  position: relative;
-}
 
-.my .card {
-  background: rgba(0,0,0,0.7);
-  border-radius: 14px;
-  padding: 15px;
-  width: 280px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease;
-}
 
-.my .card:hover {
-  transform: translateY(-8px);
-}
 
-.my .card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
 
-.my .card h3 {
-  color: #ffd700;
-  margin-bottom: 8px;
-}
 
-/* 🎯 الموبايل */
-@media (max-width: 768px) {
-  .my h1 {
-    font-size: 22px;
-  }
 
-  .my .tagline {
-    font-size: 16px;
-  }
 
-  .my .cards {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .my .card {
-    width: 90%;
-  }
-}
 
 
 
@@ -1090,24 +969,9 @@ h9 {
 
 
 
-@media (max-width: 768px) {
-  .my .cards {
-    display: flex;
-    flex-wrap: nowrap;      /* عشان الكروت تيجي في صف واحد */
-    overflow-x: auto;       /* يخليها scroll بالعرض */
-    scroll-snap-type: x mandatory; /* يخلي السحب سلس */
-    -webkit-overflow-scrolling: touch; /* smooth scroll على الموبايل */
-  }
 
-  .my .card {
-    flex: 0 0 80%;          /* كل كارت ياخد 80% من عرض الشاشة */
-    scroll-snap-align: center;
-    margin-right: 15px;
-  }
-}
 
 
-  
 
 
 
@@ -1127,40 +991,3 @@ h9 {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- @media (max-width: 768px) {
-  .my .cards {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 20px;
-    padding: 10px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .my .cards::-webkit-scrollbar {
-    display: none;
-  }
-
-  .my .card {
-    flex: 0 0 80%;
-    max-width: 320px;
-    scroll-snap-align: center;
-  }
-}
