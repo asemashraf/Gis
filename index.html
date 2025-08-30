@@ -432,25 +432,27 @@ menuToggle.addEventListener('click', () => {
   <div id="quiz">
     <p class="question" id="question"></p>
     <div class="options" id="options"></div>
+    <button onclick="submitAnswer()">Submit</button>
     <p class="feedback" id="feedback"></p>
+    <button onclick="nextQuestion()" id="nextBtn" style="display:none;">Next ➡️</button>
   </div>
   <p class="result" id="result"></p>
 </div>
 
 <style>
   body {
-    background: #000;
-    color: #fff;
+    background: #000; /* خلفية سودة */
     font-family: Arial, sans-serif;
+    color: #fff;
   }
   .quiz-container {
     width: 100%;
     max-width: 700px;
     background: #111;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 40px auto;
+    padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(255,255,255,0.15);
+    box-shadow: 0 4px 12px rgba(255,255,255,0.1);
   }
   .quiz-container h1 {
     text-align: center;
@@ -473,6 +475,20 @@ menuToggle.addEventListener('click', () => {
     background: #2E86AB;
     color: #fff;
   }
+  button {
+    padding: 12px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #2E86AB;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #1B4F72;
+  }
   .feedback {
     margin-top: 15px;
     font-weight: bold;
@@ -487,62 +503,74 @@ menuToggle.addEventListener('click', () => {
 </style>
 
 <script>
-const quizData = [
-  { question: "Which tool in ArcGIS is used to create buffer zones?", options: ["Clip", "Buffer", "Merge", "Dissolve"], correct: "Buffer" },
-  { question: "QGIS is an example of:", options: ["Open-source GIS software", "Commercial GIS software", "Remote Sensing satellite", "Database tool"], correct: "Open-source GIS software" },
-  { question: "Which software is widely used for satellite image classification?", options: ["ERDAS Imagine", "AutoCAD", "MS Excel", "Photoshop"], correct: "ERDAS Imagine" },
-  { question: "Which coordinate system is most suitable for global datasets?", options: ["WGS84", "UTM", "Lambert Conformal Conic", "NAD83"], correct: "WGS84" },
-  { question: "The 'Clip' tool in GIS is mainly used for:", options: ["Cutting features using a boundary", "Creating buffer zones", "Calculating distance", "Merging layers"], correct: "Cutting features using a boundary" },
-  { question: "Raster data represents:", options: ["Points, lines, polygons", "Continuous surfaces", "Tabular data", "Vector networks"], correct: "Continuous surfaces" }
-];
+  const quizData = [
+    { question: "Which tool in ArcGIS is used to create buffer zones?", options: ["Clip", "Buffer", "Merge", "Dissolve"], correct: "Buffer" },
+    { question: "QGIS is an example of:", options: ["Open-source GIS software", "Commercial GIS software", "Remote Sensing satellite", "Database tool"], correct: "Open-source GIS software" },
+    { question: "Which software is widely used for satellite image classification?", options: ["ERDAS Imagine", "AutoCAD", "MS Excel", "Photoshop"], correct: "ERDAS Imagine" },
+    { question: "Which coordinate system is most suitable for global datasets?", options: ["WGS84", "UTM", "Lambert Conformal Conic", "NAD83"], correct: "WGS84" },
+    { question: "The 'Clip' tool in GIS is mainly used for:", options: ["Cutting features using a boundary", "Creating buffer zones", "Calculating distance", "Merging layers"], correct: "Cutting features using a boundary" },
+    { question: "Raster data represents:", options: ["Points, lines, polygons", "Continuous surfaces", "Tabular data", "Vector networks"], correct: "Continuous surfaces" }
+  ];
 
-let currentQuestion = 0, score = 0;
+  let currentQuestion = 0, score = 0;
 
-function loadQuestion() {
-  document.getElementById("feedback").innerHTML = "";
-  let q = quizData[currentQuestion];
-  document.getElementById("question").innerText = q.question;
-  let optionsHtml = "";
-  q.options.forEach(opt => {
-    optionsHtml += `<label><input type="radio" name="option" value="${opt}" onclick="selectAnswer(this)"> ${opt}</label>`;
-  });
-  document.getElementById("options").innerHTML = optionsHtml;
-}
+  function loadQuestion() {
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("nextBtn").style.display = "none";
 
-function selectAnswer(selected) {
-  let answer = selected.value,
-      correct = quizData[currentQuestion].correct,
-      feedback = document.getElementById("feedback");
+    let q = quizData[currentQuestion];
+    document.getElementById("question").innerText = q.question;
 
-  if (answer === correct) {
-    feedback.innerHTML = "✅ Correct!";
-    feedback.style.color = "lime";
-    score++;
-  } else {
-    feedback.innerHTML = "❌ Wrong! Correct answer: " + correct;
-    feedback.style.color = "red";
+    let optionsHtml = "";
+    q.options.forEach(opt => {
+      optionsHtml += `<label><input type="radio" name="option" value="${opt}"> ${opt}</label>`;
+    });
+    document.getElementById("options").innerHTML = optionsHtml;
   }
 
-  // بعد ثانية ونص يروح للسؤال اللي بعده
-  setTimeout(() => {
+  function submitAnswer() {
+    let selected = document.querySelector('input[name="option"]:checked');
+    if (!selected) {
+      alert("Please select an option!");
+      return;
+    }
+
+    let answer = selected.value, correct = quizData[currentQuestion].correct;
+    let feedback = document.getElementById("feedback");
+
+    if (answer === correct) {
+      feedback.innerHTML = "✅ Correct!";
+      feedback.style.color = "lightgreen";
+      score++;
+    } else {
+      feedback.innerHTML = `❌ Wrong! Correct answer: ${correct}`;
+      feedback.style.color = "red";
+    }
+
+    // 🟢 التعديل الوحيد: نقفل الاختيارات بعد ما يجاوب
+    document.querySelectorAll('input[name="option"]').forEach(opt => opt.disabled = true);
+
+    document.getElementById("nextBtn").style.display = "inline-block";
+  }
+
+  function nextQuestion() {
     currentQuestion++;
     if (currentQuestion < quizData.length) loadQuestion();
     else showResult();
-  }, 1500);
-}
+  }
 
-function showResult() {
-  document.getElementById("quiz").style.display = "none";
-  let resultText = "";
-  if (score <= 2) resultText = `You scored ${score}/${quizData.length} → 🌱 Beginner`;
-  else if (score <= 4) resultText = `You scored ${score}/${quizData.length} → 🌍 Intermediate`;
-  else resultText = `You scored ${score}/${quizData.length} → 🚀 GIS Expert`;
-  document.getElementById("result").innerText = resultText;
-}
+  function showResult() {
+    document.getElementById("quiz").style.display = "none";
+    let resultText = "";
+    if (score <= 2) resultText = `You scored ${score}/${quizData.length} → 🌱 Beginner`;
+    else if (score <= 4) resultText = `You scored ${score}/${quizData.length} → 🌍 Intermediate`;
+    else resultText = `You scored ${score}/${quizData.length} → 🚀 GIS Expert`;
 
-loadQuestion();
+    document.getElementById("result").innerText = resultText;
+  }
+
+  loadQuestion();
 </script>
-
 
 
 
@@ -555,6 +583,7 @@ loadQuestion();
     
 </body>
 </html>
+
 
 
 
