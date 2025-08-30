@@ -437,43 +437,37 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
-
-
-
-
-
 <!-- ✅ Quiz Box -->
 <div class="quiz-container">
   <h1>🗺️ GIS Knowledge Quiz</h1>
 
-  <!-- البداية -->
+  <!-- Start -->
   <div id="start-screen" class="start-box">
-    <p>ادخل اسمك عشان نبدأ الاختبار:</p>
-    <input type="text" id="username" placeholder="اكتب اسمك هنا">
+    <p>Enter your name to start the quiz:</p>
+    <input type="text" id="username" placeholder="Your name here">
     <br>
-    <button class="start-btn" onclick="startQuiz()">🚀 ابدأ الاختبار</button>
+    <button class="start-btn" onclick="startQuiz()">🚀 Start Quiz</button>
   </div>
 
-  <!-- الأسئلة -->
+  <!-- Quiz -->
   <div id="quiz-screen" class="hidden">
     <h2 id="question"></h2>
     <div class="answers" id="answers"></div>
     <p id="feedback"></p>
-    <button class="next-btn" onclick="nextQuestion()">➡️ التالي</button>
+    <button class="next-btn" onclick="nextQuestion()">➡️ Next</button>
   </div>
 
-  <!-- النتيجة -->
+  <!-- Result -->
   <div id="result-screen" class="hidden">
-    <h2>📊 النتيجة النهائية</h2>
+    <h2>📊 Final Result</h2>
     <p id="final-score"></p>
-    <button class="retry-btn" onclick="location.reload()">🔄 إعادة المحاولة</button>
+    <button class="retry-btn" onclick="location.reload()">🔄 Try Again</button>
   </div>
 </div>
 
 <style>
   body {
-    background: #000; /* خلفية سوداء */
+    background: #000; /* Black background */
     color: #fff;
     font-family: "Segoe UI", Arial, sans-serif;
     margin: 0;
@@ -568,10 +562,10 @@ menuToggle.addEventListener('click', () => {
 <script>
   let username = "";
   const questions = [
-    { question: "ما هو البرنامج الأشهر لإدارة قواعد بيانات مكانية؟", answers: ["QGIS", "ArcGIS", "PostGIS", "Excel"], correct: "PostGIS" },
-    { question: "أي أداة تُستخدم لتحليل الارتفاعات؟", answers: ["Buffer", "DEM", "Clip", "Join"], correct: "DEM" },
-    { question: "ما هي صيغة الملفات المكانية الأكثر شيوعًا؟", answers: ["Shapefile", "PDF", "CSV", "TXT"], correct: "Shapefile" },
-    { question: "أي برنامج مجاني ومفتوح المصدر؟", answers: ["ArcGIS", "QGIS", "AutoCAD", "ERDAS Imagine"], correct: "QGIS" }
+    { question: "Which program is most commonly used for spatial databases?", answers: ["QGIS", "ArcGIS", "PostGIS", "Excel"], correct: "PostGIS" },
+    { question: "Which tool is used to analyze elevation data?", answers: ["Buffer", "DEM", "Clip", "Join"], correct: "DEM" },
+    { question: "What is the most common spatial file format?", answers: ["Shapefile", "PDF", "CSV", "TXT"], correct: "Shapefile" },
+    { question: "Which software is free and open-source?", answers: ["ArcGIS", "QGIS", "AutoCAD", "ERDAS Imagine"], correct: "QGIS" }
   ];
 
   let currentQuestion = 0;
@@ -580,7 +574,7 @@ menuToggle.addEventListener('click', () => {
   function startQuiz() {
     username = document.getElementById("username").value.trim();
     if (!username) {
-      alert("من فضلك اكتب اسمك أولاً!");
+      alert("Please enter your name first!");
       return;
     }
     document.getElementById("start-screen").classList.add("hidden");
@@ -605,11 +599,11 @@ menuToggle.addEventListener('click', () => {
   function checkAnswer(answer, correct) {
     let feedback = document.getElementById("feedback");
     if (answer === correct) {
-      feedback.innerText = "✅ إجابة صحيحة!";
+      feedback.innerText = "✅ Correct!";
       feedback.style.color = "lime";
       score++;
     } else {
-      feedback.innerText = "❌ خطأ! الإجابة الصحيحة: " + correct;
+      feedback.innerText = "❌ Wrong! Correct answer: " + correct;
       feedback.style.color = "red";
     }
   }
@@ -629,14 +623,14 @@ menuToggle.addEventListener('click', () => {
 
     let level = "";
     if (score === questions.length) {
-      level = "🎉 ممتاز يا " + username + "! إنت خبير GIS حقيقي!";
+      level = "🎉 Excellent " + username + "! You are a true GIS expert!";
     } else if (score >= questions.length / 2) {
-      level = "👏 أحسنت يا " + username + "! مستواك متوسط وتقدر تطور أكتر.";
+      level = "👏 Well done " + username + "! Your level is intermediate.";
     } else {
-      level = "💡 يا " + username + "، لسه مبتدئ في GIS. محتاج تدريب أكتر.";
+      level = "💡 " + username + ", you are still a beginner in GIS. Keep practicing!";
     }
 
-    document.getElementById("final-score").innerText = `درجتك: ${score} من ${questions.length}\n${level}`;
+    document.getElementById("final-score").innerText = `Your score: ${score} out of ${questions.length}\n${level}`;
   }
 </script>
 
@@ -655,6 +649,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
