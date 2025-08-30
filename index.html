@@ -416,7 +416,81 @@ menuToggle.addEventListener('click', () => {
 
 
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #f4f4f9; }
+  h1 { text-align: center; color: #2E86AB; }
+  #map { height: 500px; width: 100%; margin: 20px auto; border-radius: 12px; }
+  .game-box { text-align: center; margin-top: 15px; }
+  input, button {
+    padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc;
+  }
+  button { background: #2E86AB; color: white; cursor: pointer; margin-left: 10px; }
+  button:hover { background: #1B4F72; }
+  .message { margin-top: 15px; font-size: 18px; }
+</style>
+</head>
+<body>
+  <h1>🌍 Guess The City Game 🎮</h1>
+  <div id="map"></div>
 
+  <div class="game-box">
+    <input type="text" id="guess" placeholder="Type city name (e.g., Cairo)">
+    <button onclick="checkGuess()">Submit</button>
+    <p class="message" id="message"></p>
+    <button onclick="nextRound()">▶️ Next Round</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const cities = {
+      "Cairo": [30.0444, 31.2357],
+      "Paris": [48.8566, 2.3522],
+      "New York": [40.7128, -74.0060],
+      "Tokyo": [35.6762, 139.6503],
+      "Nairobi": [-1.2921, 36.8219],
+      "London": [51.5074, -0.1278],
+      "Dubai": [25.2048, 55.2708],
+      "Sydney": [-33.8688, 151.2093]
+    };
+
+    let cityNames = Object.keys(cities);
+    let currentCity, coords, map, marker;
+
+    function initGame() {
+      currentCity = cityNames[Math.floor(Math.random() * cityNames.length)];
+      coords = cities[currentCity];
+
+      if (map) { map.remove(); } 
+      map = L.map('map').setView(coords, 5);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      marker = L.marker(coords).addTo(map).bindPopup("Where is this? 🤔").openPopup();
+    }
+
+    function checkGuess() {
+      let guess = document.getElementById("guess").value.trim();
+      let msg = document.getElementById("message");
+      if (guess.toLowerCase() === currentCity.toLowerCase()) {
+        msg.innerHTML = "✅ Correct! The city is " + currentCity + " 🎉";
+        msg.style.color = "green";
+      } else {
+        msg.innerHTML = "❌ Wrong! The correct city was " + currentCity;
+        msg.style.color = "red";
+      }
+    }
+
+    function nextRound() {
+      document.getElementById("guess").value = "";
+      document.getElementById("message").innerHTML = "";
+      initGame();
+    }
+
+    initGame();
 
 
 
@@ -426,6 +500,7 @@ menuToggle.addEventListener('click', () => {
     
 </body>
 </html>
+
 
 
 
