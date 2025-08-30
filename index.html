@@ -647,26 +647,8 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Chatbot Icon (Button) -->
-<button class="chatbot-btn" onclick="openDialog()">💬 مساعدك الآلي</button>
+<!-- Chatbot Button (Floating) -->
+<button class="chatbot-btn" onclick="openDialog()">💬 مساعدك الذكي</button>
 
 <!-- Chatbot Dialog Overlay -->
 <div id="dialog-overlay" class="dialog-overlay">
@@ -680,7 +662,7 @@ menuToggle.addEventListener('click', () => {
 </div>
 
 <style>
-  /* Chatbot button (icon) */
+  /* Chatbot button (floating) */
   .chatbot-btn {
     position: fixed;
     bottom: 30px;
@@ -701,13 +683,13 @@ menuToggle.addEventListener('click', () => {
     transform: scale(1.1);
   }
 
-  /* Dialog Overlay styles */
+  /* Dialog overlay styles */
   .dialog-overlay {
     position: fixed;
-    bottom: 90px; 
+    bottom: 90px;
     right: 30px;
     width: 280px;
-    background-color: rgba(0, 0, 0, 0.7); 
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
     display: none;
     justify-content: center;
     align-items: center;
@@ -716,7 +698,6 @@ menuToggle.addEventListener('click', () => {
     animation: slideIn 0.5s ease-out;
   }
 
-  /* Animation for the dialog box */
   @keyframes slideIn {
     from {
       transform: translateY(50%);
@@ -790,61 +771,58 @@ menuToggle.addEventListener('click', () => {
 </style>
 
 <script>
-  async function askQuestion() {
+  // تحميل البيانات من localStorage إذا كانت موجودة
+  let qaData = JSON.parse(localStorage.getItem('qaData')) || [];
+
+  // وظيفة لإرسال السؤال والرد
+  function askQuestion() {
     const question = document.getElementById('userQuestion').value.trim();
-    const answerElement = document.getElementById('answer');
-    
+    const chatbox = document.getElementById('answer');
+
     if (!question) {
-      alert("Please enter a question!");
+      alert("من فضلك، أدخل سؤالك!");
       return;
     }
 
-    answerElement.style.display = "none"; // Hide previous answer
-
-    // OpenAI API call (GPT-3)
-    try {
-      const response = await fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
-        },
-        body: JSON.stringify({
-          model: "text-davinci-003", // GPT-3 model
-          prompt: question,
-          max_tokens: 150,
-          temperature: 0.7
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('API call failed');
+    // التحقق من السؤال في قاعدة البيانات
+    let answer = qaData.find(item => item.question.toLowerCase() === question.toLowerCase());
+    
+    if (answer) {
+      chatbox.innerHTML = `<p><strong>You:</strong> ${question}</p><p><strong>Bot:</strong> ${answer.answer}</p>`;
+    } else {
+      // إذا لم يوجد السؤال، اطلب من المستخدم إدخال الإجابة
+      const userAnswer = prompt(`لا أملك إجابة لهذا السؤال: "${question}". من فضلك، ادخل الإجابة.`);
+      if (userAnswer) {
+        // إضافة السؤال والإجابة إلى قاعدة البيانات
+        qaData.push({ question, answer: userAnswer });
+        // حفظ البيانات في localStorage
+        localStorage.setItem('qaData', JSON.stringify(qaData));
+        chatbox.innerHTML = `<p><strong>You:</strong> ${question}</p><p><strong>Bot:</strong> شكراً لإجابتك! سيتم حفظها في المستقبل.</p>`;
       }
-
-      const data = await response.json();
-      const answer = data.choices[0].text.trim();
-      
-      // Display answer
-      answerElement.innerText = answer;
-      answerElement.style.display = "block";
-
-    } catch (error) {
-      answerElement.innerText = "Sorry, there was an error with the request.";
-      answerElement.style.display = "block";
     }
+    document.getElementById('userQuestion').value = ''; // مسح المدخل
   }
 
+  // فتح مربع الحوار
   function openDialog() {
     document.getElementById('dialog-overlay').style.display = 'flex';
   }
 
+  // إغلاق مربع الحوار
   function closeDialog() {
     document.getElementById('dialog-overlay').style.display = 'none';
   }
 </script>
 
+
+
+
+
+
+
 </body>
 </html>
+
 
 
 
