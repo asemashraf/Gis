@@ -470,7 +470,6 @@ menuToggle.addEventListener('click', () => {
     text-align: center;
     color: #2E86AB;
   }
-
   /* ✅ تصميم شاشة الاسم */
   #startScreen {
     text-align: center;
@@ -500,7 +499,6 @@ menuToggle.addEventListener('click', () => {
     background: #333;
     box-shadow: 0 0 8px #2E86AB;
   }
-
   .question {
     font-size: 20px;
     margin-bottom: 15px;
@@ -618,9 +616,28 @@ menuToggle.addEventListener('click', () => {
     else resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`;
 
     document.getElementById("result").innerText = resultText;
+
+    // ✅ إرسال البيانات لجوجل شيت
+    sendToSheet();
+  }
+
+  // دالة إرسال البيانات لجوجل شيت
+  function sendToSheet() {
+    let level = "";
+    if (score <= 2) level = "Beginner";
+    else if (score <= 4) level = "Intermediate";
+    else level = "GIS Expert";
+
+    fetch("https://script.google.com/macros/s/AKfycbyGaN_lZKe6Fran7YzY3xhogwARWf67C_KC03fOht_jNYQDg01-y6_JSJSpmEVOKYBgfw/exec", {
+      method: "POST",
+      body: JSON.stringify({ name: playerName, score: score, level: level }),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => console.log("تم الإرسال:", data))
+    .catch(err => console.error("خطأ في الإرسال:", err));
   }
 </script>
-
 
 
 
@@ -848,6 +865,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
