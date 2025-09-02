@@ -856,6 +856,31 @@ menuToggle.addEventListener('click', () => {
 
 
 
+<script>
+    function startQuiz22() {
+    let nameInput = document.getElementById("username").value.trim();
+    if (nameInput === "") {
+      alert("Please enter your name!");
+      return;
+    }
+    playerName = nameInput;
+
+    // ✅ إرسال الاسم فوراً للشيت
+    fetch("https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec", {
+      method: "POST",
+      body: JSON.stringify({ name: playerName }),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => console.log("الاسم تم إرساله:", data))
+    .catch(err => console.error("خطأ في إرسال الاسم:", err));
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+    loadQuestion();
+}
+</script>
+
 
 
 
@@ -865,6 +890,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
