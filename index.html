@@ -876,110 +876,92 @@ menuToggle.addEventListener('click', () => {
 
 
 
-<!-- المكان اللي هتظهر فيه الكرة -->
-<div id="globe-container" style="width:400px; height:400px; margin:auto;"></div>
+ <!-- مكتبات Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
 
-<!-- مكتبات Three.js -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+  
 
-<script>
-  // container
-  const container = document.getElementById("globe-container");
+    /* الكونتينر بتاع الكرة الأرضية */
+    #globe-container {
+      width: 100%;
+      height: 500px; /* تقدر تزود أو تقلل */
+      background: black;
+    }
+  </style>
+  <!-- هيدر أو الكويز -->
+ 
 
-  // مشهد
-  const scene = new THREE.Scene();
+  <!-- الكرة الأرضية كغلاف -->
+  <div id="globe-container"></div>
 
-  // كاميرا
-  const camera = new THREE.PerspectiveCamera(
-    60,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    1000
-  );
-  camera.position.set(0, 0, 3);
+  <script>
+    const container = document.getElementById("globe-container");
 
-  // ريندر
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  container.appendChild(renderer.domElement);
+    // المشهد
+    const scene = new THREE.Scene();
 
-  // كنترول
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.enablePan = true;
-  controls.enableZoom = true;
+    // الكاميرا
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 2.5;
 
-  // إضاءة
-  const light = new THREE.DirectionalLight(0xffffff, 1.2);
-  light.position.set(5, 3, 5);
-  scene.add(light);
-
-  const ambientLight = new THREE.AmbientLight(0x333333); // ضوء خفيف يعم المشهد
-  scene.add(ambientLight);
-
-  // تحميل خامات
-  const textureLoader = new THREE.TextureLoader();
-
-  // صورة الأرض
-  const earthTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/rajatmw1999/3D-Earth/main/src/assets/earthmap1k.jpg"
-  );
-
-  // صورة النجوم
-  const starsTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/space.jpg"
-  );
-
-  // الأرض
-  const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
-  const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
-  const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-  scene.add(earth);
-
-  // الغلاف الجوي
-  const atmosphereGeometry = new THREE.SphereGeometry(1.05, 64, 64);
-  const atmosphereMaterial = new THREE.MeshBasicMaterial({
-    color: 0x3399ff,
-    transparent: true,
-    opacity: 0.2,
-    side: THREE.BackSide
-  });
-  const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-  scene.add(atmosphere);
-
-  // خلفية نجوم
-  const starsGeometry = new THREE.SphereGeometry(90, 64, 64);
-  const starsMaterial = new THREE.MeshBasicMaterial({
-    map: starsTexture,
-    side: THREE.BackSide
-  });
-  const starfield = new THREE.Mesh(starsGeometry, starsMaterial);
-  scene.add(starfield);
-
-  // أنيميشن
-  function animate() {
-    requestAnimationFrame(animate);
-    earth.rotation.y += 0.002; // دوران تلقائي
-    controls.update();
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  // تحديث مع الريسايز
-  window.addEventListener("resize", () => {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
+    // الريندر
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-  });
-</script>
+    container.appendChild(renderer.domElement);
 
+    // اضاءة
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 3, 5).normalize();
+    scene.add(light);
+
+    // كرة الأرض
+    const geometry = new THREE.SphereGeometry(1, 64, 64);
+    const texture = new THREE.TextureLoader().load(
+      "https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg"
+    );
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+    const globe = new THREE.Mesh(geometry, material);
+    scene.add(globe);
+
+    // كونترول
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enablePan = true;
+    controls.enableZoom = true;
+
+    // انيميشن
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // دوران تلقائي
+      globe.rotation.y += 0.002;
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ريسايز مع تغيير الشاشة
+    window.addEventListener("resize", () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+  </script>
 
 
       
 </body>
 </html>
+
 
 
 
