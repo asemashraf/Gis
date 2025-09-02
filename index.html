@@ -13,7 +13,15 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
     <script src="https://js.arcgis.com/4.18/"></script>
 
-    
+  ...
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- مكتبات Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.154/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.154/examples/js/controls/OrbitControls.js"></script>
+</head>
+
 </head>
 <body>
 
@@ -877,20 +885,15 @@ menuToggle.addEventListener('click', () => {
 
 
 
-<!-- الكرة الأرضية -->
-<div id="globe-container" style="width:100%; height:500px; margin:auto;"></div>
-
-<!-- مكتبات Three.js (إصدار متوافق) -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<!-- المكان اللي هتظهر فيه الكرة -->
+<div id="globe-container" style="width:400px; height:400px; margin:auto;"></div>
 
 <script>
-  const container = document.getElementById("globe-container");
-
   // مشهد
   const scene = new THREE.Scene();
 
   // كاميرا
+  const container = document.getElementById("globe-container");
   const camera = new THREE.PerspectiveCamera(
     60,
     container.clientWidth / container.clientHeight,
@@ -958,15 +961,16 @@ menuToggle.addEventListener('click', () => {
 
   // تحديث مع الريسايز
   window.addEventListener("resize", () => {
+    const container = document.getElementById("globe-container");
     camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
   });
 </script>
 
-      
 </body>
 </html>
+
 
 
 
