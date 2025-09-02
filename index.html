@@ -886,7 +886,11 @@ menuToggle.addEventListener('click', () => {
 
 
 <!-- المكان اللي هتظهر فيه الكرة -->
-<div id="globe-container" style="width:400px; height:400px; margin:auto;"></div>
+<div id="globe-container" style="width:100%; height:600px; background:black;"></div>
+
+<!-- مكتبات Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.154/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.154/examples/js/controls/OrbitControls.js"></script>
 
 <script>
   // مشهد
@@ -919,10 +923,10 @@ menuToggle.addEventListener('click', () => {
   light.position.set(5, 3, 5);
   scene.add(light);
 
-  // تحميل خامات
+  // تحميل خامات من CDN
   const textureLoader = new THREE.TextureLoader();
-  const earthTexture = textureLoader.load("https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg");
-  const starsTexture = textureLoader.load("https://threejs.org/examples/textures/galaxy_starfield.png");
+  const earthTexture = textureLoader.load("https://raw.githubusercontent.com/pmndrs/drei-assets/master/earth/land_ocean_ice_cloud_2048.jpg");
+  const starsTexture = textureLoader.load("https://raw.githubusercontent.com/pmndrs/drei-assets/master/stars/galaxy_starfield.png");
 
   // الأرض
   const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
@@ -961,7 +965,6 @@ menuToggle.addEventListener('click', () => {
 
   // تحديث مع الريسايز
   window.addEventListener("resize", () => {
-    const container = document.getElementById("globe-container");
     camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -970,6 +973,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
