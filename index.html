@@ -871,20 +871,13 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
-
-
-
-
-
-
 <!-- Urban Sprawl Dashboard Advanced -->
 <section class="urban-dashboard">
   <h2>Urban Sprawl in Egypt</h2>
 
   <div class="dashboard-container">
     <!-- خريطة تفاعلية -->
-    <div id="sprawlMap" style="width: 100%; height: 450px; margin-bottom: 20px;"></div>
+    <div id="sprawlMap"></div>
 
     <!-- مخطط تفاعلي لكل مدينة -->
     <canvas id="sprawlChart" width="400" height="200"></canvas>
@@ -927,6 +920,12 @@ menuToggle.addEventListener('click', () => {
   gap: 25px;
 }
 
+#sprawlMap {
+  width: 100%;
+  height: 450px;
+  border-radius: 12px;
+}
+
 .dashboard-stats {
   display: flex;
   justify-content: space-around;
@@ -936,7 +935,6 @@ menuToggle.addEventListener('click', () => {
   border-radius: 10px;
   transition: all 0.5s ease;
 }
-
 .dashboard-stats p {
   margin: 0;
   font-weight: bold;
@@ -949,13 +947,13 @@ const urbanSprawlData = {
   "type": "FeatureCollection",
   "features": [
     { "type": "Feature", "properties": { "name": "Cairo", "growth": 35, "agri": 15, "pop": 10 },
-      "geometry": { "type": "Polygon", "coordinates": [[[31.0,30.0],[31.5,30.0],[31.5,30.5],[31.0,30.5],[31.0,30.0]]] } },
+      "geometry": { "type": "Polygon", "coordinates": [[[30.0,31.0],[30.0,31.5],[30.5,31.5],[30.5,31.0],[30.0,31.0]]] } },
     { "type": "Feature", "properties": { "name": "Giza", "growth": 28, "agri": 12, "pop": 7 },
-      "geometry": { "type": "Polygon", "coordinates": [[[31.0,29.9],[31.4,29.9],[31.4,30.2],[31.0,30.2],[31.0,29.9]]] } },
+      "geometry": { "type": "Polygon", "coordinates": [[[29.9,31.0],[29.9,31.4],[30.2,31.4],[30.2,31.0],[29.9,31.0]]] } },
     { "type": "Feature", "properties": { "name": "Alexandria", "growth": 32, "agri": 10, "pop": 5 },
-      "geometry": { "type": "Polygon", "coordinates": [[[29.8,31.0],[30.0,31.0],[30.0,31.3],[29.8,31.3],[29.8,31.0]]] } },
+      "geometry": { "type": "Polygon", "coordinates": [[[31.0,29.8],[31.3,29.8],[31.3,30.0],[31.0,30.0],[31.0,29.8]]] } },
     { "type": "Feature", "properties": { "name": "Port Said", "growth": 25, "agri": 5, "pop": 2 },
-      "geometry": { "type": "Polygon", "coordinates": [[[32.25,31.25],[32.35,31.25],[32.35,31.35],[32.25,31.35],[32.25,31.25]]] } },
+      "geometry": { "type": "Polygon", "coordinates": [[[31.25,32.25],[31.35,32.25],[31.35,32.35],[31.25,32.35],[31.25,32.25]]] } },
     { "type": "Feature", "properties": { "name": "Damietta", "growth": 20, "agri": 6, "pop": 1.5 },
       "geometry": { "type": "Polygon", "coordinates": [[[31.4,31.4],[31.55,31.4],[31.55,31.55],[31.4,31.55],[31.4,31.4]]] } }
   ]
@@ -967,6 +965,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
+// تحديث حجم الخريطة بعد التحميل
+window.addEventListener('load', () => {
+  map.invalidateSize();
+});
+
 // رسم المناطق مع لون ديناميكي حسب النمو
 function getColor(growth) {
   if (growth > 30) return '#FF0000';
@@ -975,19 +978,17 @@ function getColor(growth) {
   return '#FFA500';
 }
 
-let cityLayers = [];
 urbanSprawlData.features.forEach(feature => {
-  const layer = L.geoJSON(feature, {
+  L.geoJSON(feature, {
     style: { color: getColor(feature.properties.growth), weight: 2, fillOpacity: 0.3 },
-    onEachFeature: function (feat, lyr) {
-      lyr.on('click', () => updateDashboard(feat.properties));
-      lyr.bindPopup(`<b>${feat.properties.name}</b><br>Growth: ${feat.properties.growth}%`);
+    onEachFeature: function (feat, layer) {
+      layer.on('click', () => updateDashboard(feat.properties));
+      layer.bindPopup(`<b>${feat.properties.name}</b><br>Growth: ${feat.properties.growth}%`);
     }
   }).addTo(map);
-  cityLayers.push(layer);
 });
 
-// === تحديث المخطط والإحصائيات ===
+// === المخطط ===
 const ctx = document.getElementById('sprawlChart').getContext('2d');
 let chart = new Chart(ctx, {
   type: 'line',
@@ -1006,8 +1007,6 @@ function updateDashboard(properties){
   document.getElementById('growth').innerText = properties.growth + '%';
   document.getElementById('agri').innerText = properties.agri + '%';
   document.getElementById('pop').innerText = properties.pop + ' Million';
-
-  // تحديث المخطط (نمو افتراضي على 5 نقاط)
   chart.data.datasets[0].data = [0, properties.growth*0.3, properties.growth*0.6, properties.growth*0.8, properties.growth];
   chart.update();
 }
@@ -1016,8 +1015,11 @@ function updateDashboard(properties){
 updateDashboard(urbanSprawlData.features[0].properties);
 </script>
 
+      
+
 </body>
 </html>
+
 
 
 
