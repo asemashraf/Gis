@@ -628,7 +628,7 @@ menuToggle.addEventListener('click', () => {
     else if (score <= 4) level = "Intermediate";
     else level = "GIS Expert";
 
-    fetch("https://script.google.com/macros/s/AKfycbxv07yZQj0hXLUu80AKgFWs7qPN9MsbCqGKbCMmbXHsgq8jn1aCw44Pyq_5HV_OgBTL3g/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec", {
       method: "POST",
       body: JSON.stringify({ name: playerName, score: score, level: level }),
       headers: { "Content-Type": "application/json" }
@@ -865,6 +865,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
