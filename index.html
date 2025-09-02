@@ -880,18 +880,20 @@ menuToggle.addEventListener('click', () => {
 <div id="globe-container" style="width:400px; height:400px; margin:auto;"></div>
 
 <!-- مكتبات Three.js -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.154/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.154/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
+  // container
+  const container = document.getElementById("globe-container");
+
   // مشهد
   const scene = new THREE.Scene();
 
   // كاميرا
   const camera = new THREE.PerspectiveCamera(
     60,
-    document.getElementById("globe-container").clientWidth /
-    document.getElementById("globe-container").clientHeight,
+    container.clientWidth / container.clientHeight,
     0.1,
     1000
   );
@@ -899,11 +901,8 @@ menuToggle.addEventListener('click', () => {
 
   // ريندر
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(
-    document.getElementById("globe-container").clientWidth,
-    document.getElementById("globe-container").clientHeight
-  );
-  document.getElementById("globe-container").appendChild(renderer.domElement);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
 
   // كنترول
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -917,10 +916,21 @@ menuToggle.addEventListener('click', () => {
   light.position.set(5, 3, 5);
   scene.add(light);
 
+  const ambientLight = new THREE.AmbientLight(0x333333); // ضوء خفيف يعم المشهد
+  scene.add(ambientLight);
+
   // تحميل خامات
   const textureLoader = new THREE.TextureLoader();
-  const earthTexture = textureLoader.load("https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg");
-  const starsTexture = textureLoader.load("https://threejs.org/examples/textures/galaxy_starfield.png");
+
+  // صورة الأرض
+  const earthTexture = textureLoader.load(
+    "https://raw.githubusercontent.com/rajatmw1999/3D-Earth/main/src/assets/earthmap1k.jpg"
+  );
+
+  // صورة النجوم
+  const starsTexture = textureLoader.load(
+    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/space.jpg"
+  );
 
   // الأرض
   const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
@@ -959,7 +969,6 @@ menuToggle.addEventListener('click', () => {
 
   // تحديث مع الريسايز
   window.addEventListener("resize", () => {
-    const container = document.getElementById("globe-container");
     camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -968,11 +977,10 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
-
       
 </body>
 </html>
+
 
 
 
