@@ -186,6 +186,39 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#map {
+  height: 500px; /* عدّل الارتفاع زي ما تحب */
+  width: 100%;
+}
+
+
+
+
+
+
+
+
+
 span {
     color: white;
     margin: 0;
@@ -939,6 +972,7 @@ h9 {
   text-align: center;
   position: relative;
 }
+
 
 
 
