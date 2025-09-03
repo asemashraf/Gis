@@ -206,15 +206,6 @@ body {
 
 
 
-#map {
-  height: 500px; /* عدّل الارتفاع زي ما تحب */
-  width: 100%;
-}
-
-
-
-
-
 
 
 
@@ -972,6 +963,7 @@ h9 {
   text-align: center;
   position: relative;
 }
+
 
 
 
