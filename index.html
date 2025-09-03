@@ -926,74 +926,57 @@ menuToggle.addEventListener('click', () => {
 
 
 
-<div id="map"></div>
 
 
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-<script>
-  const sheetUrl = "https://script.google.com/macros/s/AKfycbx98-NSNjfMknZ0p9bSu-a8Jebv4hzyZPCJgbXCb_8O0e1JOZELbWcEuxM33vwVSKs2/exec";
+  <script>
+    let map;
+    let markers = [];
 
-  const map = L.map('map').setView([30, 31], 5);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(map);
+    async function loadData() {
+      try {
+        const response = await fetch("YOUR_SHEET_URL"); // اللينك من Apps Script
+        const data = await response.json();
 
-  const markers = L.markerClusterGroup();
-  map.addLayer(markers);
+        // امسح الماركر القديمة
+        markers.forEach(m => m.setMap(null));
+        markers = [];
 
-  async function sendVisitorLocation() {
-    try {
-      const res = await fetch("https://ipapi.co/json/");
-      const data = await res.json();
+        // ارسم النقاط الجديدة
+        data.forEach(row => {
+          const lat = parseFloat(row.latitude);
+          const lng = parseFloat(row.longitude);
+          if (!isNaN(lat) && !isNaN(lng)) {
+            const marker = new google.maps.Marker({
+              position: { lat: lat, lng: lng },
+              map: map,
+              title: `وقت الدخول: ${row.timestamp}`
+            });
+            markers.push(marker);
+          }
+        });
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    }
 
-      const lat = data.latitude;
-      const lon = data.longitude;
-
-      await fetch(sheetUrl, {
-        method: "POST",
-        body: JSON.stringify({ lat, lon }),
-        headers: { "Content-Type": "application/json" }
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 3,
+        center: { lat: 20, lng: 0 }, // مركز افتراضي (العالم)
       });
 
-      const currentMarker = L.marker([lat, lon]).bindPopup("📍 أنت هنا الآن");
-      currentMarker.addTo(map).openPopup();
+      // حمل أول مرة
+      loadData();
 
-    } catch (err) {
-      console.error("خطأ في جلب الموقع:", err);
+      // تحديث كل 30 ثانية
+      setInterval(loadData, 30000);
     }
-  }
 
-  async function loadAllMarkers() {
-    try {
-      const res = await fetch(sheetUrl);
-      const data = await res.json();
-
-      markers.clearLayers();
-
-      data.forEach(row => {
-        if (row.lat && row.lon) {
-          const marker = L.marker([row.lat, row.lon]);
-          marker.bindPopup(`📍 زائر عند (${row.lat}, ${row.lon})`);
-          markers.addLayer(marker);
-        }
-      });
-
-    } catch (err) {
-      console.error("خطأ في تحميل البيانات:", err);
-    }
-  }
-
-  sendVisitorLocation();
-  loadAllMarkers();
-  setInterval(loadAllMarkers, 30000);
-</script>
-
-
-
-
-
+    window.onload = initMap;
+  </script>
 
 
 
@@ -1006,6 +989,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
