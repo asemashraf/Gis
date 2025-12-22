@@ -904,6 +904,102 @@ menuToggle.addEventListener('click', () => {
 
 
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<script>
+// ===============================
+// 🌍 Initialize Map
+// ===============================
+const map = L.map("map").setView([30.0444, 31.2357], 12);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap"
+}).addTo(map);
+
+// ===============================
+// 🗺️ Ultimate Shortest Path Between Two Points
+// ===============================
+let routingControl = null;
+let startMarker = null;
+let travelMode = "car"; // car | foot
+
+// Icons
+const startIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png",
+  iconSize: [30, 30]
+});
+const endIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+  iconSize: [30, 30]
+});
+
+// ===============================
+// Click on Map to Select Points
+// ===============================
+map.on("click", function (e) {
+  const clickedPoint = e.latlng;
+
+  // First click → Start
+  if (!startMarker) {
+    startMarker = L.marker(clickedPoint, { icon: startIcon })
+      .addTo(map)
+      .bindPopup("📍 Start Point")
+      .openPopup();
+    return;
+  }
+
+  // Second click → Destination
+  if (routingControl) {
+    map.removeControl(routingControl);
+  }
+
+  routingControl = L.Routing.control({
+    waypoints: [
+      startMarker.getLatLng(),
+      clickedPoint
+    ],
+    router: L.Routing.osrmv1({
+      serviceUrl:
+        travelMode === "foot"
+          ? "https://router.project-osrm.org/route/v1/foot"
+          : "https://router.project-osrm.org/route/v1"
+    }),
+    addWaypoints: false,
+    draggableWaypoints: false,
+    routeWhileDragging: false,
+    show: false,
+    lineOptions: {
+      styles: [
+        { color: "#000", weight: 8, opacity: 0.3 },
+        { color: "#00bfff", weight: 5 }
+      ]
+    }
+  })
+    .on("routesfound", function (e) {
+      const route = e.routes[0];
+      const distance = (route.summary.totalDistance / 1000).toFixed(2);
+      const time = Math.round(route.summary.totalTime / 60);
+
+      L.marker(clickedPoint, { icon: endIcon })
+        .addTo(map)
+        .bindPopup(
+          `🏁 Destination<br>📏 Distance: ${distance} km<br>⏱️ Time: ${time} min`
+        )
+        .openPopup();
+    })
+    .addTo(map);
+
+  // Reset for next route
+  startMarker = null;
+});
+
+// ===============================
+// Switch Travel Mode
+// ===============================
+function setTravelMode(mode) {
+  travelMode = mode; // "car" or "foot"
+}
+</script>
 
 
 
@@ -933,6 +1029,7 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
