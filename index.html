@@ -1,1125 +1,539 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Asem Ashraf</title>
+  <meta charset="UTF-8">
+  <title>Asem Ashraf — GIS & Remote Sensing</title>
+  <meta name="description" content="Asem Ashraf — GIS specialist and full-stack developer. Digital mapping, remote sensing, geospatial analysis and web GIS applications.">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="HTML_1.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.18/"></script>
-
-
-
+  <!-- Leaflet (used by the interactive route map at the bottom of the page) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 <body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
+<!-- =========================================================
+     Navigation
+     ========================================================= -->
 <nav class="menu">
-    <div id="logo">
-        <span style="color: darkred !important;">Asem</span><span> Ashraf</span><img src="logo.png" alt="">
-    </div>
+  <div id="logo">
+    <img src="logo.png" alt="Asem Ashraf logo">
+    <span style="color:var(--teal);">Asem</span><span>&nbsp;Ashraf</span>
+  </div>
 
-    <div class="menu-toggle">&#9776;</div> <!-- زرار الموبايل -->
+  <div class="menu-toggle" id="menuToggle" role="button" aria-label="Toggle menu" tabindex="0">&#9776;</div>
 
-    <ul id="rmenu">
-        <li>
-            <a class="menu-item" href="#">menu</a>
-            <div class="sup-contant">
-                <div class="sup-drop">
-                    <ul>
-                        <li><a href="#">Digital maps</a></li>
-                        <li><a href="#">full stack</a></li>
-                        <li><a href="#">best location</a></li>
-                        <li><a href="#">processing</a></li>
-                    </ul>
-                </div>
-            </div>
-        </li>
-    </ul>
+  <ul id="rmenu">
+    <li>
+      <a class="menu-item" href="#">Menu</a>
+      <div class="sup-contant">
+        <div class="sup-drop">
+          <ul>
+            <li><a href="#gis-applications">Digital maps</a></li>
+            <li><a href="#developers">Full stack</a></li>
+            <li><a href="#map-section">Best location</a></li>
+            <li><a href="#gis-applications">Processing</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
 </nav>
 
+<!-- =========================================================
+     Hero
+     ========================================================= -->
 <div class="Container">
   <div class="frame">
-   <section class="my">
-  <div class="overlay-text">
-    <h1><span style="color: darkred;">Hello</span> World</h1>
-    <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
-  </div>
-
-  
-</section>
-
-
-      
-
-<style>
-.tagline {
-  font-family: 'Segoe UI', 'Poppins', sans-serif;
-  font-weight: bold;
-  color: white;
-  font-size: 20px;
-   margin: 10px 0;
-}
-</style>
-
-
-
-        
-    </div>
+    <section class="my" id="hero">
+      <div class="overlay-text">
+        <h1><span class="accent">Hello</span>, World</h1>
+        <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
+      </div>
+    </section>
   </div>
 </div>
-
-
 
 <main>
-    <article>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-        
-        
-<!-- <center><img src="Gis.png" height="200"><br></center> -->
-
-       
-   <div class="gis-section">
-  <div class="main-text">
-    GIS has turned agriculture into a data-driven science, enabling real-time crop monitoring, weather and soil analysis, and precision farming with satellite imagery, drones, and IoT — reducing waste, boosting yields, and ensuring sustainability.
-  </div>
-
-  <div class="carousel">
-  <div class="cards-container">
-    <div class="card">
-      <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="Data-driven science" />
-      <h3>Natural Resource Management</h3>
-      <p>Explanation: GIS technologies are used to monitor and assess natural resources such as water, forests, and mines. These systems help in mapping utilization areas, identifying optimal investment sites, and monitoring the sustainable use of resources.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Real-time monitoring" />
-      <h3>Urban and Municipal Planning</h3>
-      <p>Explanation: GIS is used in the design and implementation of urban development plans by analyzing the distribution of population, roads, and public facilities. It supports better management of population growth, traffic organization, and the planning of public services such as water and electricity.</p>
-    </div>
-    <div class="card">
-      <img src="agriculture-precision-coronavirus.png" alt="Precision agriculture" />
-      <h3>Disaster and Emergency Management</h3>
-      <p>Explanation: GIS is applied in tracking natural disasters such as earthquakes, floods, and storms. The system provides detailed hazard maps, helping emergency teams coordinate quickly and deliver aid to affected areas more efficiently..</p>
-    </div>
-    <div class="card">
-      <img src="171013536065ee9840474b2.png" alt="Informed decisions" />
-      <h3>Smart Agriculture</h3>
-      <p>Explanation: In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices in specific regions. It helps farmers improve productivity, reduce waste, and manage resources effectively.</p>
-    </div>
-
-    <!-- تكرار نفس الكروت عشان السلايد يستمر بسلاسة -->
-    <div class="card">
-      <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="Data-driven science" />
-      <h3>Natural Resource Management</h3>
-      <p>Explanation: GIS technologies are used to monitor and assess natural resources such as water, forests, and mines. These systems help in mapping utilization areas, identifying optimal investment sites, and monitoring the sustainable use of resources.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Real-time monitoring" />
-      <h3>Urban and Municipal Planning</h3>
-      <p>Explanation: GIS is used in the design and implementation of urban development plans by analyzing the distribution of population, roads, and public facilities. It supports better management of population growth, traffic organization, and the planning of public services such as water and electricity.</p>
-    </div>
-    <div class="card">
-      <img src="agriculture-precision-coronavirus.png" alt="Precision agriculture" />
-      <h3>Disaster and Emergency Management</h3>
-      <p>Explanation: GIS is applied in tracking natural disasters such as earthquakes, floods, and storms. The system provides detailed hazard maps, helping emergency teams coordinate quickly and deliver aid to affected areas more efficiently..</p>
-    </div>
-    <div class="card">
-      <img src="171013536065ee9840474b2.png" alt="Informed decisions" />
-      <h3>Smart Agriculture</h3>
-      <p>Explanation: In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices in specific regions. It helps farmers improve productivity, reduce waste, and manage resources effectively.</p>
-    </div>
-  </div>
-</div>
-
-
-
-    
-
-
-
-  <div class="gis-overlay">
-      <center>
-          <center>
-    <div>
-        <button class="cv">Download my CV</button>
-    </a>
-
-
-<div class="typewriter-container" id="typewriter">
-  <span id="typed-text"></span>
-</div>
-
-
-
-
-
-
-
-    
-</center>
-
-    <div class="rr">contact Me</div>
-    <div class="icon3">
-        <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/"><img src="linked.png"></a>
-        <a href="https://wa.me/+201027400764"><img src="whatsapp.png"></a>
-        <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png"></a>
-    </div>
-          <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const text = "See how I combine maps, code, and smart solutions";
-    const element = document.getElementById("typed-text");
-    let index = 0;
-    let started = false;
-
-    function typeWriter() {
-      if (index < text.length) {
-        element.textContent += text.charAt(index);
-        index++;
-        setTimeout(typeWriter, 60);
-      }
-    }
-
-    function startIfVisible() {
-      const rect = element.getBoundingClientRect();
-      const isVisible = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
-
-      if (isVisible && !started) {
-        started = true;
-        typeWriter();
-      }
-    }
-
-    window.addEventListener("scroll", startIfVisible);
-    window.addEventListener("load", startIfVisible);
-
-    startIfVisible();
-  });
-</script>
-
-
-</center>
-     
-
-
-<div class="gis-section2">
-  <div class="gis-overlay2">
-    <h7>Devolpers</h7>
-    <p>
-      Programmers need to be focused because you’re going to be writing, examining, and error-checking code. GIS developers need to learn fast on their feet. GIS programming skills like learning <span>Python, .NET, and C++</span> are essential. Alternatively, you could be building web applications using <span>JavaScript, HTML, and CSS</span>. There is also potential to design geospatial applications for field collection, reporting, and other GIS-related activities.
-    </p>
-  </div>
-</div>
-
-
-
-
-
-   
-
-
-
-
-
-
-        
-        
-    </article>
+  <article>
+
+    <!-- =========================================================
+         GIS applications + card carousel
+         ========================================================= -->
+    <section class="gis-section" id="gis-applications">
+      <div class="section-heading">
+        <span class="eyebrow">// applications</span>
+        <h2>Where GIS Makes the Difference</h2>
+      </div>
+
+      <div class="main-text">
+        GIS has turned agriculture into a data-driven science, enabling real-time crop monitoring, weather and
+        soil analysis, and precision farming with satellite imagery, drones, and IoT — reducing waste, boosting
+        yields, and ensuring sustainability.
+      </div>
+
+      <div class="carousel">
+        <div class="cards-container" id="cardsContainer">
+          <div class="card">
+            <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="Natural resource monitoring map">
+            <h3>Natural Resource Management</h3>
+            <p>GIS technologies are used to monitor and assess natural resources such as water, forests, and mines — mapping utilization areas, identifying optimal investment sites, and monitoring sustainable use.</p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Aerial view of a planned city grid">
+            <h3>Urban & Municipal Planning</h3>
+            <p>GIS supports urban development plans by analyzing population, roads, and public facilities — helping manage growth, traffic organization, and services like water and electricity.</p>
+          </div>
+          <div class="card">
+            <img src="agriculture-precision-coronavirus.png" alt="Emergency response map overlay">
+            <h3>Disaster & Emergency Management</h3>
+            <p>GIS is applied in tracking natural disasters such as earthquakes, floods, and storms — providing hazard maps that help emergency teams coordinate and deliver aid efficiently.</p>
+          </div>
+          <div class="card">
+            <img src="171013536065ee9840474b2.png" alt="Precision agriculture field data">
+            <h3>Smart Agriculture</h3>
+            <p>In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices for a region — improving productivity and managing resources effectively.</p>
+          </div>
+          <!-- duplicated set for a seamless infinite scroll -->
+          <div class="card" aria-hidden="true">
+            <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="">
+            <h3>Natural Resource Management</h3>
+            <p>GIS technologies are used to monitor and assess natural resources such as water, forests, and mines — mapping utilization areas, identifying optimal investment sites, and monitoring sustainable use.</p>
+          </div>
+          <div class="card" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="">
+            <h3>Urban & Municipal Planning</h3>
+            <p>GIS supports urban development plans by analyzing population, roads, and public facilities — helping manage growth, traffic organization, and services like water and electricity.</p>
+          </div>
+          <div class="card" aria-hidden="true">
+            <img src="agriculture-precision-coronavirus.png" alt="">
+            <h3>Disaster & Emergency Management</h3>
+            <p>GIS is applied in tracking natural disasters such as earthquakes, floods, and storms — providing hazard maps that help emergency teams coordinate and deliver aid efficiently.</p>
+          </div>
+          <div class="card" aria-hidden="true">
+            <img src="171013536065ee9840474b2.png" alt="">
+            <h3>Smart Agriculture</h3>
+            <p>In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices for a region — improving productivity and managing resources effectively.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           CV / typewriter / contact
+           ========================================================= -->
+      <div class="gis-overlay">
+        <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
+
+        <div class="typewriter-container" id="typewriter">
+          <span id="typed-text"></span>
+        </div>
+
+        <div class="rr">Contact Me</div>
+        <div class="icon3">
+          <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
+          <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
+          <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
+        </div>
+      </div>
+    </section>
+
+    <div class="contour-divider" aria-hidden="true"></div>
+
+    <!-- =========================================================
+         Developers section
+         ========================================================= -->
+    <section class="gis-section2" id="developers">
+      <div class="gis-overlay2">
+        <span class="eyebrow">// stack</span>
+        <h2>Developers</h2>
+        <p>
+          Programmers need to be focused because you're going to be writing, examining, and error-checking code.
+          GIS developers need to learn fast on their feet. GIS programming skills like learning
+          <span>Python, .NET, and C++</span> are essential. Alternatively, you could be building web applications
+          using <span>JavaScript, HTML, and CSS</span>. There is also potential to design geospatial applications
+          for field collection, reporting, and other GIS-related activities.
+        </p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Interactive route map
+         ========================================================= -->
+    <section class="map-section" id="map-section">
+      <div class="section-heading">
+        <span class="eyebrow">// 30.0444° N, 31.2357° E</span>
+        <h2>Find the Shortest Route</h2>
+      </div>
+      <p class="map-hint">Click a start point, then a destination, to draw the shortest route between them.</p>
+      <div class="mode-switch">
+        <button type="button" class="active" id="modeCar" onclick="setTravelMode('car')">🚗 Driving</button>
+        <button type="button" id="modeFoot" onclick="setTravelMode('foot')">🚶 Walking</button>
+      </div>
+      <div id="map"></div>
+    </section>
+
+    <!-- =========================================================
+         GIS quiz
+         ========================================================= -->
+    <section class="quiz-container" id="quiz-section">
+      <h2>🗺️ GIS Quiz</h2>
+
+      <div id="startScreen">
+        <p class="name-label">Enter your name to start:</p>
+        <div class="name-box">
+          <input type="text" id="username" placeholder="Your name">
+          <button type="button" onclick="startQuiz()">🚀 Start</button>
+        </div>
+      </div>
+
+      <div id="quiz" style="display:none;">
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <button type="button" onclick="submitAnswer()">Submit</button>
+        <p class="feedback" id="feedback"></p>
+        <button type="button" onclick="nextQuestion()" id="nextBtn" style="display:none;">Next ➡️</button>
+      </div>
+
+      <p class="result" id="result"></p>
+    </section>
+
+  </article>
 </main>
 
-<div id="viewDiv"></div>
+<!-- =========================================================
+     Chatbot widget
+     ========================================================= -->
+<button class="chatbot-btn" type="button" onclick="openDialog()" aria-label="Open chat assistant">💬</button>
+
+<div id="dialog-overlay" class="dialog-overlay">
+  <div class="dialog-box">
+    <button class="close-btn" type="button" onclick="closeDialog()" aria-label="Close chat">✖️</button>
+    <h2>أسئلني عن أي شيء</h2>
+    <input type="text" id="userQuestion" placeholder="اكتب سؤالك هنا...">
+    <button type="button" onclick="askQuestion()">إرسال</button>
+    <div id="answer" class="response"></div>
+  </div>
+</div>
 
 <footer>
-    © Asem 2025 <br>
-    All rights reserved
+  © Asem 2025 — All rights reserved
 </footer>
 
+<!-- =========================================================
+     Mobile menu toggle
+     ========================================================= -->
 <script>
-  const mySection = document.querySelector('.my');
-
-  mySection.addEventListener("touchstart", function () {
-    mySection.classList.add("zoomed");
-  });
-
-  document.addEventListener("touchstart", function (e) {
-    if (!mySection.contains(e.target)) {
-      mySection.classList.remove("zoomed");
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const rmenu = document.getElementById('rmenu');
+    if (menuToggle && rmenu) {
+      menuToggle.addEventListener('click', () => rmenu.classList.toggle('show'));
+      menuToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') rmenu.classList.toggle('show');
+      });
     }
   });
 </script>
 
-
+<!-- =========================================================
+     Hero tap-to-zoom (touch devices)
+     ========================================================= -->
 <script>
-  
-
-
-
-  <script>
-  // ===============================
-  // 1) إظهار الكروت بأنيميشن عند ظهورها
-  // ===============================
   document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.my .card');
+    const mySection = document.querySelector('.my');
+    if (!mySection) return;
 
+    mySection.addEventListener('touchstart', () => mySection.classList.add('zoomed'));
+    document.addEventListener('touchstart', (e) => {
+      if (!mySection.contains(e.target)) mySection.classList.remove('zoomed');
+    });
+  });
+</script>
+
+<!-- =========================================================
+     Card reveal-on-scroll + typewriter tagline
+     ========================================================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Reveal carousel cards as they enter the viewport
+    const cards = document.querySelectorAll('.card');
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('show');
             observer.unobserve(entry.target);
           }
         });
       }, { threshold: 0.2 });
-
-      cards.forEach(card => observer.observe(card));
+      cards.forEach((card) => observer.observe(card));
     } else {
-      const revealOnScroll = () => {
-        cards.forEach(card => {
-          const rect = card.getBoundingClientRect();
-          if (rect.top < window.innerHeight - 100) {
-            card.classList.add('show');
-          }
-        });
-      };
-      window.addEventListener('scroll', revealOnScroll);
-      revealOnScroll();
+      cards.forEach((card) => card.classList.add('show'));
     }
 
-    // ===============================
-    // 2) القائمة المنسدلة للموبايل (الهامبرجر)
-    // ===============================
-    const menuToggle = document.querySelector('.menu-toggle');
-    const rmenu = document.getElementById('rmenu');
+    // Typewriter effect for the tagline under the CV button
+    const text = 'See how I combine maps, code, and smart solutions';
+    const el = document.getElementById('typed-text');
+    let index = 0;
+    let started = false;
 
-    if (menuToggle && rmenu) {
-      menuToggle.addEventListener('click', () => {
-        rmenu.classList.toggle('show');
-      });
+    function typeWriter() {
+      if (index < text.length) {
+        el.textContent += text.charAt(index);
+        index++;
+        setTimeout(typeWriter, 60);
+      }
     }
 
-    // ===============================
-    // 3) تأثير التكبير عند اللمس في السيكشن .my
-    // ===============================
-    const mySection = document.querySelector('.my');
-    if (mySection) {
-      mySection.addEventListener("touchstart", function () {
-        mySection.classList.add("zoomed");
-      });
-
-      document.addEventListener("touchstart", function (e) {
-        if (!mySection.contains(e.target)) {
-          mySection.classList.remove("zoomed");
-        }
-      });
+    function startIfVisible() {
+      if (started || !el) return;
+      const rect = el.getBoundingClientRect();
+      const visible = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+      if (visible) {
+        started = true;
+        typeWriter();
+      }
     }
 
-    // ===============================
-    // 4) تحسين بسيط للـ horizontal scroll بالأسهم
-    // ===============================
-    const container = document.querySelector('.my .cards');
-    if (container) {
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') container.scrollBy({ left: 300, behavior: 'smooth' });
-        if (e.key === 'ArrowLeft')  container.scrollBy({ left: -300, behavior: 'smooth' });
-      });
-    }
+    window.addEventListener('scroll', startIfVisible);
+    window.addEventListener('load', startIfVisible);
+    startIfVisible();
   });
-  </script>
-
-
-
-
-
-
-
-
-    
 </script>
 
-
-
-<script>
-
-const menuToggle = document.querySelector('.menu-toggle');
-const rmenu = document.getElementById('rmenu');
-
-menuToggle.addEventListener('click', () => {
-  rmenu.classList.toggle('show');
-});
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- GIS Quiz -->
-<div class="quiz-container">
-  <h1>🗺️ GIS Quiz</h1>
-
-  <!-- إدخال اسم المستخدم -->
-  <div id="startScreen">
-    <p class="name-label">Enter your name to start:</p>
-    <div class="name-box">
-      <input type="text" id="username" placeholder="Your name">
-      <button onclick="startQuiz()">🚀 Start</button>
-    </div>
-  </div>
-
-  <div id="quiz" style="display:none;">
-    <p class="question" id="question"></p>
-    <div class="options" id="options"></div>
-    <button onclick="submitAnswer()">Submit</button>
-    <p class="feedback" id="feedback"></p>
-    <button onclick="nextQuestion()" id="nextBtn" style="display:none;">Next ➡️</button>
-  </div>
-
-  <p class="result" id="result"></p>
-</div>
-
-<style>
-  body {
-    background: #000; /* خلفية سودة */
-    font-family: Arial, sans-serif;
-    color: #fff;
-  }
-  .quiz-container {
-    width: 100%;
-    max-width: 700px;
-    background: #111;
-    margin: 40px auto;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(255,255,255,0.1);
-  }
-  .quiz-container h1 {
-    text-align: center;
-    color: #2E86AB;
-  }
-  /* ✅ تصميم شاشة الاسم */
-  #startScreen {
-    text-align: center;
-    margin: 30px 0;
-  }
-  .name-label {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  .name-box {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  #username {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    width: 60%;
-    background: #222;
-    color: #fff;
-    outline: none;
-    transition: 0.3s;
-  }
-  #username:focus {
-    background: #333;
-    box-shadow: 0 0 8px #2E86AB;
-  }
-  .question {
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-  .options label {
-    display: block;
-    margin-bottom: 10px;
-    background: #222;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .options label:hover {
-    background: #2E86AB;
-    color: #fff;
-  }
-  button {
-    padding: 12px 20px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #2E86AB;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  button:hover {
-    background: #1B4F72;
-  }
-  .feedback {
-    margin-top: 15px;
-    font-weight: bold;
-    font-size: 18px;
-  }
-  .result {
-    text-align: center;
-    font-size: 22px;
-    margin-top: 20px;
-    font-weight: bold;
-  }
-</style>
-
+<!-- =========================================================
+     GIS quiz logic
+     ========================================================= -->
 <script>
   const quizData = [
-    { question: "Which tool in ArcGIS is used to create buffer zones?", options: ["Clip", "Buffer", "Merge", "Dissolve"], correct: "Buffer" },
-    { question: "QGIS is an example of:", options: ["Open-source GIS software", "Commercial GIS software", "Remote Sensing satellite", "Database tool"], correct: "Open-source GIS software" },
-    { question: "Which software is widely used for satellite image classification?", options: ["ERDAS Imagine", "AutoCAD", "MS Excel", "Photoshop"], correct: "ERDAS Imagine" },
-    { question: "Which coordinate system is most suitable for global datasets?", options: ["WGS84", "UTM", "Lambert Conformal Conic", "NAD83"], correct: "WGS84" },
-    { question: "The 'Clip' tool in GIS is mainly used for:", options: ["Cutting features using a boundary", "Creating buffer zones", "Calculating distance", "Merging layers"], correct: "Cutting features using a boundary" },
-    { question: "Raster data represents:", options: ["Points, lines, polygons", "Continuous surfaces", "Tabular data", "Vector networks"], correct: "Continuous surfaces" }
+    { question: 'Which tool in ArcGIS is used to create buffer zones?', options: ['Clip', 'Buffer', 'Merge', 'Dissolve'], correct: 'Buffer' },
+    { question: 'QGIS is an example of:', options: ['Open-source GIS software', 'Commercial GIS software', 'Remote Sensing satellite', 'Database tool'], correct: 'Open-source GIS software' },
+    { question: 'Which software is widely used for satellite image classification?', options: ['ERDAS Imagine', 'AutoCAD', 'MS Excel', 'Photoshop'], correct: 'ERDAS Imagine' },
+    { question: 'Which coordinate system is most suitable for global datasets?', options: ['WGS84', 'UTM', 'Lambert Conformal Conic', 'NAD83'], correct: 'WGS84' },
+    { question: "The 'Clip' tool in GIS is mainly used for:", options: ['Cutting features using a boundary', 'Creating buffer zones', 'Calculating distance', 'Merging layers'], correct: 'Cutting features using a boundary' },
+    { question: 'Raster data represents:', options: ['Points, lines, polygons', 'Continuous surfaces', 'Tabular data', 'Vector networks'], correct: 'Continuous surfaces' }
   ];
 
-  let currentQuestion = 0, score = 0, playerName = "";
+  let currentQuestion = 0;
+  let score = 0;
+  let playerName = '';
+
+  // Replace with your own deployed Google Apps Script Web App URL.
+  const QUIZ_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec';
 
   function startQuiz() {
-    let nameInput = document.getElementById("username").value.trim();
-    if (nameInput === "") {
-      alert("Please enter your name!");
+    const nameInput = document.getElementById('username').value.trim();
+    if (nameInput === '') {
+      alert('Please enter your name!');
       return;
     }
     playerName = nameInput;
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('quiz').style.display = 'block';
+    currentQuestion = 0;
+    score = 0;
     loadQuestion();
   }
 
   function loadQuestion() {
-    document.getElementById("feedback").innerHTML = "";
-    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById('feedback').innerHTML = '';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('nextBtn').style.display = 'none';
 
-    let q = quizData[currentQuestion];
-    document.getElementById("question").innerText = q.question;
+    const q = quizData[currentQuestion];
+    document.getElementById('question').innerText = q.question;
 
-    let optionsHtml = "";
-    q.options.forEach(opt => {
-      optionsHtml += `<label><input type="radio" name="option" value="${opt}"> ${opt}</label>`;
+    let optionsHtml = '';
+    q.options.forEach((opt, i) => {
+      optionsHtml += `<label><input type="radio" name="option" value="${opt}" id="opt${i}"> ${opt}</label>`;
     });
-    document.getElementById("options").innerHTML = optionsHtml;
+    document.getElementById('options').innerHTML = optionsHtml;
   }
 
   function submitAnswer() {
-    let selected = document.querySelector('input[name="option"]:checked');
+    const selected = document.querySelector('input[name="option"]:checked');
     if (!selected) {
-      alert("Please select an option!");
+      alert('Please select an option!');
       return;
     }
 
-    let answer = selected.value, correct = quizData[currentQuestion].correct;
-    let feedback = document.getElementById("feedback");
+    const answer = selected.value;
+    const correct = quizData[currentQuestion].correct;
+    const feedback = document.getElementById('feedback');
 
     if (answer === correct) {
-      feedback.innerHTML = "✅ Correct!";
-      feedback.style.color = "lightgreen";
+      feedback.innerHTML = '✅ Correct!';
+      feedback.className = 'feedback correct';
       score++;
     } else {
       feedback.innerHTML = `❌ Wrong! Correct answer: ${correct}`;
-      feedback.style.color = "red";
+      feedback.className = 'feedback wrong';
     }
-    document.getElementById("nextBtn").style.display = "inline-block";
+    document.getElementById('nextBtn').style.display = 'inline-block';
   }
 
   function nextQuestion() {
     currentQuestion++;
-    if (currentQuestion < quizData.length) loadQuestion();
-    else showResult();
+    if (currentQuestion < quizData.length) {
+      loadQuestion();
+    } else {
+      showResult();
+    }
   }
 
   function showResult() {
-    document.getElementById("quiz").style.display = "none";
-    let resultText = "";
-    if (score <= 2) resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌱 Beginner`;
-    else if (score <= 4) resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌍 Intermediate`;
-    else resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`;
+    document.getElementById('quiz').style.display = 'none';
+    let resultText;
+    let level;
 
-    document.getElementById("result").innerText = resultText;
+    if (score <= 2) { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌱 Beginner`; level = 'Beginner'; }
+    else if (score <= 4) { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌍 Intermediate`; level = 'Intermediate'; }
+    else { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`; level = 'GIS Expert'; }
 
-    // ✅ إرسال البيانات لجوجل شيت
-    sendToSheet();
+    document.getElementById('result').innerText = resultText;
+    sendToSheet(level);
   }
 
-  // دالة إرسال البيانات لجوجل شيت
-  function sendToSheet() {
-    let level = "";
-    if (score <= 2) level = "Beginner";
-    else if (score <= 4) level = "Intermediate";
-    else level = "GIS Expert";
-
-    fetch("https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec", {
-      method: "POST",
+  function sendToSheet(level) {
+    fetch(QUIZ_SHEET_ENDPOINT, {
+      method: 'POST',
       body: JSON.stringify({ name: playerName, score: score, level: level }),
-      headers: { "Content-Type": "application/json" }
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(res => res.json())
-    .then(data => console.log("تم الإرسال:", data))
-    .catch(err => console.error("خطأ في الإرسال:", err));
+      .then((res) => res.json())
+      .then((data) => console.log('تم الإرسال:', data))
+      .catch((err) => console.error('خطأ في الإرسال:', err));
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Chatbot Button (Floating) -->
-<button class="chatbot-btn" onclick="openDialog()">💬</button>
-
-<!-- Chatbot Dialog Overlay -->
-<div id="dialog-overlay" class="dialog-overlay">
-  <div class="dialog-box">
-    <h2>أسئلني عن أي شيء</h2>
-    <input type="text" id="userQuestion" placeholder="اكتب سؤالك هنا..." />
-    <button onclick="askQuestion()">إرسال</button>
-    <div id="answer" class="response"></div>
-    <button class="close-btn" onclick="closeDialog()">✖️</button>
-  </div>
-</div>
-
-<style>
-  /* Chatbot button (floating) */
-  .chatbot-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px;
-    background: #2E86AB;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: 0.3s ease-in-out;
-  }
-
-  .chatbot-btn:hover {
-    background: #1B4F72;
-    transform: scale(1.1);
-  }
-
-  /* Dialog overlay styles */
-  .dialog-overlay {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 270px;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    animation: slideIn 0.5s ease-out;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateY(50%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  .dialog-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;
-    text-align: center;
-  }
-
-  .dialog-box h2 {
-    color: #2E86AB;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  .dialog-box input {
-    padding: 8px;
-    width: 90%;
-    margin-bottom: 10px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-
-  .dialog-box button {
-    padding: 8px 12px;
-    background: #2E86AB;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 100%;
-  }
-
-  .dialog-box button:hover {
-    background: #1B4F72;
-  }
-
-  .response {
-    margin-top: 10px;
-    font-size: 14px;
-    padding: 8px;
-    background: #222;
-    color: #fff;
-    border-radius: 8px;
-    display: none;
-  }
-
-  .close-btn {
-    background: transparent;
-    color: #2E86AB;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-  }
-</style>
-
+<!-- =========================================================
+     Chatbot widget logic
+     NOTE: calling the OpenAI API directly from client-side JS exposes
+     your API key to anyone who views the page source. Route this
+     through your own backend endpoint before putting it live.
+     ========================================================= -->
 <script>
-  async function askQuestion() {
-    const question = document.getElementById('userQuestion').value.trim();
-    const chatbox = document.getElementById('answer');
-
-    if (!question) {
-      alert("من فضلك، أدخل سؤالك!");
-      return;
-    }
-
-    chatbox.innerHTML = `<p><strong>You:</strong> ${question}</p>`;
-
-    // إرسال السؤال إلى OpenAI API
-    const answer = await getAIResponse(question);
-
-    chatbox.innerHTML += `<p><strong>Bot:</strong> ${answer}</p>`;
-    document.getElementById('userQuestion').value = ''; // مسح المدخل
-  }
-
-  async function getAIResponse(question) {
-    const apiKey = 'YOUR_OPENAI_API_KEY'; // استبدلها بمفتاح API الخاص بك
-
-    const response = await fetch('https://api.openai.com/v1/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'text-davinci-003', // GPT-3
-        prompt: question,
-        max_tokens: 150,
-        temperature: 0.7
-      })
-    });
-
-    const data = await response.json();
-    return data.choices[0].text.trim();
-  }
-
-  // فتح مربع الحوار
   function openDialog() {
     document.getElementById('dialog-overlay').style.display = 'flex';
   }
 
-  // إغلاق مربع الحوار
   function closeDialog() {
     document.getElementById('dialog-overlay').style.display = 'none';
   }
-</script>
 
+  async function askQuestion() {
+    const input = document.getElementById('userQuestion');
+    const question = input.value.trim();
+    const chatbox = document.getElementById('answer');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    function startQuiz22() {
-    let nameInput = document.getElementById("username").value.trim();
-    if (nameInput === "") {
-      alert("Please enter your name!");
+    if (!question) {
+      alert('من فضلك، أدخل سؤالك!');
       return;
     }
-    playerName = nameInput;
 
-    // ✅ إرسال الاسم فوراً للشيت
-    fetch("https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec", {
-      method: "POST",
-      body: JSON.stringify({ name: playerName }),
-      headers: { "Content-Type": "application/json" }
-    })
-    .then(res => res.json())
-    .then(data => console.log("الاسم تم إرساله:", data))
-    .catch(err => console.error("خطأ في إرسال الاسم:", err));
+    chatbox.style.display = 'block';
+    chatbox.innerHTML = `<p><strong>You:</strong> ${question}</p>`;
 
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
-    loadQuestion();
-}
+    const answer = await getAIResponse(question);
+    chatbox.innerHTML += `<p><strong>Bot:</strong> ${answer}</p>`;
+    input.value = '';
+  }
+
+  async function getAIResponse(question) {
+    const apiKey = 'YOUR_OPENAI_API_KEY'; // move this call to a backend before deploying
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: question }],
+          max_tokens: 150,
+          temperature: 0.7
+        })
+      });
+      const data = await response.json();
+      return data.choices[0].message.content.trim();
+    } catch (err) {
+      console.error(err);
+      return 'حدث خطأ أثناء الاتصال بالمساعد.';
+    }
+  }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- =========================================================
+     Interactive route map (Leaflet + OSRM)
+     ========================================================= -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-
 <script>
-// ===============================
-// 🌍 Initialize Map
-// ===============================
-const map = L.map("map").setView([30.0444, 31.2357], 12);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap"
-}).addTo(map);
+  const map = L.map('map').setView([30.0444, 31.2357], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
 
-// ===============================
-// 🗺️ Ultimate Shortest Path Between Two Points
-// ===============================
-let routingControl = null;
-let startMarker = null;
-let travelMode = "car"; // car | foot
+  let routingControl = null;
+  let startMarker = null;
+  let travelMode = 'car'; // 'car' | 'foot'
 
-// Icons
-const startIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png",
-  iconSize: [30, 30]
-});
-const endIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize: [30, 30]
-});
+  const startIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', iconSize: [30, 30] });
+  const endIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize: [30, 30] });
 
-// ===============================
-// Click on Map to Select Points
-// ===============================
-map.on("click", function (e) {
-  const clickedPoint = e.latlng;
+  map.on('click', (e) => {
+    const clickedPoint = e.latlng;
 
-  // First click → Start
-  if (!startMarker) {
-    startMarker = L.marker(clickedPoint, { icon: startIcon })
-      .addTo(map)
-      .bindPopup("📍 Start Point")
-      .openPopup();
-    return;
-  }
-
-  // Second click → Destination
-  if (routingControl) {
-    map.removeControl(routingControl);
-  }
-
-  routingControl = L.Routing.control({
-    waypoints: [
-      startMarker.getLatLng(),
-      clickedPoint
-    ],
-    router: L.Routing.osrmv1({
-      serviceUrl:
-        travelMode === "foot"
-          ? "https://router.project-osrm.org/route/v1/foot"
-          : "https://router.project-osrm.org/route/v1"
-    }),
-    addWaypoints: false,
-    draggableWaypoints: false,
-    routeWhileDragging: false,
-    show: false,
-    lineOptions: {
-      styles: [
-        { color: "#000", weight: 8, opacity: 0.3 },
-        { color: "#00bfff", weight: 5 }
-      ]
+    if (!startMarker) {
+      startMarker = L.marker(clickedPoint, { icon: startIcon }).addTo(map).bindPopup('📍 Start Point').openPopup();
+      return;
     }
-  })
-    .on("routesfound", function (e) {
-      const route = e.routes[0];
-      const distance = (route.summary.totalDistance / 1000).toFixed(2);
-      const time = Math.round(route.summary.totalTime / 60);
 
-      L.marker(clickedPoint, { icon: endIcon })
-        .addTo(map)
-        .bindPopup(
-          `🏁 Destination<br>📏 Distance: ${distance} km<br>⏱️ Time: ${time} min`
-        )
-        .openPopup();
+    if (routingControl) map.removeControl(routingControl);
+
+    routingControl = L.Routing.control({
+      waypoints: [startMarker.getLatLng(), clickedPoint],
+      router: L.Routing.osrmv1({
+        serviceUrl: travelMode === 'foot'
+          ? 'https://router.project-osrm.org/route/v1/foot'
+          : 'https://router.project-osrm.org/route/v1'
+      }),
+      addWaypoints: false,
+      draggableWaypoints: false,
+      routeWhileDragging: false,
+      show: false,
+      lineOptions: {
+        styles: [
+          { color: '#000', weight: 8, opacity: 0.25 },
+          { color: '#35d6c4', weight: 5 }
+        ]
+      }
     })
-    .addTo(map);
+      .on('routesfound', (e) => {
+        const route = e.routes[0];
+        const distance = (route.summary.totalDistance / 1000).toFixed(2);
+        const time = Math.round(route.summary.totalTime / 60);
 
-  // Reset for next route
-  startMarker = null;
-});
+        L.marker(clickedPoint, { icon: endIcon })
+          .addTo(map)
+          .bindPopup(`🏁 Destination<br>📏 Distance: ${distance} km<br>⏱️ Time: ${time} min`)
+          .openPopup();
+      })
+      .addTo(map);
 
-// ===============================
-// Switch Travel Mode
-// ===============================
-function setTravelMode(mode) {
-  travelMode = mode; // "car" or "foot"
-}
+    startMarker = null;
+  });
+
+  function setTravelMode(mode) {
+    travelMode = mode;
+    document.getElementById('modeCar').classList.toggle('active', mode === 'car');
+    document.getElementById('modeFoot').classList.toggle('active', mode === 'foot');
+  }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-      
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
