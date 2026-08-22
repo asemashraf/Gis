@@ -1028,7 +1028,8 @@ input:focus-visible {
 
   .menu ul li:hover .sup-contant { max-height: none; }
 
-  .frame { height: 60vh; }
+  .frame { height: auto; overflow: visible; }
+  .my { min-height: 82vh; padding: 46px 16px 34px; }
 
   .overlay-text h1 { font-size: 2.1em; }
   .tagline { font-size: 0.9em; }
