@@ -239,13 +239,20 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   align-items: center;
   width: 100%;
   min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100svh - var(--nav-h));
   background: linear-gradient(180deg, rgba(10, 18, 28, 0.35) 0%, rgba(10, 18, 28, 0.85) 100%),
               url("cairo.png") center top / cover no-repeat;
-  background-attachment: fixed;
   transition: transform 2.3s ease;
   text-align: center;
   padding: 40px 20px;
   position: relative;
+}
+
+/* background-attachment: fixed is unreliable on mobile browsers
+   (can make the whole background disappear or the layout jump) —
+   only use it on larger screens where it's safe. */
+@media (min-width: 769px) {
+  .my { background-attachment: fixed; }
 }
 
 .my:hover { transform: scale(1.03); }
@@ -281,10 +288,13 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   padding: 70px 20px 60px;
   color: var(--ink);
   box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+  .gis-section { background-attachment: fixed; }
 }
 
 .section-heading { text-align: center; margin-bottom: 34px; }
@@ -652,8 +662,11 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .dialog-overlay {
   position: fixed;
   bottom: 90px;
-  right: 24px;
-  width: 300px;
+  right: 20px;
+  left: 20px;
+  width: auto;
+  max-width: 300px;
+  margin-left: auto; /* keeps it pinned to the right on wide screens */
   display: none;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
