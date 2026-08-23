@@ -290,22 +290,7 @@
           <div class="tool-output" id="utmOutput"></div>
         </div>
 
-        <!-- Haversine distance calculator -->
-        <div class="tool-card">
-          <h3>📏 Distance Calculator</h3>
-          <p class="tool-desc">Great-circle distance between two points (Haversine)</p>
-
-          <div class="tool-row two-col">
-            <input type="text" id="distLat1" placeholder="Lat 1">
-            <input type="text" id="distLon1" placeholder="Lon 1">
-          </div>
-          <div class="tool-row two-col">
-            <input type="text" id="distLat2" placeholder="Lat 2">
-            <input type="text" id="distLon2" placeholder="Lon 2">
-          </div>
-          <button type="button" onclick="calcDistance()">Calculate</button>
-          <div class="tool-output" id="distOutput"></div>
-        </div>
+        
 
       </div>
     </section>
@@ -338,44 +323,6 @@
   </article>
 </main>
 
-<!-- =========================================================
-     Chatbot / "ask me anything" widget
-     ========================================================= -->
-<button class="chatbot-btn" type="button" onclick="openDialog()" aria-label="Open chat assistant">💬</button>
-
-<div id="dialog-overlay" class="dialog-overlay">
-  <div class="dialog-box">
-    <button class="close-btn" type="button" onclick="closeDialog()" aria-label="Close chat">✖️</button>
-    <div class="chat-tabs">
-      <button type="button" class="chat-tab active" id="tabAI" onclick="switchChatTab('ai')">🤖 اسأل الذكاء الاصطناعي</button>
-      <button type="button" class="chat-tab" id="tabHuman" onclick="switchChatTab('human')">🧑‍💻 كلّم عاصم</button>
-    </div>
-
-    <!-- AI mode: every bubble here is explicitly labelled with a sender
-         name (🤖 المساعد الذكي) so a visitor can never mistake the
-         automatic reply for a message from Asem himself. -->
-    <div id="paneAI" class="chat-pane">
-      <div class="chat-log" id="aiLog"></div>
-      <textarea id="aiInput" placeholder="اسأل عن أي حاجة في الـ GIS أو استفسر عن خبرة عاصم..." rows="2"></textarea>
-      <button type="button" id="aiSendBtn" onclick="askAI()">إرسال للذكاء الاصطناعي</button>
-      <p class="chat-note">🤖 دي إجابة تلقائية من مساعد ذكاء اصطناعي، مش من عاصم شخصيًا. لو محتاج رد حقيقي منه، بدّل لتاب "كلّم عاصم".</p>
-    </div>
-
-    <!-- Human live-chat mode: bubbles are labelled with the visitor's own
-         name (not "you"/"user") so it's clear this is a real message
-         being sent to Asem, and any reply here is explicitly from
-         "عاصم" — never conflated with the AI tab above. -->
-    <div id="paneHuman" class="chat-pane" style="display:none;">
-      <div class="chat-log" id="humanLog"></div>
-      <div class="tool-row">
-        <input type="text" id="humanName" placeholder="اسمك (يظهر لعاصم بس)">
-      </div>
-      <textarea id="humanInput" placeholder="اكتب رسالتك لعاصم هنا..." rows="2"></textarea>
-      <button type="button" id="humanSendBtn" onclick="sendHumanMessage()">إرسال</button>
-      <p class="chat-note" id="humanStatus">⚠️ الشات اللايف لسه مش متوصل بسيرفر — الرسالة دلوقتي بتتحفظ في المتصفح بس ومش بتوصل لعاصم فعليًا. لازم تفعيل قاعدة بيانات (زي Firebase) عشان الرسائل توصله لايف.</p>
-    </div>
-  </div>
-</div>
 
 <footer>
   © Asem 2025 — All rights reserved
