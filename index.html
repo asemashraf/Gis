@@ -65,6 +65,7 @@
         <div class="sup-drop">
           <ul>
             <li><a href="#map-section">// Shortest route</a></li>
+            <li><a href="#tools-section">// GIS tools</a></li>
             <li><a href="#quiz-section">// GIS quiz</a></li>
           </ul>
         </div>
@@ -88,6 +89,8 @@
       <!-- rotating globe: pure CSS/CSS-animation, no JS or WebGL needed -->
       <div class="globe-wrap" aria-hidden="true">
         <div class="globe-ring"></div>
+        <div class="globe-ring globe-ring-2"></div>
+        <div class="globe-sat"></div>
         <div class="globe">
           <div class="globe-texture"></div>
           <div class="globe-shading"></div>
@@ -216,6 +219,85 @@
     </section>
 
     <!-- =========================================================
+         Online GIS mini-tools
+         ========================================================= -->
+    <section class="tools-section" id="tools-section">
+      <div class="section-heading">
+        <span class="eyebrow">// online tools</span>
+        <h2>GIS Mini-Tools</h2>
+      </div>
+      <p class="map-hint">Small geospatial utilities, calculated live in your browser — no server round-trip.</p>
+
+      <div class="tools-grid">
+
+        <!-- DD <-> DMS coordinate converter -->
+        <div class="tool-card">
+          <h3>📍 Coordinate Converter</h3>
+          <p class="tool-desc">Decimal Degrees ⇄ Degrees/Minutes/Seconds</p>
+
+          <div class="tool-row">
+            <label for="ddLat">Latitude (DD)</label>
+            <input type="text" id="ddLat" placeholder="e.g. 30.0444">
+          </div>
+          <div class="tool-row">
+            <label for="ddLon">Longitude (DD)</label>
+            <input type="text" id="ddLon" placeholder="e.g. 31.2357">
+          </div>
+          <button type="button" onclick="convertDDtoDMS()">Convert to DMS</button>
+          <div class="tool-output" id="dmsOutput"></div>
+
+          <div class="tool-divider"></div>
+
+          <div class="tool-row">
+            <label for="dmsLat">Latitude (DMS)</label>
+            <input type="text" id="dmsLat" placeholder="e.g. 30°02'39.8&quot;N">
+          </div>
+          <div class="tool-row">
+            <label for="dmsLon">Longitude (DMS)</label>
+            <input type="text" id="dmsLon" placeholder="e.g. 31°14'08.5&quot;E">
+          </div>
+          <button type="button" onclick="convertDMStoDD()">Convert to DD</button>
+          <div class="tool-output" id="ddOutput"></div>
+        </div>
+
+        <!-- UTM zone finder -->
+        <div class="tool-card">
+          <h3>🛰️ UTM Zone Finder</h3>
+          <p class="tool-desc">Find the UTM zone and EPSG code for any lat/lon</p>
+
+          <div class="tool-row">
+            <label for="utmLat">Latitude</label>
+            <input type="text" id="utmLat" placeholder="e.g. 30.0444">
+          </div>
+          <div class="tool-row">
+            <label for="utmLon">Longitude</label>
+            <input type="text" id="utmLon" placeholder="e.g. 31.2357">
+          </div>
+          <button type="button" onclick="findUTMZone()">Find Zone</button>
+          <div class="tool-output" id="utmOutput"></div>
+        </div>
+
+        <!-- Haversine distance calculator -->
+        <div class="tool-card">
+          <h3>📏 Distance Calculator</h3>
+          <p class="tool-desc">Great-circle distance between two points (Haversine)</p>
+
+          <div class="tool-row two-col">
+            <input type="text" id="distLat1" placeholder="Lat 1">
+            <input type="text" id="distLon1" placeholder="Lon 1">
+          </div>
+          <div class="tool-row two-col">
+            <input type="text" id="distLat2" placeholder="Lat 2">
+            <input type="text" id="distLon2" placeholder="Lon 2">
+          </div>
+          <button type="button" onclick="calcDistance()">Calculate</button>
+          <div class="tool-output" id="distOutput"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
          GIS quiz
          ========================================================= -->
     <section class="quiz-container" id="quiz-section">
@@ -245,25 +327,35 @@
 
 <!-- =========================================================
      Chatbot / "ask me anything" widget
-     Wired up and ready — no setup needed on your side.
-     It sends straight to your inbox (asemashraf133@gmail.com)
-     via formsubmit.co. The very first question anyone sends
-     will make formsubmit email you ONE confirmation link —
-     click "Activate Form" in that one email, one time only,
-     and every question after that lands in your inbox normally,
-     ready to reply to like any other email.
      ========================================================= -->
 <button class="chatbot-btn" type="button" onclick="openDialog()" aria-label="Open chat assistant">💬</button>
 
 <div id="dialog-overlay" class="dialog-overlay">
   <div class="dialog-box">
     <button class="close-btn" type="button" onclick="closeDialog()" aria-label="Close chat">✖️</button>
-    <h2>أسألني عن أي شيء</h2>
-    <input type="text" id="askName" placeholder="اسمك">
-    <input type="email" id="askEmail" placeholder="إيميلك (عشان أرد عليك)">
-    <textarea id="userQuestion" placeholder="اكتب سؤالك هنا..." rows="3"></textarea>
-    <button type="button" id="askSendBtn" onclick="askQuestion()">إرسال</button>
-    <div id="answer" class="response"></div>
+    <div class="chat-tabs">
+      <button type="button" class="chat-tab active" id="tabAI" onclick="switchChatTab('ai')">🤖 اسأل الذكاء الاصطناعي</button>
+      <button type="button" class="chat-tab" id="tabHuman" onclick="switchChatTab('human')">🧑‍💻 كلّم عاصم</button>
+    </div>
+
+    <!-- AI mode -->
+    <div id="paneAI" class="chat-pane">
+      <div class="chat-log" id="aiLog"></div>
+      <textarea id="aiInput" placeholder="اسأل عن أي حاجة في الـ GIS أو استفسر عن خبرة عاصم..." rows="2"></textarea>
+      <button type="button" id="aiSendBtn" onclick="askAI()">إرسال للذكاء الاصطناعي</button>
+      <p class="chat-note">إجابة تلقائية فورية — لو محتاج رد شخصي من عاصم نفسه، بدّل لتاب "كلّم عاصم".</p>
+    </div>
+
+    <!-- Human live-chat mode -->
+    <div id="paneHuman" class="chat-pane" style="display:none;">
+      <div class="chat-log" id="humanLog"></div>
+      <div class="tool-row">
+        <input type="text" id="humanName" placeholder="اسمك (يظهر لعاصم بس)">
+      </div>
+      <textarea id="humanInput" placeholder="اكتب رسالتك لعاصم هنا..." rows="2"></textarea>
+      <button type="button" id="humanSendBtn" onclick="sendHumanMessage()">إرسال</button>
+      <p class="chat-note" id="humanStatus">هتوصل الرسالة لعاصم مباشرة، وهيردّ عليك هنا لايف — المحادثة دي خاصة بيك انت بس.</p>
+    </div>
   </div>
 </div>
 
@@ -288,12 +380,17 @@
 </script>
 
 <!-- =========================================================
-     Hero tap-to-zoom (touch devices)
+     Hero tap-to-zoom (touch devices) — desktop/hover-capable only.
+     On touch screens this used to fire on every tap anywhere on
+     the page and toggle the hero zoom, which is also what was
+     quietly keeping :hover-based pause rules "stuck" elsewhere
+     on the page (see the pointer:fine guards in the CSS).
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const mySection = document.querySelector('.my');
     if (!mySection) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     mySection.addEventListener('touchstart', () => mySection.classList.add('zoomed'));
     document.addEventListener('touchstart', (e) => {
@@ -303,25 +400,19 @@
 </script>
 
 <!-- =========================================================
-     Card reveal-on-scroll + typewriter tagline
+     Card reveal + typewriter tagline
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Reveal carousel cards as they enter the viewport
+    // Reveal carousel cards. On mobile, waiting on scroll-intersection
+    // was leaving mid-carousel cards stuck at opacity:0 forever because
+    // the carousel keeps sliding horizontally while the card is only
+    // ever briefly, partially on-screen — so we just fade everything
+    // in shortly after load instead of gating it on IntersectionObserver.
     const cards = document.querySelectorAll('.card');
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.2 });
-      cards.forEach((card) => observer.observe(card));
-    } else {
-      cards.forEach((card) => card.classList.add('show'));
-    }
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('show'), 120 + i * 60);
+    });
 
     // Typewriter effect for the tagline under the CV button
     const text = 'See how I combine maps, code, and smart solutions';
@@ -340,10 +431,6 @@
     function startIfVisible() {
       if (started || !el) return;
       const rect = el.getBoundingClientRect();
-      // Was requiring the whole element inside the viewport — on phones
-      // (shorter viewport, address bar chrome) that box is rarely ever
-      // fully on-screen, so the typing effect could sit stuck at 0
-      // characters forever. Now it starts as soon as any part is visible.
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const visible = rect.top < viewportHeight && rect.bottom > 0;
       if (visible) {
@@ -355,6 +442,16 @@
     window.addEventListener('scroll', startIfVisible);
     window.addEventListener('load', startIfVisible);
     startIfVisible();
+  });
+</script>
+
+<!-- =========================================================
+     Custom satellite-reticle cursor (desktop / mouse only)
+     ========================================================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.documentElement.classList.add('custom-cursor');
   });
 </script>
 
@@ -375,7 +472,6 @@
   let score = 0;
   let playerName = '';
 
-  // Replace with your own deployed Google Apps Script Web App URL.
   const QUIZ_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec';
 
   function startQuiz() {
@@ -464,69 +560,155 @@
 </script>
 
 <!-- =========================================================
-     "Ask me anything" widget — real submission logic
-     Sends straight to asemashraf133@gmail.com via formsubmit.co.
-     Nothing to deploy, no account, no code to paste anywhere —
-     just remember: the FIRST question ever sent triggers one
-     one-time confirmation email to that inbox; open it and
-     click "Activate Form" once, and it's live for good after that.
+     GIS mini-tools logic (coordinate converter / UTM / distance)
      ========================================================= -->
 <script>
-  const CONTACT_ENDPOINT = 'https://formsubmit.co/ajax/asemashraf133@gmail.com';
+  function toRad(deg) { return deg * Math.PI / 180; }
 
+  function ddToDms(deg, isLat) {
+    const dir = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
+    const abs = Math.abs(deg);
+    const d = Math.floor(abs);
+    const minFloat = (abs - d) * 60;
+    const m = Math.floor(minFloat);
+    const s = ((minFloat - m) * 60).toFixed(1);
+    return `${d}°${String(m).padStart(2, '0')}'${s}"${dir}`;
+  }
+
+  function convertDDtoDMS() {
+    const lat = parseFloat(document.getElementById('ddLat').value);
+    const lon = parseFloat(document.getElementById('ddLon').value);
+    const out = document.getElementById('dmsOutput');
+    if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+      out.textContent = '⚠️ من فضلك ادخل إحداثيات صحيحة (Lat -90..90 / Lon -180..180)';
+      return;
+    }
+    out.innerHTML = `<strong>${ddToDms(lat, true)}</strong>, <strong>${ddToDms(lon, false)}</strong>`;
+  }
+
+  function convertDMStoDD() {
+    const latStr = document.getElementById('dmsLat').value.trim();
+    const lonStr = document.getElementById('dmsLon').value.trim();
+    const out = document.getElementById('ddOutput');
+    const re = /(\d+)[°\s]+(\d+)['\s]+([\d.]+)["\s]*([NSEW])/i;
+    const latMatch = latStr.match(re);
+    const lonMatch = lonStr.match(re);
+    if (!latMatch || !lonMatch) {
+      out.textContent = '⚠️ الصيغة المطلوبة مثال: 30°02\'39.8"N';
+      return;
+    }
+    const parseOne = (m) => {
+      let dd = parseInt(m[1], 10) + parseInt(m[2], 10) / 60 + parseFloat(m[3]) / 3600;
+      if (/[SW]/i.test(m[4])) dd *= -1;
+      return dd;
+    };
+    const lat = parseOne(latMatch).toFixed(6);
+    const lon = parseOne(lonMatch).toFixed(6);
+    out.innerHTML = `<strong>Lat: ${lat}</strong>, <strong>Lon: ${lon}</strong>`;
+  }
+
+  function findUTMZone() {
+    const lat = parseFloat(document.getElementById('utmLat').value);
+    const lon = parseFloat(document.getElementById('utmLon').value);
+    const out = document.getElementById('utmOutput');
+    if (isNaN(lat) || isNaN(lon) || lat < -80 || lat > 84 || lon < -180 || lon > 180) {
+      out.textContent = '⚠️ من فضلك ادخل إحداثيات صحيحة (UTM يغطي Lat -80..84)';
+      return;
+    }
+    const zone = Math.floor((lon + 180) / 6) + 1;
+    const hemisphere = lat >= 0 ? 'North' : 'South';
+    const epsg = lat >= 0 ? 32600 + zone : 32700 + zone;
+    out.innerHTML = `<strong>Zone ${zone}${lat >= 0 ? 'N' : 'S'}</strong> — ${hemisphere} hemisphere<br>EPSG:${epsg}`;
+  }
+
+  function calcDistance() {
+    const lat1 = parseFloat(document.getElementById('distLat1').value);
+    const lon1 = parseFloat(document.getElementById('distLon1').value);
+    const lat2 = parseFloat(document.getElementById('distLat2').value);
+    const lon2 = parseFloat(document.getElementById('distLon2').value);
+    const out = document.getElementById('distOutput');
+    if ([lat1, lon1, lat2, lon2].some((v) => isNaN(v))) {
+      out.textContent = '⚠️ من فضلك ادخل الإحداثيات الأربعة';
+      return;
+    }
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const km = (R * c).toFixed(2);
+    out.innerHTML = `<strong>${km} km</strong> (${(km * 0.621371).toFixed(2)} miles)`;
+  }
+</script>
+
+<!-- =========================================================
+     "Ask me anything" widget — AI tab (placeholder logic) +
+     Human live-chat tab (placeholder logic).
+     See the accompanying setup notes for what needs to be wired
+     up server-side before this is truly live.
+     ========================================================= -->
+<script>
   function openDialog() {
     document.getElementById('dialog-overlay').style.display = 'flex';
   }
-
   function closeDialog() {
     document.getElementById('dialog-overlay').style.display = 'none';
   }
 
-  async function askQuestion() {
-    const nameEl = document.getElementById('askName');
-    const emailEl = document.getElementById('askEmail');
-    const input = document.getElementById('userQuestion');
-    const chatbox = document.getElementById('answer');
-    const sendBtn = document.getElementById('askSendBtn');
+  function switchChatTab(tab) {
+    document.getElementById('tabAI').classList.toggle('active', tab === 'ai');
+    document.getElementById('tabHuman').classList.toggle('active', tab === 'human');
+    document.getElementById('paneAI').style.display = tab === 'ai' ? 'block' : 'none';
+    document.getElementById('paneHuman').style.display = tab === 'human' ? 'block' : 'none';
+  }
 
-    const name = nameEl.value.trim() || 'زائر الموقع';
-    const email = emailEl.value.trim();
+  function appendMsg(logId, who, text) {
+    const log = document.getElementById(logId);
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble ' + who;
+    bubble.textContent = text;
+    log.appendChild(bubble);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // AI tab — TODO: replace with a real call to your backend endpoint
+  // (see setup notes). This placeholder just explains that clearly
+  // to any visitor instead of silently pretending to be AI-powered.
+  async function askAI() {
+    const input = document.getElementById('aiInput');
     const question = input.value.trim();
+    if (!question) return;
+    appendMsg('aiLog', 'user', question);
+    input.value = '';
 
-    if (!question) {
-      alert('من فضلك، أدخل سؤالك!');
-      return;
-    }
-
-    chatbox.style.display = 'block';
-    chatbox.innerHTML = '<p>⏳ بيتبعت السؤال...</p>';
-    sendBtn.disabled = true;
+    appendMsg('aiLog', 'bot', '...');
+    const log = document.getElementById('aiLog');
+    const thinking = log.lastChild;
 
     try {
-      const res = await fetch(CONTACT_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          name,
-          email: email || 'لم يذكر إيميل',
-          message: question,
-          _subject: `سؤال جديد من الموقع — ${name}`,
-          page: location.href
-        })
-      });
-
-      if (!res.ok) throw new Error('bad status ' + res.status);
-
-      chatbox.innerHTML = `<p><strong>تم الإرسال! ✅</strong></p><p>سؤالك وصل، وهرد عليك على إيميلك في أقرب وقت.</p>`;
-      input.value = '';
-      nameEl.value = '';
-      emailEl.value = '';
+      // const res = await fetch('/api/ask-ai', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ question })
+      // });
+      // const data = await res.json();
+      // thinking.textContent = data.answer;
+      thinking.textContent = 'الرد الذكي مش متوصل بسيرفر لسه — راجع ملاحظات التفعيل اللي بعتهالك عشان توصّله بالـ AI API فعليًا.';
     } catch (err) {
-      console.error(err);
-      chatbox.innerHTML = '<p>❌ حصل خطأ في الإرسال. لو أول مرة الفورم شغال، تأكد إنك دوست "Activate Form" في الإيميل اللي وصلك من formsubmit، أو ابعتلي مباشرة على الإيميل تحت.</p>';
-    } finally {
-      sendBtn.disabled = false;
+      thinking.textContent = '❌ حصل خطأ في الاتصال بالذكاء الاصطناعي.';
     }
+  }
+
+  // Human live-chat tab — TODO: replace with Firebase (or similar)
+  // realtime listener so replies from Asem appear here live.
+  function sendHumanMessage() {
+    const input = document.getElementById('humanInput');
+    const name = document.getElementById('humanName').value.trim() || 'زائر';
+    const msg = input.value.trim();
+    if (!msg) return;
+    appendMsg('humanLog', 'user', msg);
+    input.value = '';
+    document.getElementById('humanStatus').textContent = 'الشات اللايف لسه محتاج ربط بقاعدة بيانات (Firebase) عشان الرسالة توصل لعاصم فعليًا وترجع لايف — شوف ملاحظات التفعيل.';
   }
 </script>
 
