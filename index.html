@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="HTML_1.css?v=2">
+  <link rel="stylesheet" href="HTML_1.css?v=3">
 
   <!-- Leaflet (used by the interactive route map at the bottom of the page) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
@@ -86,14 +86,19 @@
         <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
       </div>
 
-      <!-- rotating globe: pure CSS/CSS-animation, no JS or WebGL needed -->
+      <!-- rotating globe: pure CSS/CSS-animation, no JS or WebGL needed.
+           A satellite orbits the globe and fires a scanning laser pulse
+           down to the surface on every pass — the site's signature. -->
       <div class="globe-wrap" aria-hidden="true">
         <div class="globe-ring"></div>
         <div class="globe-ring globe-ring-2"></div>
-        <div class="globe-sat"></div>
+        <div class="globe-sat">
+          <div class="sat-beam"></div>
+        </div>
         <div class="globe">
           <div class="globe-texture"></div>
           <div class="globe-shading"></div>
+          <div class="scan-ping"></div>
         </div>
       </div>
     </section>
@@ -121,43 +126,51 @@
       <div class="carousel">
         <div class="cards-container" id="cardsContainer">
           <div class="card">
-            <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="Natural resource monitoring map">
+            <div class="card-img-wrap"><img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="Natural resource monitoring map" loading="lazy"></div>
+            <span class="card-tag">01</span>
             <h3>Natural Resource Management</h3>
             <p>GIS technologies are used to monitor and assess natural resources such as water, forests, and mines — mapping utilization areas, identifying optimal investment sites, and monitoring sustainable use.</p>
           </div>
           <div class="card">
-            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Aerial view of a planned city grid">
+            <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Aerial view of a planned city grid" loading="lazy"></div>
+            <span class="card-tag">02</span>
             <h3>Urban & Municipal Planning</h3>
             <p>GIS supports urban development plans by analyzing population, roads, and public facilities — helping manage growth, traffic organization, and services like water and electricity.</p>
           </div>
           <div class="card">
-            <img src="agriculture-precision-coronavirus.png" alt="Emergency response map overlay">
+            <div class="card-img-wrap"><img src="agriculture-precision-coronavirus.png" alt="Emergency response map overlay" loading="lazy"></div>
+            <span class="card-tag">03</span>
             <h3>Disaster & Emergency Management</h3>
             <p>GIS is applied in tracking natural disasters such as earthquakes, floods, and storms — providing hazard maps that help emergency teams coordinate and deliver aid efficiently.</p>
           </div>
           <div class="card">
-            <img src="171013536065ee9840474b2.png" alt="Precision agriculture field data">
+            <div class="card-img-wrap"><img src="171013536065ee9840474b2.png" alt="Precision agriculture field data" loading="lazy"></div>
+            <span class="card-tag">04</span>
             <h3>Smart Agriculture</h3>
             <p>In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices for a region — improving productivity and managing resources effectively.</p>
           </div>
           <!-- duplicated set for a seamless infinite scroll -->
           <div class="card" aria-hidden="true">
-            <img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="">
+            <div class="card-img-wrap"><img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="" loading="lazy"></div>
+            <span class="card-tag">01</span>
             <h3>Natural Resource Management</h3>
             <p>GIS technologies are used to monitor and assess natural resources such as water, forests, and mines — mapping utilization areas, identifying optimal investment sites, and monitoring sustainable use.</p>
           </div>
           <div class="card" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="">
+            <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="" loading="lazy"></div>
+            <span class="card-tag">02</span>
             <h3>Urban & Municipal Planning</h3>
             <p>GIS supports urban development plans by analyzing population, roads, and public facilities — helping manage growth, traffic organization, and services like water and electricity.</p>
           </div>
           <div class="card" aria-hidden="true">
-            <img src="agriculture-precision-coronavirus.png" alt="">
+            <div class="card-img-wrap"><img src="agriculture-precision-coronavirus.png" alt="" loading="lazy"></div>
+            <span class="card-tag">03</span>
             <h3>Disaster & Emergency Management</h3>
             <p>GIS is applied in tracking natural disasters such as earthquakes, floods, and storms — providing hazard maps that help emergency teams coordinate and deliver aid efficiently.</p>
           </div>
           <div class="card" aria-hidden="true">
-            <img src="171013536065ee9840474b2.png" alt="">
+            <div class="card-img-wrap"><img src="171013536065ee9840474b2.png" alt="" loading="lazy"></div>
+            <span class="card-tag">04</span>
             <h3>Smart Agriculture</h3>
             <p>In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices for a region — improving productivity and managing resources effectively.</p>
           </div>
@@ -188,7 +201,7 @@
     <!-- =========================================================
          Developers section
          ========================================================= -->
-    <section class="gis-section2" id="developers">
+    <section class="gis-section2 reveal-up" id="developers">
       <div class="gis-overlay2">
         <span class="eyebrow">// stack</span>
         <h2>Developers</h2>
@@ -205,7 +218,7 @@
     <!-- =========================================================
          Interactive route map
          ========================================================= -->
-    <section class="map-section" id="map-section">
+    <section class="map-section reveal-up" id="map-section">
       <div class="section-heading">
         <span class="eyebrow">// 30.0444° N, 31.2357° E</span>
         <h2>Find the Shortest Route</h2>
@@ -221,7 +234,7 @@
     <!-- =========================================================
          Online GIS mini-tools
          ========================================================= -->
-    <section class="tools-section" id="tools-section">
+    <section class="tools-section reveal-up" id="tools-section">
       <div class="section-heading">
         <span class="eyebrow">// online tools</span>
         <h2>GIS Mini-Tools</h2>
@@ -300,7 +313,7 @@
     <!-- =========================================================
          GIS quiz
          ========================================================= -->
-    <section class="quiz-container" id="quiz-section">
+    <section class="quiz-container reveal-up" id="quiz-section">
       <h2>🗺️ GIS Quiz</h2>
 
       <div id="startScreen">
@@ -338,15 +351,20 @@
       <button type="button" class="chat-tab" id="tabHuman" onclick="switchChatTab('human')">🧑‍💻 كلّم عاصم</button>
     </div>
 
-    <!-- AI mode -->
+    <!-- AI mode: every bubble here is explicitly labelled with a sender
+         name (🤖 المساعد الذكي) so a visitor can never mistake the
+         automatic reply for a message from Asem himself. -->
     <div id="paneAI" class="chat-pane">
       <div class="chat-log" id="aiLog"></div>
       <textarea id="aiInput" placeholder="اسأل عن أي حاجة في الـ GIS أو استفسر عن خبرة عاصم..." rows="2"></textarea>
       <button type="button" id="aiSendBtn" onclick="askAI()">إرسال للذكاء الاصطناعي</button>
-      <p class="chat-note">إجابة تلقائية فورية — لو محتاج رد شخصي من عاصم نفسه، بدّل لتاب "كلّم عاصم".</p>
+      <p class="chat-note">🤖 دي إجابة تلقائية من مساعد ذكاء اصطناعي، مش من عاصم شخصيًا. لو محتاج رد حقيقي منه، بدّل لتاب "كلّم عاصم".</p>
     </div>
 
-    <!-- Human live-chat mode -->
+    <!-- Human live-chat mode: bubbles are labelled with the visitor's own
+         name (not "you"/"user") so it's clear this is a real message
+         being sent to Asem, and any reply here is explicitly from
+         "عاصم" — never conflated with the AI tab above. -->
     <div id="paneHuman" class="chat-pane" style="display:none;">
       <div class="chat-log" id="humanLog"></div>
       <div class="tool-row">
@@ -354,7 +372,7 @@
       </div>
       <textarea id="humanInput" placeholder="اكتب رسالتك لعاصم هنا..." rows="2"></textarea>
       <button type="button" id="humanSendBtn" onclick="sendHumanMessage()">إرسال</button>
-      <p class="chat-note" id="humanStatus">هتوصل الرسالة لعاصم مباشرة، وهيردّ عليك هنا لايف — المحادثة دي خاصة بيك انت بس.</p>
+      <p class="chat-note" id="humanStatus">⚠️ الشات اللايف لسه مش متوصل بسيرفر — الرسالة دلوقتي بتتحفظ في المتصفح بس ومش بتوصل لعاصم فعليًا. لازم تفعيل قاعدة بيانات (زي Firebase) عشان الرسائل توصله لايف.</p>
     </div>
   </div>
 </div>
@@ -413,6 +431,26 @@
     cards.forEach((card, i) => {
       setTimeout(() => card.classList.add('show'), 120 + i * 60);
     });
+
+    // Scroll-reveal for standalone sections/blocks (anything tagged
+    // .reveal-up). Uses IntersectionObserver directly — unlike the
+    // carousel cards, these elements don't move horizontally, so
+    // gating on visibility works correctly and doesn't risk getting
+    // stuck off-screen.
+    const revealTargets = document.querySelectorAll('.reveal-up');
+    if ('IntersectionObserver' in window && revealTargets.length) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealTargets.forEach((el) => io.observe(el));
+    } else {
+      revealTargets.forEach((el) => el.classList.add('show'));
+    }
 
     // Typewriter effect for the tagline under the CV button
     const text = 'See how I combine maps, code, and smart solutions';
@@ -644,8 +682,16 @@
 <!-- =========================================================
      "Ask me anything" widget — AI tab (placeholder logic) +
      Human live-chat tab (placeholder logic).
-     See the accompanying setup notes for what needs to be wired
-     up server-side before this is truly live.
+
+     IMPORTANT — sender labelling:
+     Every bubble is rendered with an explicit sender name so a
+     visitor (or Asem, reading a forwarded screenshot) can never
+     confuse an automatic AI reply with a real message from Asem,
+     or confuse their own message with a reply. The AI tab always
+     labels its bubbles "🤖 المساعد الذكي"; the human tab always
+     labels the visitor's own bubbles with the name they typed
+     (or "زائر") and clearly marks that no reply channel is wired
+     up yet.
      ========================================================= -->
 <script>
   function openDialog() {
@@ -662,53 +708,52 @@
     document.getElementById('paneHuman').style.display = tab === 'human' ? 'block' : 'none';
   }
 
-  function appendMsg(logId, who, text) {
+  // who: 'user' | 'bot'  ->  bubble alignment/color
+  // label: the sender name actually shown above the bubble text
+  function appendMsg(logId, who, label, text) {
     const log = document.getElementById(logId);
+    const wrap = document.createElement('div');
+    wrap.className = 'chat-bubble-wrap ' + who;
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'chat-sender';
+    nameEl.textContent = label;
+
     const bubble = document.createElement('div');
     bubble.className = 'chat-bubble ' + who;
     bubble.textContent = text;
-    log.appendChild(bubble);
+
+    wrap.appendChild(nameEl);
+    wrap.appendChild(bubble);
+    log.appendChild(wrap);
     log.scrollTop = log.scrollHeight;
+    return bubble;
   }
 
-  // AI tab — TODO: replace with a real call to your backend endpoint
-  // (see setup notes). This placeholder just explains that clearly
-  // to any visitor instead of silently pretending to be AI-powered.
   async function askAI() {
     const input = document.getElementById('aiInput');
     const question = input.value.trim();
     if (!question) return;
-    appendMsg('aiLog', 'user', question);
+    appendMsg('aiLog', 'user', 'انت', question);
     input.value = '';
 
-    appendMsg('aiLog', 'bot', '...');
-    const log = document.getElementById('aiLog');
-    const thinking = log.lastChild;
+    const thinking = appendMsg('aiLog', 'bot', '🤖 المساعد الذكي', '...');
 
     try {
-      // const res = await fetch('/api/ask-ai', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ question })
-      // });
-      // const data = await res.json();
-      // thinking.textContent = data.answer;
       thinking.textContent = 'الرد الذكي مش متوصل بسيرفر لسه — راجع ملاحظات التفعيل اللي بعتهالك عشان توصّله بالـ AI API فعليًا.';
     } catch (err) {
       thinking.textContent = '❌ حصل خطأ في الاتصال بالذكاء الاصطناعي.';
     }
   }
 
-  // Human live-chat tab — TODO: replace with Firebase (or similar)
-  // realtime listener so replies from Asem appear here live.
   function sendHumanMessage() {
     const input = document.getElementById('humanInput');
     const name = document.getElementById('humanName').value.trim() || 'زائر';
     const msg = input.value.trim();
     if (!msg) return;
-    appendMsg('humanLog', 'user', msg);
+    appendMsg('humanLog', 'user', name, msg);
     input.value = '';
-    document.getElementById('humanStatus').textContent = 'الشات اللايف لسه محتاج ربط بقاعدة بيانات (Firebase) عشان الرسالة توصل لعاصم فعليًا وترجع لايف — شوف ملاحظات التفعيل.';
+    document.getElementById('humanStatus').textContent = '⚠️ الرسالة اتحفظت في المتصفح بس لسه — الشات اللايف محتاج ربط بقاعدة بيانات (Firebase) عشان توصل لعاصم فعليًا ويرد لايف.';
   }
 </script>
 
