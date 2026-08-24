@@ -11,6 +11,7 @@
 
   <!-- Leaflet (used by the interactive route map at the bottom of the page) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
 </head>
 <body>
 
@@ -86,9 +87,6 @@
         <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
       </div>
 
-      <!-- rotating globe: pure CSS/CSS-animation, no JS or WebGL needed.
-           A satellite orbits the globe and fires a scanning laser pulse
-           down to the surface on every pass — the site's signature. -->
       <div class="globe-wrap" aria-hidden="true">
         <div class="globe-ring"></div>
         <div class="globe-ring globe-ring-2"></div>
@@ -290,8 +288,6 @@
           <div class="tool-output" id="utmOutput"></div>
         </div>
 
-        
-
       </div>
     </section>
 
@@ -323,7 +319,6 @@
   </article>
 </main>
 
-
 <footer>
   © Asem 2025 — All rights reserved
 </footer>
@@ -345,11 +340,7 @@
 </script>
 
 <!-- =========================================================
-     Hero tap-to-zoom (touch devices) — desktop/hover-capable only.
-     On touch screens this used to fire on every tap anywhere on
-     the page and toggle the hero zoom, which is also what was
-     quietly keeping :hover-based pause rules "stuck" elsewhere
-     on the page (see the pointer:fine guards in the CSS).
+     Hero tap-to-zoom (touch devices)
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -369,21 +360,11 @@
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Reveal carousel cards. On mobile, waiting on scroll-intersection
-    // was leaving mid-carousel cards stuck at opacity:0 forever because
-    // the carousel keeps sliding horizontally while the card is only
-    // ever briefly, partially on-screen — so we just fade everything
-    // in shortly after load instead of gating it on IntersectionObserver.
     const cards = document.querySelectorAll('.card');
     cards.forEach((card, i) => {
       setTimeout(() => card.classList.add('show'), 120 + i * 60);
     });
 
-    // Scroll-reveal for standalone sections/blocks (anything tagged
-    // .reveal-up). Uses IntersectionObserver directly — unlike the
-    // carousel cards, these elements don't move horizontally, so
-    // gating on visibility works correctly and doesn't risk getting
-    // stuck off-screen.
     const revealTargets = document.querySelectorAll('.reveal-up');
     if ('IntersectionObserver' in window && revealTargets.length) {
       const io = new IntersectionObserver((entries) => {
@@ -399,7 +380,6 @@
       revealTargets.forEach((el) => el.classList.add('show'));
     }
 
-    // Typewriter effect for the tagline under the CV button
     const text = 'See how I combine maps, code, and smart solutions';
     const el = document.getElementById('typed-text');
     let index = 0;
@@ -545,7 +525,7 @@
 </script>
 
 <!-- =========================================================
-     GIS mini-tools logic (coordinate converter / UTM / distance)
+     GIS mini-tools logic
      ========================================================= -->
 <script>
   function toRad(deg) { return deg * Math.PI / 180; }
@@ -605,103 +585,6 @@
     const epsg = lat >= 0 ? 32600 + zone : 32700 + zone;
     out.innerHTML = `<strong>Zone ${zone}${lat >= 0 ? 'N' : 'S'}</strong> — ${hemisphere} hemisphere<br>EPSG:${epsg}`;
   }
-
-  function calcDistance() {
-    const lat1 = parseFloat(document.getElementById('distLat1').value);
-    const lon1 = parseFloat(document.getElementById('distLon1').value);
-    const lat2 = parseFloat(document.getElementById('distLat2').value);
-    const lon2 = parseFloat(document.getElementById('distLon2').value);
-    const out = document.getElementById('distOutput');
-    if ([lat1, lon1, lat2, lon2].some((v) => isNaN(v))) {
-      out.textContent = '⚠️ من فضلك ادخل الإحداثيات الأربعة';
-      return;
-    }
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const km = (R * c).toFixed(2);
-    out.innerHTML = `<strong>${km} km</strong> (${(km * 0.621371).toFixed(2)} miles)`;
-  }
-</script>
-
-<!-- =========================================================
-     "Ask me anything" widget — AI tab (placeholder logic) +
-     Human live-chat tab (placeholder logic).
-
-     IMPORTANT — sender labelling:
-     Every bubble is rendered with an explicit sender name so a
-     visitor (or Asem, reading a forwarded screenshot) can never
-     confuse an automatic AI reply with a real message from Asem,
-     or confuse their own message with a reply. The AI tab always
-     labels its bubbles "🤖 المساعد الذكي"; the human tab always
-     labels the visitor's own bubbles with the name they typed
-     (or "زائر") and clearly marks that no reply channel is wired
-     up yet.
-     ========================================================= -->
-<script>
-  function openDialog() {
-    document.getElementById('dialog-overlay').style.display = 'flex';
-  }
-  function closeDialog() {
-    document.getElementById('dialog-overlay').style.display = 'none';
-  }
-
-  function switchChatTab(tab) {
-    document.getElementById('tabAI').classList.toggle('active', tab === 'ai');
-    document.getElementById('tabHuman').classList.toggle('active', tab === 'human');
-    document.getElementById('paneAI').style.display = tab === 'ai' ? 'block' : 'none';
-    document.getElementById('paneHuman').style.display = tab === 'human' ? 'block' : 'none';
-  }
-
-  // who: 'user' | 'bot'  ->  bubble alignment/color
-  // label: the sender name actually shown above the bubble text
-  function appendMsg(logId, who, label, text) {
-    const log = document.getElementById(logId);
-    const wrap = document.createElement('div');
-    wrap.className = 'chat-bubble-wrap ' + who;
-
-    const nameEl = document.createElement('div');
-    nameEl.className = 'chat-sender';
-    nameEl.textContent = label;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble ' + who;
-    bubble.textContent = text;
-
-    wrap.appendChild(nameEl);
-    wrap.appendChild(bubble);
-    log.appendChild(wrap);
-    log.scrollTop = log.scrollHeight;
-    return bubble;
-  }
-
-  async function askAI() {
-    const input = document.getElementById('aiInput');
-    const question = input.value.trim();
-    if (!question) return;
-    appendMsg('aiLog', 'user', 'انت', question);
-    input.value = '';
-
-    const thinking = appendMsg('aiLog', 'bot', '🤖 المساعد الذكي', '...');
-
-    try {
-      thinking.textContent = 'الرد الذكي مش متوصل بسيرفر لسه — راجع ملاحظات التفعيل اللي بعتهالك عشان توصّله بالـ AI API فعليًا.';
-    } catch (err) {
-      thinking.textContent = '❌ حصل خطأ في الاتصال بالذكاء الاصطناعي.';
-    }
-  }
-
-  function sendHumanMessage() {
-    const input = document.getElementById('humanInput');
-    const name = document.getElementById('humanName').value.trim() || 'زائر';
-    const msg = input.value.trim();
-    if (!msg) return;
-    appendMsg('humanLog', 'user', name, msg);
-    input.value = '';
-    document.getElementById('humanStatus').textContent = '⚠️ الرسالة اتحفظت في المتصفح بس لسه — الشات اللايف محتاج ربط بقاعدة بيانات (Firebase) عشان توصل لعاصم فعليًا ويرد لايف.';
-  }
 </script>
 
 <!-- =========================================================
@@ -717,10 +600,18 @@
 
   let routingControl = null;
   let startMarker = null;
-  let travelMode = 'car'; // 'car' | 'foot'
+  let travelMode = 'car';
 
-  const startIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', iconSize: [30, 30] });
-  const endIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize: [30, 30] });
+  const startIcon = L.icon({ 
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', 
+    iconSize: [30, 30],
+    iconAnchor: [15, 30]
+  });
+  const endIcon = L.icon({ 
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', 
+    iconSize: [30, 30],
+    iconAnchor: [15, 30]
+  });
 
   map.on('click', (e) => {
     const clickedPoint = e.latlng;
@@ -748,19 +639,13 @@
           { color: '#000', weight: 8, opacity: 0.25 },
           { color: '#35d6c4', weight: 5 }
         ]
+      },
+      createMarker: function(i, wp, n) {
+        return L.marker(wp.latLng, {
+          icon: i === 0 ? startIcon : endIcon
+        });
       }
-    })
-      .on('routesfound', (e) => {
-        const route = e.routes[0];
-        const distance = (route.summary.totalDistance / 1000).toFixed(2);
-        const time = Math.round(route.summary.totalTime / 60);
-
-        L.marker(clickedPoint, { icon: endIcon })
-          .addTo(map)
-          .bindPopup(`🏁 Destination<br>📏 Distance: ${distance} km<br>⏱️ Time: ${time} min`)
-          .openPopup();
-      })
-      .addTo(map);
+    }).addTo(map);
 
     startMarker = null;
   });
@@ -769,6 +654,14 @@
     travelMode = mode;
     document.getElementById('modeCar').classList.toggle('active', mode === 'car');
     document.getElementById('modeFoot').classList.toggle('active', mode === 'foot');
+    if (startMarker) {
+      map.removeLayer(startMarker);
+      startMarker = null;
+    }
+    if (routingControl) {
+      map.removeControl(routingControl);
+      routingControl = null;
+    }
   }
 </script>
 
