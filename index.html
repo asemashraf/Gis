@@ -7,14 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="HTML_1.css?v=3">
+  <!-- v4: bumped cache-busting version after the mobile animation fixes below -->
+  <link rel="stylesheet" href="HTML_1.css?v=4">
 
-  <!-- Leaflet (used by the interactive route map at the bottom of the page) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 <body>
 
-<!-- background layers: starfield + orbit rings (pure CSS, no images) -->
 <div class="space-bg" aria-hidden="true">
   <div class="stars stars-1"></div>
   <div class="stars stars-2"></div>
@@ -86,10 +85,7 @@
         <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
       </div>
 
-      <!-- rotating globe: pure CSS/CSS-animation, no JS or WebGL needed.
-           A satellite orbits the globe and fires a scanning laser pulse
-           down to the surface on every pass — the site's signature. -->
-      <div class="globe-wrap" aria-hidden="true">
+      <div class="globe-wrap" id="globeWrap" aria-hidden="true">
         <div class="globe-ring"></div>
         <div class="globe-ring globe-ring-2"></div>
         <div class="globe-sat">
@@ -123,6 +119,26 @@
         yields, and ensuring sustainability.
       </div>
 
+      <!-- Stats counters — edit data-target to your real numbers -->
+      <div class="stats-strip" id="statsStrip">
+        <div class="stat-item">
+          <span class="stat-number" data-target="15">0</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="3">0</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="40">0</span>
+          <span class="stat-label">Maps Delivered</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="6">0</span>
+          <span class="stat-label">GIS Tools Built</span>
+        </div>
+      </div>
+
       <div class="carousel">
         <div class="cards-container" id="cardsContainer">
           <div class="card">
@@ -149,7 +165,6 @@
             <h3>Smart Agriculture</h3>
             <p>In agriculture, GIS is used to analyze soil, monitor crops, and determine the best farming practices for a region — improving productivity and managing resources effectively.</p>
           </div>
-          <!-- duplicated set for a seamless infinite scroll -->
           <div class="card" aria-hidden="true">
             <div class="card-img-wrap"><img src="ChatGPT Image Aug 9, 2025, 03_08_02 PM.png" alt="" loading="lazy"></div>
             <span class="card-tag">01</span>
@@ -243,7 +258,6 @@
 
       <div class="tools-grid">
 
-        <!-- DD <-> DMS coordinate converter -->
         <div class="tool-card">
           <h3>📍 Coordinate Converter</h3>
           <p class="tool-desc">Decimal Degrees ⇄ Degrees/Minutes/Seconds</p>
@@ -273,7 +287,6 @@
           <div class="tool-output" id="ddOutput"></div>
         </div>
 
-        <!-- UTM zone finder -->
         <div class="tool-card">
           <h3>🛰️ UTM Zone Finder</h3>
           <p class="tool-desc">Find the UTM zone and EPSG code for any lat/lon</p>
@@ -289,8 +302,6 @@
           <button type="button" onclick="findUTMZone()">Find Zone</button>
           <div class="tool-output" id="utmOutput"></div>
         </div>
-
-        
 
       </div>
     </section>
@@ -318,6 +329,10 @@
       </div>
 
       <p class="result" id="result"></p>
+      <div class="quiz-badge" id="quizBadge">
+        <div class="badge-icon" id="badgeIcon">🌱</div>
+        <div class="badge-label" id="badgeLabel">Beginner</div>
+      </div>
     </section>
 
   </article>
@@ -345,11 +360,7 @@
 </script>
 
 <!-- =========================================================
-     Hero tap-to-zoom (touch devices) — desktop/hover-capable only.
-     On touch screens this used to fire on every tap anywhere on
-     the page and toggle the hero zoom, which is also what was
-     quietly keeping :hover-based pause rules "stuck" elsewhere
-     on the page (see the pointer:fine guards in the CSS).
+     Hero tap-to-zoom (touch devices) — desktop/hover-capable only
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -365,25 +376,35 @@
 </script>
 
 <!-- =========================================================
-     Card reveal + typewriter tagline
+     Auto "pulse" for touch devices — mobile stand-in for hover.
+     True :hover doesn't exist on touch, so instead of chasing
+     touch events (which is what caused the old "stuck" bug),
+     this just toggles the same visual state hover would use, on
+     a timer, only on devices that can't hover in the first place.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Reveal carousel cards. On mobile, waiting on scroll-intersection
-    // was leaving mid-carousel cards stuck at opacity:0 forever because
-    // the carousel keeps sliding horizontally while the card is only
-    // ever briefly, partially on-screen — so we just fade everything
-    // in shortly after load instead of gating it on IntersectionObserver.
+    const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const globeWrap = document.getElementById('globeWrap');
+    if (!isTouch || !globeWrap) return;
+
+    setInterval(() => {
+      globeWrap.classList.add('auto-pulse');
+      setTimeout(() => globeWrap.classList.remove('auto-pulse'), 1200);
+    }, 6000);
+  });
+</script>
+
+<!-- =========================================================
+     Card reveal + typewriter tagline + stats counters
+     ========================================================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.card');
     cards.forEach((card, i) => {
       setTimeout(() => card.classList.add('show'), 120 + i * 60);
     });
 
-    // Scroll-reveal for standalone sections/blocks (anything tagged
-    // .reveal-up). Uses IntersectionObserver directly — unlike the
-    // carousel cards, these elements don't move horizontally, so
-    // gating on visibility works correctly and doesn't risk getting
-    // stuck off-screen.
     const revealTargets = document.querySelectorAll('.reveal-up');
     if ('IntersectionObserver' in window && revealTargets.length) {
       const io = new IntersectionObserver((entries) => {
@@ -427,6 +448,42 @@
     window.addEventListener('scroll', startIfVisible);
     window.addEventListener('load', startIfVisible);
     startIfVisible();
+
+    // Stats counters: count up from 0 once the strip is visible
+    const statsStrip = document.getElementById('statsStrip');
+    if (statsStrip && 'IntersectionObserver' in window) {
+      let counted = false;
+      const numbers = statsStrip.querySelectorAll('.stat-number');
+
+      const animateCount = (elm) => {
+        const target = parseInt(elm.getAttribute('data-target'), 10) || 0;
+        const duration = 1200;
+        const startTime = performance.now();
+
+        function tick(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          elm.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      };
+
+      const statsIo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !counted) {
+            counted = true;
+            numbers.forEach(animateCount);
+            statsIo.unobserve(statsStrip);
+          }
+        });
+      }, { threshold: 0.3 });
+      statsIo.observe(statsStrip);
+    } else if (statsStrip) {
+      statsStrip.querySelectorAll('.stat-number').forEach((elm) => {
+        elm.textContent = elm.getAttribute('data-target');
+      });
+    }
   });
 </script>
 
@@ -468,6 +525,7 @@
     playerName = nameInput;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('quiz').style.display = 'block';
+    document.getElementById('quizBadge').classList.remove('show');
     currentQuestion = 0;
     score = 0;
     loadQuestion();
@@ -529,7 +587,22 @@
     else { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`; level = 'GIS Expert'; }
 
     document.getElementById('result').innerText = resultText;
+    showBadge(level);
     sendToSheet(level);
+  }
+
+  function showBadge(level) {
+    const badge = document.getElementById('quizBadge');
+    const icon = document.getElementById('badgeIcon');
+    const label = document.getElementById('badgeLabel');
+    const map = {
+      'Beginner': '🌱',
+      'Intermediate': '🌍',
+      'GIS Expert': '🚀'
+    };
+    icon.textContent = map[level] || '🏅';
+    label.textContent = level;
+    badge.classList.add('show');
   }
 
   function sendToSheet(level) {
@@ -627,18 +700,7 @@
 </script>
 
 <!-- =========================================================
-     "Ask me anything" widget — AI tab (placeholder logic) +
-     Human live-chat tab (placeholder logic).
-
-     IMPORTANT — sender labelling:
-     Every bubble is rendered with an explicit sender name so a
-     visitor (or Asem, reading a forwarded screenshot) can never
-     confuse an automatic AI reply with a real message from Asem,
-     or confuse their own message with a reply. The AI tab always
-     labels its bubbles "🤖 المساعد الذكي"; the human tab always
-     labels the visitor's own bubbles with the name they typed
-     (or "زائر") and clearly marks that no reply channel is wired
-     up yet.
+     "Ask me anything" widget — AI tab + human live-chat tab
      ========================================================= -->
 <script>
   function openDialog() {
@@ -655,8 +717,6 @@
     document.getElementById('paneHuman').style.display = tab === 'human' ? 'block' : 'none';
   }
 
-  // who: 'user' | 'bot'  ->  bubble alignment/color
-  // label: the sender name actually shown above the bubble text
   function appendMsg(logId, who, label, text) {
     const log = document.getElementById(logId);
     const wrap = document.createElement('div');
