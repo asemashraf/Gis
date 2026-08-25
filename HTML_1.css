@@ -69,8 +69,6 @@ h1, h2, h3, h4 {
 
 p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-word; }
 
-/* small "coordinate" eyebrow label used before section headings,
-   ties every section back to the mapping/GIS subject */
 .eyebrow {
   display: inline-block;
   font-family: var(--font-mono);
@@ -84,8 +82,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   margin-bottom: 14px;
 }
 
-/* thin contour-line divider — a stand-in for topographic contour rules
-   used between major sections instead of a plain <hr> */
 .contour-divider {
   height: 18px;
   width: 100%;
@@ -96,14 +92,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   opacity: 0.6;
 }
 
-/* =========================================================
-   Generic scroll-reveal utility.
-   Sections tagged .reveal-up fade + rise into place the first
-   time they cross into the viewport (see the IntersectionObserver
-   in the HTML). Kept separate from the carousel-card reveal
-   below, which is time-based rather than viewport-based because
-   the carousel keeps sliding horizontally.
-   ========================================================= */
 .reveal-up {
   opacity: 0;
   transform: translateY(28px);
@@ -114,14 +102,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   transform: translateY(0);
 }
 
-/* =========================================================
-   Custom cursor — satellite targeting reticle.
-   Desktop / mouse pointers only (gated by the JS adding
-   .custom-cursor to <html> only when hover+fine pointer is
-   available); touch devices keep their native behaviour.
-   Two SVG data-URI cursors: a small reticle for normal areas,
-   a filled "lock-on" reticle for interactive elements.
-   ========================================================= */
 .custom-cursor,
 .custom-cursor body {
   cursor:
@@ -141,13 +121,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
     pointer;
 }
 
-/* =========================================================
-   Space background — fixed starfield behind the whole page.
-   Pure CSS (box-shadow star-fields), no images/network needed.
-   This is the "professional space site" signature element:
-   a faint satellite-orbit ring plus twinkling stars, always
-   present, never louder than the content in front of it.
-   ========================================================= */
 .space-bg {
   position: fixed;
   inset: 0;
@@ -361,20 +334,10 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   position: relative;
 }
 
-/* background-attachment: fixed is unreliable on mobile browsers
-   (can make the whole background disappear or the layout jump) —
-   only use it on larger screens where it's safe. */
 @media (min-width: 769px) {
   .my { background-attachment: fixed; }
 }
 
-/* Hover/zoomed transform effects: only for real mouse pointers.
-   On touch screens, tapping *anywhere* on the page can leave a
-   CSS :hover state "stuck" until the next tap elsewhere — that
-   was the real cause of the globe and the carousel appearing
-   frozen on mobile (see .globe-wrap and .carousel below). Scoping
-   these to (hover:hover) and (pointer:fine) keeps the desktop
-   effect and removes the mobile side-effect entirely. */
 @media (hover: hover) and (pointer: fine) {
   .my:hover { transform: scale(1.03); }
 }
@@ -399,18 +362,17 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 
 /* =========================================================
    Rotating globe — signature hero element.
-   A circular viewport clips a wide, seamless equirectangular
-   earth texture; the texture is animated with `transform:
-   translateX()` (not `background-position`) so the spin is
-   GPU-composited and actually plays on phones — animating
-   background-position is a paint-triggering property that many
-   mobile browsers throttle or drop entirely under battery-saver
-   / low-power mode, which is why the globe used to look frozen
-   on mobile even though the very same animation ran fine on
-   desktop. Two orbit rings (counter-rotating) plus a small
-   orbiting satellite with a downward scanning laser beam sell
-   the "tracked object" feel and make the hero read as a
-   deliberate remote-sensing signature.
+   ---------------------------------------------------------
+   FIX (mobile "frozen globe" bug — real cause #2):
+   On iOS Safari specifically, an animated child clipped by a
+   parent with border-radius + overflow:hidden can get promoted
+   to its own compositor layer late, or not at all, which makes
+   the animation keep running in the DOM/timeline (devtools will
+   say it's "running") while nothing actually repaints on screen
+   — it just LOOKS frozen. Forcing every rotating layer onto its
+   own isolated GPU layer up front (isolation + translateZ +
+   backface-visibility, applied consistently to parent AND child)
+   fixes that class of bug reliably.
    ========================================================= */
 .globe-wrap {
   position: relative;
@@ -430,7 +392,10 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   border-radius: 50%;
   animation: ring-spin 14s linear infinite;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
 }
 
 .globe-ring::before {
@@ -446,9 +411,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   box-shadow: 0 0 8px 2px var(--teal);
 }
 
-/* second, wider ring — tilted and counter-rotating so the whole
-   assembly reads as an orbital-mechanics diagram, not a single
-   spinning circle */
 .globe-ring-2 {
   inset: -54px;
   border-color: transparent;
@@ -470,9 +432,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   to   { transform: rotate3d(1, 0.4, 0, 60deg) translateZ(0) rotate(0deg); }
 }
 
-/* small satellite that orbits the globe on its own wider path,
-   independent of the two ring outlines, and carries a scanning
-   laser beam that points down at the globe at all times */
 .globe-sat {
   position: absolute;
   inset: -70px;
@@ -480,7 +439,9 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   pointer-events: none;
   animation: sat-orbit 9s linear infinite;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   will-change: transform;
+  isolation: isolate;
 }
 
 .globe-sat::before {
@@ -494,11 +455,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   z-index: 2;
 }
 
-/* laser beam: a thin teal wedge running from the satellite's
-   position inward to the globe centre, rotating in lockstep with
-   the satellite so it always points straight at the planet, and
-   pulsing in opacity so it reads as an active scanning pass
-   rather than a static line */
 .sat-beam {
   position: absolute;
   top: 50%;
@@ -535,6 +491,8 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   background-color: #0e2a3a;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  isolation: isolate;
 }
 
 .globe-texture {
@@ -551,13 +509,11 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   filter: saturate(1.1) brightness(0.95);
   will-change: transform;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-/* GPU-composited spin: translateX moves the (4x-wide, tiled)
-   texture strip left by one tile-width per loop instead of
-   animating background-position, which is what makes this play
-   smoothly on phones. */
 @keyframes spin-globe {
   from { transform: translateZ(0) translateX(0); }
   to   { transform: translateZ(0) translateX(-25%); }
@@ -573,9 +529,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   pointer-events: none;
 }
 
-/* scanning "ping" — a ring that expands and fades on the globe's
-   surface in sync with the laser beam sweeping past, like a
-   radar/lidar return being logged each orbit */
 .scan-ping {
   position: absolute;
   top: 50%;
@@ -597,8 +550,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   100% { opacity: 0; transform: scale(0.4); }
 }
 
-/* Pause-on-hover only applies where a real mouse is available —
-   see the note above .my:hover for why this matters on mobile. */
 @media (hover: hover) and (pointer: fine) {
   .globe-wrap:hover .globe-texture,
   .globe-wrap:hover .globe-ring,
@@ -612,6 +563,23 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
       0 0 60px 12px rgba(53, 214, 196, 0.4),
       inset -20px -14px 44px rgba(0, 0, 0, 0.65);
   }
+}
+
+/* =========================================================
+   Auto "pulse" for touch devices (mobile equivalent of hover)
+   ---------------------------------------------------------
+   Real :hover doesn't exist on touch screens, so instead of
+   trying to fake it with touch events (which is what caused the
+   original "stuck hover" bug), JS toggles this class on a timer
+   on touch devices only. It reuses the exact same zoom/glow the
+   desktop hover state uses, so the effect feels identical without
+   ever depending on a pointer that isn't there.
+   ========================================================= */
+.globe-wrap.auto-pulse .globe {
+  transform: translateZ(0) scale(1.06);
+  box-shadow:
+    0 0 60px 12px rgba(53, 214, 196, 0.4),
+    inset -20px -14px 44px rgba(0, 0, 0, 0.65);
 }
 
 /* =========================================================
@@ -652,6 +620,50 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   border-radius: 10px;
 }
 
+/* =========================================================
+   Stats counters — new, sits above the carousel.
+   Numbers count up from 0 the first time the strip scrolls
+   into view (see IntersectionObserver in the JS). Edit the
+   data-target values in the HTML to your real numbers.
+   ========================================================= */
+.stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  max-width: 900px;
+  margin: 0 auto 48px auto;
+}
+
+.stat-item {
+  flex: 1 1 160px;
+  max-width: 220px;
+  text-align: center;
+  background-color: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 14px;
+}
+
+.stat-number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.1em;
+  color: var(--teal);
+  line-height: 1.1;
+}
+
+.stat-label {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
 .carousel {
   width: 100%;
   max-width: 1040px;
@@ -672,13 +684,11 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   width: calc(240px * 8 + 20px * 7 + 40px);
   animation: slide-left 26s linear infinite;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   will-change: transform;
+  isolation: isolate;
 }
 
-/* Pause-on-hover for the carousel, desktop-only — on touch screens
-   this was the other half of the "frozen on mobile" bug: a tap
-   anywhere near the carousel would apply :hover and never release
-   it, permanently stopping the scroll. */
 @media (hover: hover) and (pointer: fine) {
   .carousel:hover .cards-container { animation-play-state: paused; }
 }
@@ -705,12 +715,6 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 
 .card:hover { border-color: var(--teal); }
 
-/* image "aperture" — the photo lives behind a slightly larger,
-   softly-zoomed frame and settles to its resting scale once the
-   card reveals, so every card image arrives with a smooth,
-   camera-focusing zoom-in instead of popping in flat. On hover
-   (desktop) it zooms further, like pulling in on a satellite
-   target. */
 .card-img-wrap {
   width: 100%;
   height: 130px;
@@ -838,9 +842,24 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   letter-spacing: 0.08em;
 }
 
+/* =========================================================
+   Contact Me icons
+   ---------------------------------------------------------
+   FIX: centered + non-scrollable/non-sticky. `width:100%` on a
+   flex container that is itself inside a `text-align:center`
+   parent is what was letting the icon ROW shrink-wrap and drift
+   to one side on some viewports; pinning width to 100% *and*
+   giving the wrapping section itself `text-align:center` (belt
+   and suspenders) keeps the row centered at every breakpoint,
+   phone included. Nothing here is `position:fixed/sticky`, so
+   it scrolls away normally with the page — it only *looked*
+   pinned before because it was misaligned in the same spot on
+   every render.
+   ========================================================= */
 .icon3 {
   margin: 1em auto 0 !important;
   width: 100% !important;
+  max-width: 100%;
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -1144,11 +1163,41 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   font-family: var(--font-display);
 }
 
+/* new: achievement badge shown under the result line */
+.quiz-badge {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 18px auto 0;
+  text-align: center;
+}
+
+.quiz-badge.show { display: flex; }
+
+.quiz-badge .badge-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  background: var(--teal-dim);
+  border: 2px solid var(--teal);
+  box-shadow: 0 0 24px rgba(53, 214, 196, 0.35);
+}
+
+.quiz-badge .badge-label {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
 /* =========================================================
-   Chatbot / contact widget (AI tab + human live-chat tab)
-   Every bubble now renders with an explicit sender label
-   (.chat-sender) above it so an AI reply and a real message
-   from Asem or a visitor can never be mistaken for one another.
+   Chatbot / contact widget
    ========================================================= */
 .chatbot-btn {
   position: fixed;
@@ -1177,7 +1226,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   left: 20px;
   width: auto;
   max-width: 340px;
-  margin-left: auto; /* keeps it pinned to the right on wide screens */
+  margin-left: auto;
   display: none;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
@@ -1347,20 +1396,45 @@ footer {
 
 /* =========================================================
    Accessibility: visible focus, reduced motion
+   ---------------------------------------------------------
+   FIX (real cause #1 of the "frozen on mobile" reports):
+   `prefers-reduced-motion: reduce` is set automatically by the
+   OS on a lot of phones — either the user turned on "Reduce
+   Motion" in Accessibility settings, or (on iOS) Low Power Mode
+   flips it on for them without them realizing. The old rule
+   below stopped *every* animation on the page the instant that
+   flag was on, which is exactly why the globe/satellite/carousel
+   could look completely dead on one phone and fine on desktop or
+   another phone, with nothing actually "broken" in the code.
+   Per the requirement to keep the signature motion always running
+   regardless of hover/touch/motion-preference, the core animations
+   are now explicitly re-enabled after the blanket reduction below.
    ========================================================= */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--teal);
-  outline-offset: 2px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+
+  /* signature motion: always on, by explicit request */
+  .globe-texture { animation: spin-globe 14s linear infinite !important; }
+  .globe-ring { animation: ring-spin 14s linear infinite !important; }
+  .globe-ring-2 { animation: ring-spin-reverse 20s linear infinite !important; }
+  .globe-sat { animation: sat-orbit 9s linear infinite !important; }
+  .sat-beam { animation: beam-pulse 9s linear infinite !important; }
+  .scan-ping { animation: scan-ping-anim 9s linear infinite !important; }
+  .cards-container { animation: slide-left 26s linear infinite !important; }
+  .stars-1 { animation: twinkle 6s ease-in-out infinite !important; }
+  .stars-2 { animation: twinkle 8s ease-in-out infinite 1.5s !important; }
+  .stars-3 { animation: twinkle 10s ease-in-out infinite 3s !important; }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
 }
 
 /* =========================================================
@@ -1418,7 +1492,7 @@ input:focus-visible {
 
   .globe-wrap { width: 170px; height: 170px; margin-top: 26px; }
   .globe { width: 140px; height: 140px; }
-  .globe-ring-2 { display: none; } /* keep the mobile hero calm/legible */
+  .globe-ring-2 { display: none; }
   .globe-sat { inset: -48px; }
 
   .cv { width: 200px; padding: 12px 0; margin: 10px auto; }
@@ -1428,6 +1502,10 @@ input:focus-visible {
   #map { height: 340px; }
 
   .tools-grid { grid-template-columns: 1fr; }
+
+  .stats-strip { gap: 12px; }
+  .stat-item { flex: 1 1 45%; padding: 16px 10px; }
+  .stat-number { font-size: 1.7em; }
 }
 
 @media (max-width: 480px) {
