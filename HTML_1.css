@@ -498,13 +498,13 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   justify-self: start;
   width: 100%;
   max-width: 300px;
-  background: var(--panel-soft);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 30px 28px 28px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   text-align: center;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.4);
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .hero-panel .eyebrow { margin-bottom: 16px; }
