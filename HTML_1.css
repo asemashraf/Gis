@@ -411,32 +411,34 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   width: 100%;
   min-height: calc(100vh - var(--nav-h));
   min-height: calc(100svh - var(--nav-h));
-  background: linear-gradient(180deg, rgba(10, 18, 28, 0.35) 0%, rgba(10, 18, 28, 0.85) 100%),
-              url("cairo.png") center top / cover no-repeat;
-  transition: transform 2.3s ease;
   text-align: center;
   padding: 40px 20px;
   position: relative;
+  overflow: hidden;
+}
+
+/* Background photo lives on its own layer behind the content now, so
+   the hover/tap "zoom" (below) can move the image without dragging the
+   headline, orrery, or contact panel along with it — hovering anywhere
+   in the hero still triggers the effect, it just only ever touches the
+   photo. */
+.my-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(10, 18, 28, 0.35) 0%, rgba(10, 18, 28, 0.85) 100%),
+              url("cairo.png") center top / cover no-repeat;
+  transition: transform 2.3s ease;
 }
 
 @media (min-width: 769px) {
-  .my { background-attachment: fixed; }
+  .my-bg { background-attachment: fixed; }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .my:hover { transform: scale(1.03); }
+  .my:hover .my-bg { transform: scale(1.03); }
 }
-.my.zoomed { transform: scale(1.15); }
-
-/* The background zoom above is meant for the photographic backdrop,
-   not the foreground hero content (headline, orrery, contact panel).
-   `.no-zoom` is toggled by JS whenever the pointer/touch is over
-   `.hero-grid`, and always wins over the hover/tap scale so hovering
-   the text or celestial bodies never nudges the background image. */
-.my.no-zoom,
-.my.no-zoom:hover {
-  transform: none !important;
-}
+.my.zoomed .my-bg { transform: scale(1.15); }
 
 .overlay-text h1 {
   font-size: 3.35em;
@@ -466,6 +468,8 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
    composition rather than two stacked blocks.
    ========================================================= */
 .hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.05fr auto 0.9fr;
   align-items: center;
