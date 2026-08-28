@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- v5: orrery hero, deeper starfield, scroll-reveal pass, trimmed sections -->
-  <link rel="stylesheet" href="HTML_1.css?v=5">
+  <!-- v6: hero split into orrery + docked contact panel side by side -->
+  <link rel="stylesheet" href="HTML_1.css?v=6">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
@@ -69,30 +69,59 @@
 <div class="Container">
   <div class="frame">
     <section class="my" id="hero">
-      <div class="overlay-text">
-        <h1><span class="accent">Hello</span>, World</h1>
-        <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
-      </div>
+      <div class="hero-grid">
 
-      <!-- Orrery: sun + orbiting bodies + satellite, replacing the
-           single rotating Earth globe. -->
-      <div class="orrery-wrap" id="orreryWrap" aria-hidden="true">
-        <div class="orbit orbit-1"></div>
-        <div class="orbit orbit-2"></div>
-        <div class="orbit orbit-3"></div>
-        <div class="orbit orbit-4"></div>
+        <div class="hero-main">
+          <div class="overlay-text">
+            <h1><span class="accent">Hello</span>, World</h1>
+            <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
+          </div>
 
-        <div class="orrery-sun"></div>
-        <div class="orrery-egypt"></div>
+          <!-- Orrery: sun + orbiting bodies + satellite, replacing the
+               single rotating Earth globe. -->
+          <div class="orrery-wrap" id="orreryWrap" aria-hidden="true">
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+            <div class="orbit orbit-4"></div>
 
-        <div class="orbit-arm arm-1"><div class="body"></div></div>
-        <div class="orbit-arm arm-2"><div class="body"></div></div>
-        <div class="orbit-arm arm-3"><div class="body"></div></div>
-        <div class="orbit-arm arm-4"><div class="body"></div></div>
+            <div class="orrery-sun"></div>
+            <div class="orrery-egypt"></div>
 
-        <div class="orrery-sat-arm">
-          <div class="orrery-sat">🛰️</div>
+            <div class="orbit-arm arm-1"><div class="body"></div></div>
+            <div class="orbit-arm arm-2"><div class="body"></div></div>
+            <div class="orbit-arm arm-3"><div class="body"></div></div>
+            <div class="orbit-arm arm-4"><div class="body"></div></div>
+
+            <div class="orrery-sat-arm">
+              <div class="orrery-sat">🛰️</div>
+            </div>
+          </div>
         </div>
+
+        <div class="hero-divider" aria-hidden="true"><span></span></div>
+
+        <!-- =========================================================
+             CV / typewriter / contact — now docked beside the orrery
+             as its own "console panel" rather than a full-width block
+             underneath the hero.
+             ========================================================= -->
+        <div class="hero-panel" id="gis-overlay">
+          <span class="eyebrow">// transmission</span>
+          <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
+
+          <div class="typewriter-container" id="typewriter">
+            <span id="typed-text"></span>
+          </div>
+
+          <div class="rr">Contact Me</div>
+          <div class="icon3">
+            <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
+            <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
+            <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
+          </div>
+        </div>
+
       </div>
     </section>
   </div>
@@ -100,24 +129,6 @@
 
 <main>
   <article>
-
-    <!-- =========================================================
-         CV / typewriter / contact
-         ========================================================= -->
-    <section class="gis-overlay reveal-up" id="gis-overlay">
-      <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
-
-      <div class="typewriter-container" id="typewriter">
-        <span id="typed-text"></span>
-      </div>
-
-      <div class="rr">Contact Me</div>
-      <div class="icon3">
-        <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
-        <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
-        <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
-      </div>
-    </section>
 
     <div class="contour-divider" aria-hidden="true"></div>
 
