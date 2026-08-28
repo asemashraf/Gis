@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- v4: bumped cache-busting version after the mobile animation fixes below -->
-  <link rel="stylesheet" href="HTML_1.css?v=4">
+  <!-- v5: orrery hero, deeper starfield, scroll-reveal pass, trimmed sections -->
+  <link rel="stylesheet" href="HTML_1.css?v=5">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
@@ -18,6 +18,8 @@
   <div class="stars stars-1"></div>
   <div class="stars stars-2"></div>
   <div class="stars stars-3"></div>
+  <div class="stars stars-4"></div>
+  <div class="stars stars-5"></div>
 </div>
 
 <!-- =========================================================
@@ -33,20 +35,6 @@
 
   <ul id="rmenu">
     <li><a class="menu-item" href="#hero">Home</a></li>
-    <li>
-      <a class="menu-item" href="#gis-applications">Applications</a>
-      <div class="sup-contant">
-        <div class="sup-drop">
-          <ul>
-            <li><a href="#gis-applications">// 01 — Natural resources</a></li>
-            <li><a href="#gis-applications">// 02 — Urban planning</a></li>
-            <li><a href="#gis-applications">// 03 — Disaster response</a></li>
-            <li><a href="#gis-applications">// 04 — Smart agriculture</a></li>
-            <li><a href="#pharaoh-gis">// 05 — Ancient Egyptian GIS</a></li>
-          </ul>
-        </div>
-      </div>
-    </li>
     <li><a class="menu-item" href="#pharaoh-gis">🔺&nbsp;Ancient GIS</a></li>
     <li>
       <a class="menu-item" href="#developers">Stack</a>
@@ -67,7 +55,6 @@
           <ul>
             <li><a href="#map-section">// Shortest route</a></li>
             <li><a href="#tools-section">// GIS tools</a></li>
-            <li><a href="#quiz-section">// GIS quiz</a></li>
           </ul>
         </div>
       </div>
@@ -87,17 +74,24 @@
         <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
       </div>
 
-      <div class="globe-wrap" id="globeWrap" aria-hidden="true">
-        <div class="globe-ring"></div>
-        <div class="globe-ring globe-ring-2"></div>
-        <div class="globe-sat">
-          <div class="sat-beam"></div>
-        </div>
-        <div class="globe">
-          <div class="globe-texture"></div>
-          <div class="globe-shading"></div>
-          <div class="scan-ping"></div>
-          <div class="globe-egypt"></div>
+      <!-- Orrery: sun + orbiting bodies + satellite, replacing the
+           single rotating Earth globe. -->
+      <div class="orrery-wrap" id="orreryWrap" aria-hidden="true">
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+        <div class="orbit orbit-4"></div>
+
+        <div class="orrery-sun"></div>
+        <div class="orrery-egypt"></div>
+
+        <div class="orbit-arm arm-1"><div class="body"></div></div>
+        <div class="orbit-arm arm-2"><div class="body"></div></div>
+        <div class="orbit-arm arm-3"><div class="body"></div></div>
+        <div class="orbit-arm arm-4"><div class="body"></div></div>
+
+        <div class="orrery-sat-arm">
+          <div class="orrery-sat">🛰️</div>
         </div>
       </div>
     </section>
@@ -108,83 +102,20 @@
   <article>
 
     <!-- =========================================================
-         GIS applications + card carousel
+         CV / typewriter / contact
          ========================================================= -->
-    <section class="gis-section" id="gis-applications">
-      <div class="section-heading">
-        <span class="eyebrow">// applications</span>
-        <h2>Where GIS Makes the Difference</h2>
+    <section class="gis-overlay reveal-up" id="gis-overlay">
+      <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
+
+      <div class="typewriter-container" id="typewriter">
+        <span id="typed-text"></span>
       </div>
 
-      <div class="main-text">
-        GIS has turned agriculture into a data-driven science, enabling real-time crop monitoring, weather and
-        soil analysis, and precision farming with satellite imagery, drones, and IoT — reducing waste, boosting
-        yields, and ensuring sustainability.
-      </div>
-
-      <!-- Stats counters — edit data-target to your real numbers -->
-      <div class="stats-strip" id="statsStrip">
-        <div class="stat-item">
-          <span class="stat-number" data-target="15">0</span>
-          <span class="stat-label">Projects</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="3">0</span>
-          <span class="stat-label">Years Experience</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="40">0</span>
-          <span class="stat-label">Maps Delivered</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="6">0</span>
-          <span class="stat-label">GIS Tools Built</span>
-        </div>
-      </div>
-
-      <div class="capability-grid" id="capabilityGrid">
-        <div class="capability-card">
-          <span class="capability-index">01</span>
-          <span class="capability-icon">💧</span>
-          <h3>Natural Resource Management</h3>
-          <p>Monitoring and assessing water, forests, and mineral resources — mapping utilization areas, flagging optimal investment sites, and tracking sustainable use over time.</p>
-        </div>
-        <div class="capability-card">
-          <span class="capability-index">02</span>
-          <span class="capability-icon">🏙️</span>
-          <h3>Urban & Municipal Planning</h3>
-          <p>Analyzing population, roads, and public facilities to support growth plans, traffic organization, and utility services like water and electricity.</p>
-        </div>
-        <div class="capability-card">
-          <span class="capability-index">03</span>
-          <span class="capability-icon">🚨</span>
-          <h3>Disaster & Emergency Management</h3>
-          <p>Tracking hazards such as earthquakes, floods, and storms — producing hazard maps that help emergency teams coordinate and deliver aid efficiently.</p>
-        </div>
-        <div class="capability-card">
-          <span class="capability-index">04</span>
-          <span class="capability-icon">🌾</span>
-          <h3>Smart Agriculture</h3>
-          <p>Analyzing soil and crop health to determine the best farming practices for a region — improving yields and managing resources effectively.</p>
-        </div>
-      </div>
-
-      <!-- =========================================================
-           CV / typewriter / contact
-           ========================================================= -->
-      <div class="gis-overlay" id="gis-overlay">
-        <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
-
-        <div class="typewriter-container" id="typewriter">
-          <span id="typed-text"></span>
-        </div>
-
-        <div class="rr">Contact Me</div>
-        <div class="icon3">
-          <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
-          <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
-          <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
-        </div>
+      <div class="rr">Contact Me</div>
+      <div class="icon3">
+        <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
+        <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
+        <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
       </div>
     </section>
 
@@ -193,18 +124,18 @@
     <!-- =========================================================
          Ancient Egyptian GIS — signature feature section
          ========================================================= -->
-    <section class="pharaoh-section reveal-up" id="pharaoh-gis">
-      <div class="section-heading">
+    <section class="pharaoh-section" id="pharaoh-gis">
+      <div class="section-heading reveal-up">
         <span class="eyebrow">// 🏺 circa 3000 BCE — the first geospatial engineers</span>
         <h2>How the Ancient Egyptians Practiced GIS — Without a Single Computer</h2>
       </div>
 
       <div class="pharaoh-grid">
-        <div class="pharaoh-media" id="pharaohMedia1">
+        <div class="pharaoh-media reveal-slit" id="pharaohMedia1">
           <img src="mare.jpg" alt="Illustration of ancient Egyptian surveyors laying out a glowing map of the Nile beside the pyramids, alongside pyramid construction and precision measuring tools" loading="lazy">
           <span class="pharaoh-caption">Surveying the Nile, circa 2600 BCE</span>
         </div>
-        <div class="pharaoh-copy">
+        <div class="pharaoh-copy reveal-up">
           <p>
             Long before satellites and coordinate systems, Egypt already had the two things every GIS depends on:
             a reason to measure the land, and a reliable way to do it. Every year the Nile flooded and wiped out
@@ -220,11 +151,11 @@
       </div>
 
       <div class="pharaoh-grid reverse">
-        <div class="pharaoh-media" id="pharaohMedia2">
+        <div class="pharaoh-media reveal-slit" id="pharaohMedia2">
           <img src="mazzen.png" alt="Illustration of an Egyptian scribe drawing a map of the Nile, canals, and pyramids on papyrus, with the real river and pyramids visible through the window" loading="lazy">
           <span class="pharaoh-caption">Recording the cadastre, Nile Delta</span>
         </div>
-        <div class="pharaoh-copy">
+        <div class="pharaoh-copy reveal-up">
           <h3>My take, as a GIS engineer</h3>
           <p>
             What strikes me most about the harpedonaptae isn't the rope — it's the workflow. They were running an
@@ -244,7 +175,7 @@
 
       <div class="ankh-divider" aria-hidden="true"><span>☥</span><span>🔺</span><span>☥</span></div>
 
-      <div class="gis-compare" id="gisCompare">
+      <div class="gis-compare reveal-up" id="gisCompare">
         <div class="section-heading" style="margin-bottom: 18px;">
           <h3 style="font-family: var(--font-display); color: var(--ink); font-size: 1.15em;">Same Job, 4,500 Years Apart</h3>
         </div>
@@ -303,7 +234,7 @@
         <button type="button" class="active" id="modeCar" onclick="setTravelMode('car')">🚗 Driving</button>
         <button type="button" id="modeFoot" onclick="setTravelMode('foot')">🚶 Walking</button>
       </div>
-      <div id="map"></div>
+      <div id="map" class="reveal-slit"></div>
     </section>
 
     <!-- =========================================================
@@ -318,7 +249,7 @@
 
       <div class="tools-grid">
 
-        <div class="tool-card">
+        <div class="tool-card reveal-up">
           <h3>📍 Coordinate Converter</h3>
           <p class="tool-desc">Decimal Degrees ⇄ Degrees/Minutes/Seconds</p>
 
@@ -347,7 +278,7 @@
           <div class="tool-output" id="ddOutput"></div>
         </div>
 
-        <div class="tool-card">
+        <div class="tool-card reveal-up">
           <h3>🛰️ UTM Zone Finder</h3>
           <p class="tool-desc">Find the UTM zone and EPSG code for any lat/lon</p>
 
@@ -363,35 +294,6 @@
           <div class="tool-output" id="utmOutput"></div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- =========================================================
-         GIS quiz
-         ========================================================= -->
-    <section class="quiz-container reveal-up" id="quiz-section">
-      <h2>🗺️ GIS Quiz</h2>
-
-      <div id="startScreen">
-        <p class="name-label">Enter your name to start:</p>
-        <div class="name-box">
-          <input type="text" id="username" placeholder="Your name">
-          <button type="button" onclick="startQuiz()">🚀 Start</button>
-        </div>
-      </div>
-
-      <div id="quiz" style="display:none;">
-        <p class="question" id="question"></p>
-        <div class="options" id="options"></div>
-        <button type="button" onclick="submitAnswer()">Submit</button>
-        <p class="feedback" id="feedback"></p>
-        <button type="button" onclick="nextQuestion()" id="nextBtn" style="display:none;">Next ➡️</button>
-      </div>
-
-      <p class="result" id="result"></p>
-      <div class="quiz-badge" id="quizBadge">
-        <div class="badge-icon" id="badgeIcon">🌱</div>
-        <div class="badge-label" id="badgeLabel">Beginner</div>
       </div>
     </section>
 
@@ -437,35 +339,32 @@
 
 <!-- =========================================================
      Auto "pulse" for touch devices — mobile stand-in for hover.
-     True :hover doesn't exist on touch, so instead of chasing
-     touch events (which is what caused the old "stuck" bug),
-     this just toggles the same visual state hover would use, on
-     a timer, only on devices that can't hover in the first place.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const globeWrap = document.getElementById('globeWrap');
-    if (!isTouch || !globeWrap) return;
+    const orreryWrap = document.getElementById('orreryWrap');
+    if (!isTouch || !orreryWrap) return;
 
     setInterval(() => {
-      globeWrap.classList.add('auto-pulse');
-      setTimeout(() => globeWrap.classList.remove('auto-pulse'), 1200);
+      orreryWrap.classList.add('auto-pulse');
+      setTimeout(() => orreryWrap.classList.remove('auto-pulse'), 1200);
     }, 6000);
   });
 </script>
 
 <!-- =========================================================
-     Card reveal + typewriter tagline + stats counters
+     Scroll reveal + typewriter tagline
+     ---------------------------------------------------------
+     A single IntersectionObserver drives every `.reveal-up` and
+     `.reveal-slit` element on the page, so text blocks fade/rise
+     into place and feature images slide out from behind a masked
+     "gap" as they scroll into view, instead of the whole section
+     just being visible from the start.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.capability-card');
-    cards.forEach((card, i) => {
-      setTimeout(() => card.classList.add('show'), 120 + i * 60);
-    });
-
-    const revealTargets = document.querySelectorAll('.reveal-up');
+    const revealTargets = document.querySelectorAll('.reveal-up, .reveal-slit');
     if ('IntersectionObserver' in window && revealTargets.length) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -508,42 +407,6 @@
     window.addEventListener('scroll', startIfVisible);
     window.addEventListener('load', startIfVisible);
     startIfVisible();
-
-    // Stats counters: count up from 0 once the strip is visible
-    const statsStrip = document.getElementById('statsStrip');
-    if (statsStrip && 'IntersectionObserver' in window) {
-      let counted = false;
-      const numbers = statsStrip.querySelectorAll('.stat-number');
-
-      const animateCount = (elm) => {
-        const target = parseInt(elm.getAttribute('data-target'), 10) || 0;
-        const duration = 1200;
-        const startTime = performance.now();
-
-        function tick(now) {
-          const progress = Math.min((now - startTime) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          elm.textContent = Math.round(eased * target);
-          if (progress < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-      };
-
-      const statsIo = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !counted) {
-            counted = true;
-            numbers.forEach(animateCount);
-            statsIo.unobserve(statsStrip);
-          }
-        });
-      }, { threshold: 0.3 });
-      statsIo.observe(statsStrip);
-    } else if (statsStrip) {
-      statsStrip.querySelectorAll('.stat-number').forEach((elm) => {
-        elm.textContent = elm.getAttribute('data-target');
-      });
-    }
   });
 </script>
 
@@ -558,24 +421,24 @@
 </script>
 
 <!-- =========================================================
-     Hero globe — periodic "zoom to Giza" signature moment.
-     Every ~16s the globe cross-fades into the pyramids-at-sunset
+     Hero orrery — periodic "zoom to Giza" signature moment.
+     Every ~16s the sun cross-fades into the pyramids-at-sunset
      scene from the Ancient GIS banner image, holds briefly, then
-     fades back into the satellite globe. Runs regardless of hover
+     fades back into the orbiting bodies. Runs regardless of hover
      state — it's timed, not hover-triggered.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const globeWrap = document.getElementById('globeWrap');
-    if (!globeWrap) return;
+    const orreryWrap = document.getElementById('orreryWrap');
+    if (!orreryWrap) return;
 
     const EGYPT_ZOOM_EVERY_MS = 16000;
     const EGYPT_ZOOM_DURATION_MS = 4200;
 
     setInterval(() => {
       if (document.hidden) return;
-      globeWrap.classList.add('egypt-zoom');
-      setTimeout(() => globeWrap.classList.remove('egypt-zoom'), EGYPT_ZOOM_DURATION_MS);
+      orreryWrap.classList.add('egypt-zoom');
+      setTimeout(() => orreryWrap.classList.remove('egypt-zoom'), EGYPT_ZOOM_DURATION_MS);
     }, EGYPT_ZOOM_EVERY_MS);
   });
 </script>
@@ -674,129 +537,7 @@
 </script>
 
 <!-- =========================================================
-     GIS quiz logic
-     ========================================================= -->
-<script>
-  const quizData = [
-    { question: 'Which tool in ArcGIS is used to create buffer zones?', options: ['Clip', 'Buffer', 'Merge', 'Dissolve'], correct: 'Buffer' },
-    { question: 'QGIS is an example of:', options: ['Open-source GIS software', 'Commercial GIS software', 'Remote Sensing satellite', 'Database tool'], correct: 'Open-source GIS software' },
-    { question: 'Which software is widely used for satellite image classification?', options: ['ERDAS Imagine', 'AutoCAD', 'MS Excel', 'Photoshop'], correct: 'ERDAS Imagine' },
-    { question: 'Which coordinate system is most suitable for global datasets?', options: ['WGS84', 'UTM', 'Lambert Conformal Conic', 'NAD83'], correct: 'WGS84' },
-    { question: "The 'Clip' tool in GIS is mainly used for:", options: ['Cutting features using a boundary', 'Creating buffer zones', 'Calculating distance', 'Merging layers'], correct: 'Cutting features using a boundary' },
-    { question: 'Raster data represents:', options: ['Points, lines, polygons', 'Continuous surfaces', 'Tabular data', 'Vector networks'], correct: 'Continuous surfaces' },
-    { question: "What were ancient Egypt's earliest known land surveyors called?", options: ['Harpedonaptae', 'Nomarchs', 'Viziers', 'Scribes of Ma\'at'], correct: 'Harpedonaptae' },
-    { question: 'Which right-triangle ratio did they use to lay out accurate right angles?', options: ['3-4-5', '5-12-13', '1-1-√2', '6-8-10'], correct: '3-4-5' }
-  ];
-
-  let currentQuestion = 0;
-  let score = 0;
-  let playerName = '';
-
-  const QUIZ_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbygwg-IL1YwBOKB4cAOIbOfGGJ4tkPPKAz8edgTfriuWx18JsuqflTSKd7gJ7hGzKcCjQ/exec';
-
-  function startQuiz() {
-    const nameInput = document.getElementById('username').value.trim();
-    if (nameInput === '') {
-      alert('Please enter your name!');
-      return;
-    }
-    playerName = nameInput;
-    document.getElementById('startScreen').style.display = 'none';
-    document.getElementById('quiz').style.display = 'block';
-    document.getElementById('quizBadge').classList.remove('show');
-    currentQuestion = 0;
-    score = 0;
-    loadQuestion();
-  }
-
-  function loadQuestion() {
-    document.getElementById('feedback').innerHTML = '';
-    document.getElementById('feedback').className = 'feedback';
-    document.getElementById('nextBtn').style.display = 'none';
-
-    const q = quizData[currentQuestion];
-    document.getElementById('question').innerText = q.question;
-
-    let optionsHtml = '';
-    q.options.forEach((opt, i) => {
-      optionsHtml += `<label><input type="radio" name="option" value="${opt}" id="opt${i}"> ${opt}</label>`;
-    });
-    document.getElementById('options').innerHTML = optionsHtml;
-  }
-
-  function submitAnswer() {
-    const selected = document.querySelector('input[name="option"]:checked');
-    if (!selected) {
-      alert('Please select an option!');
-      return;
-    }
-
-    const answer = selected.value;
-    const correct = quizData[currentQuestion].correct;
-    const feedback = document.getElementById('feedback');
-
-    if (answer === correct) {
-      feedback.innerHTML = '✅ Correct!';
-      feedback.className = 'feedback correct';
-      score++;
-    } else {
-      feedback.innerHTML = `❌ Wrong! Correct answer: ${correct}`;
-      feedback.className = 'feedback wrong';
-    }
-    document.getElementById('nextBtn').style.display = 'inline-block';
-  }
-
-  function nextQuestion() {
-    currentQuestion++;
-    if (currentQuestion < quizData.length) {
-      loadQuestion();
-    } else {
-      showResult();
-    }
-  }
-
-  function showResult() {
-    document.getElementById('quiz').style.display = 'none';
-    let resultText;
-    let level;
-
-    if (score <= 3) { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌱 Beginner`; level = 'Beginner'; }
-    else if (score <= 6) { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🌍 Intermediate`; level = 'Intermediate'; }
-    else { resultText = `${playerName}, you scored ${score}/${quizData.length} → 🚀 GIS Expert`; level = 'GIS Expert'; }
-
-    document.getElementById('result').innerText = resultText;
-    showBadge(level);
-    sendToSheet(level);
-  }
-
-  function showBadge(level) {
-    const badge = document.getElementById('quizBadge');
-    const icon = document.getElementById('badgeIcon');
-    const label = document.getElementById('badgeLabel');
-    const map = {
-      'Beginner': '🌱',
-      'Intermediate': '🌍',
-      'GIS Expert': '🚀'
-    };
-    icon.textContent = map[level] || '🏅';
-    label.textContent = level;
-    badge.classList.add('show');
-  }
-
-  function sendToSheet(level) {
-    fetch(QUIZ_SHEET_ENDPOINT, {
-      method: 'POST',
-      body: JSON.stringify({ name: playerName, score: score, level: level }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((res) => res.json())
-      .then((data) => console.log('تم الإرسال:', data))
-      .catch((err) => console.error('خطأ في الإرسال:', err));
-  }
-</script>
-
-<!-- =========================================================
-     GIS mini-tools logic (coordinate converter / UTM / distance)
+     GIS mini-tools logic (coordinate converter / UTM)
      ========================================================= -->
 <script>
   function toRad(deg) { return deg * Math.PI / 180; }
@@ -855,105 +596,6 @@
     const hemisphere = lat >= 0 ? 'North' : 'South';
     const epsg = lat >= 0 ? 32600 + zone : 32700 + zone;
     out.innerHTML = `<strong>Zone ${zone}${lat >= 0 ? 'N' : 'S'}</strong> — ${hemisphere} hemisphere<br>EPSG:${epsg}`;
-  }
-
-  function calcDistance() {
-    const lat1 = parseFloat(document.getElementById('distLat1').value);
-    const lon1 = parseFloat(document.getElementById('distLon1').value);
-    const lat2 = parseFloat(document.getElementById('distLat2').value);
-    const lon2 = parseFloat(document.getElementById('distLon2').value);
-    const out = document.getElementById('distOutput');
-    if ([lat1, lon1, lat2, lon2].some((v) => isNaN(v))) {
-      out.textContent = '⚠️ من فضلك ادخل الإحداثيات الأربعة';
-      return;
-    }
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const km = (R * c).toFixed(2);
-    out.innerHTML = `<strong>${km} km</strong> (${(km * 0.621371).toFixed(2)} miles)`;
-  }
-</script>
-
-<!-- =========================================================
-     "Ask me anything" widget — AI tab + human live-chat tab
-     ========================================================= -->
-<script>
-  function openDialog() {
-    document.getElementById('dialog-overlay').style.display = 'flex';
-  }
-  function closeDialog() {
-    document.getElementById('dialog-overlay').style.display = 'none';
-  }
-
-  function switchChatTab(tab) {
-    document.getElementById('tabAI').classList.toggle('active', tab === 'ai');
-    document.getElementById('tabHuman').classList.toggle('active', tab === 'human');
-    document.getElementById('paneAI').style.display = tab === 'ai' ? 'block' : 'none';
-    document.getElementById('paneHuman').style.display = tab === 'human' ? 'block' : 'none';
-  }
-
-  function appendMsg(logId, who, label, text) {
-    const log = document.getElementById(logId);
-    const wrap = document.createElement('div');
-    wrap.className = 'chat-bubble-wrap ' + who;
-
-    const nameEl = document.createElement('div');
-    nameEl.className = 'chat-sender';
-    nameEl.textContent = label;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble ' + who;
-    bubble.textContent = text;
-
-    wrap.appendChild(nameEl);
-    wrap.appendChild(bubble);
-    log.appendChild(wrap);
-    log.scrollTop = log.scrollHeight;
-    return bubble;
-  }
-
-  // Small built-in FAQ, matched by keyword. Honest about its limits — this
-  // is not a live model, just enough to answer the questions visitors
-  // actually ask on a GIS portfolio.
-  const faqBot = [
-    { keys: ['ancient', 'pharaoh', 'egypt', 'harpedon', 'nile'], reply: 'Ancient Egyptian surveyors, the harpedonaptae, used a knotted rope and the 3-4-5 triangle to re-draw farm boundaries after every Nile flood. Scroll up to "Ancient Egyptian GIS" for the full story.' },
-    { keys: ['cv', 'resume', 'hire', 'job', 'work with'], reply: 'You can grab the CV from the "Download my CV" button, or reach out directly on WhatsApp, email, or LinkedIn in the Contact Me section.' },
-    { keys: ['tool', 'coordinate', 'utm', 'convert', 'dms'], reply: 'Check the "GIS Mini-Tools" section below — it converts DD ⇄ DMS coordinates and finds UTM zones, right in your browser.' },
-    { keys: ['map', 'route', 'shortest', 'driving', 'walking'], reply: 'Head to "Find the Shortest Route" — click a start point, then a destination on the map, and it draws the route for you.' },
-    { keys: ['quiz', 'test', 'score', 'badge'], reply: 'Try the GIS Quiz further down the page — eight questions, three skill badges to earn.' },
-    { keys: ['contact', 'email', 'whatsapp', 'phone', 'linkedin'], reply: 'Best ways to reach Asem: WhatsApp, email, or LinkedIn — all linked in the Contact Me section.' },
-    { keys: ['remote sensing', 'satellite', 'imagery', 'drone'], reply: 'Asem works with satellite imagery, drones, and remote sensing for land-cover, agriculture, and environmental monitoring projects.' },
-    { keys: ['stack', 'python', 'javascript', 'software', 'skill'], reply: 'The Stack section covers the toolkit: Python, .NET and C++ for GIS scripting, plus JavaScript/HTML/CSS for web GIS apps.' }
-  ];
-
-  function askAI() {
-    const input = document.getElementById('aiInput');
-    const question = input.value.trim();
-    if (!question) return;
-    appendMsg('aiLog', 'user', 'You', question);
-    input.value = '';
-
-    const thinking = appendMsg('aiLog', 'bot', '🤖 GIS-Bot', '...');
-    const lower = question.toLowerCase();
-    const hit = faqBot.find((f) => f.keys.some((k) => lower.includes(k)));
-    const replyText = hit
-      ? hit.reply
-      : 'Good question — I\'m a small FAQ bot for now. Try asking about the CV, GIS tools, the route map, the quiz, or ancient Egyptian GIS.';
-
-    setTimeout(() => { thinking.textContent = replyText; }, 450);
-  }
-
-  function sendHumanMessage() {
-    const input = document.getElementById('humanInput');
-    const name = document.getElementById('humanName').value.trim() || 'Visitor';
-    const msg = input.value.trim();
-    if (!msg) return;
-    appendMsg('humanLog', 'user', name, msg);
-    input.value = '';
-    document.getElementById('humanStatus').textContent = '⚠️ Saved in this browser only for now — live chat needs a backend (e.g. Firebase) to actually reach Asem in real time.';
   }
 </script>
 
@@ -1024,38 +666,6 @@
     document.getElementById('modeFoot').classList.toggle('active', mode === 'foot');
   }
 </script>
-
-<!-- =========================================================
-     Chatbot / contact widget — was styled in CSS and wired in JS
-     but never had its markup on the page. Added here.
-     ========================================================= -->
-<button class="chatbot-btn" id="chatbotBtn" type="button" onclick="openDialog()" aria-haspopup="dialog" aria-label="Open contact widget">💬</button>
-
-<div class="dialog-overlay" id="dialog-overlay" role="dialog" aria-modal="true" aria-label="Contact Asem">
-  <div class="dialog-box">
-    <button class="close-btn" type="button" onclick="closeDialog()" aria-label="Close">✕</button>
-
-    <div class="chat-tabs">
-      <button class="chat-tab active" id="tabAI" type="button" onclick="switchChatTab('ai')">🤖 Ask GIS-Bot</button>
-      <button class="chat-tab" id="tabHuman" type="button" onclick="switchChatTab('human')">🧑 Message Asem</button>
-    </div>
-
-    <div class="chat-pane" id="paneAI">
-      <div class="chat-log" id="aiLog"></div>
-      <input type="text" id="aiInput" placeholder="Ask about GIS, the CV, ancient Egypt...">
-      <button type="button" onclick="askAI()">Send</button>
-      <p class="chat-note">Instant answers from a small built-in FAQ — not a live model yet.</p>
-    </div>
-
-    <div class="chat-pane" id="paneHuman" style="display:none;">
-      <div class="chat-log" id="humanLog"></div>
-      <input type="text" id="humanName" placeholder="Your name">
-      <input type="text" id="humanInput" placeholder="Type a message...">
-      <button type="button" onclick="sendHumanMessage()">Send</button>
-      <p class="chat-note" id="humanStatus">Messages stay in this browser for now — direct contact is fastest via WhatsApp or email below.</p>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
