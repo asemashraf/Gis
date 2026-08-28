@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- v7: hero panel made fully transparent, floating on the starfield -->
-  <link rel="stylesheet" href="HTML_1.css?v=7">
+  <!-- v8: bigger CV/text/icons/orrery; background hover no longer triggers over hero content -->
+  <link rel="stylesheet" href="HTML_1.css?v=8">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
@@ -338,13 +338,33 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const mySection = document.querySelector('.my');
+    const heroGrid = document.querySelector('.hero-grid');
     if (!mySection) return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-    mySection.addEventListener('touchstart', () => mySection.classList.add('zoomed'));
+    mySection.addEventListener('touchstart', (e) => {
+      if (heroGrid && heroGrid.contains(e.target)) return;
+      mySection.classList.add('zoomed');
+    });
     document.addEventListener('touchstart', (e) => {
       if (!mySection.contains(e.target)) mySection.classList.remove('zoomed');
     });
+  });
+</script>
+
+<!-- =========================================================
+     Keep the background-image hover zoom scoped to the actual
+     background: hovering the headline, orrery, or contact panel
+     should never nudge the photo behind them.
+     ========================================================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mySection = document.querySelector('.my');
+    const heroGrid = document.querySelector('.hero-grid');
+    if (!mySection || !heroGrid) return;
+
+    heroGrid.addEventListener('mouseenter', () => mySection.classList.add('no-zoom'));
+    heroGrid.addEventListener('mouseleave', () => mySection.classList.remove('no-zoom'));
   });
 </script>
 
