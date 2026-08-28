@@ -428,8 +428,18 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 }
 .my.zoomed { transform: scale(1.15); }
 
+/* The background zoom above is meant for the photographic backdrop,
+   not the foreground hero content (headline, orrery, contact panel).
+   `.no-zoom` is toggled by JS whenever the pointer/touch is over
+   `.hero-grid`, and always wins over the hover/tap scale so hovering
+   the text or celestial bodies never nudges the background image. */
+.my.no-zoom,
+.my.no-zoom:hover {
+  transform: none !important;
+}
+
 .overlay-text h1 {
-  font-size: 3em;
+  font-size: 3.35em;
   letter-spacing: 0.01em;
 }
 
@@ -439,7 +449,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   font-family: var(--font-mono);
   font-weight: 500;
   color: var(--ink-dim);
-  font-size: 1.1em;
+  font-size: 1.22em;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 14px 0 0 0;
@@ -497,7 +507,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .hero-panel {
   justify-self: start;
   width: 100%;
-  max-width: 300px;
+  max-width: 340px;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -507,20 +517,20 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   box-shadow: none;
 }
 
-.hero-panel .eyebrow { margin-bottom: 16px; }
+.hero-panel .eyebrow { margin-bottom: 18px; font-size: 0.85em; }
 
 .hero-panel .cv { width: 100%; }
 
 .hero-panel .typewriter-container {
-  padding: 16px 0 0;
-  font-size: 0.92em;
+  padding: 18px 0 0;
+  font-size: 1.02em;
   text-align: left;
   min-height: 3.4em;
   line-height: 1.6;
 }
 
 .hero-panel .rr {
-  font-size: 0.92em;
+  font-size: 1.05em;
   margin: 1.6em 0 0.5em;
 }
 
@@ -558,9 +568,9 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
    ========================================================= */
 .orrery-wrap {
   position: relative;
-  margin-top: 40px;
-  width: 320px;
-  height: 320px;
+  margin-top: 30px;
+  width: 400px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -568,21 +578,21 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 
 .orrery-sun {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff3d8, var(--amber) 55%, #a86e22 100%);
   box-shadow:
-    0 0 20px 6px rgba(227, 168, 76, 0.55),
-    0 0 60px 18px rgba(227, 168, 76, 0.22);
+    0 0 24px 7px rgba(227, 168, 76, 0.55),
+    0 0 74px 22px rgba(227, 168, 76, 0.22);
   z-index: 3;
   transform: translateZ(0);
   animation: sun-pulse 5s ease-in-out infinite;
 }
 
 @keyframes sun-pulse {
-  0%, 100% { box-shadow: 0 0 20px 6px rgba(227, 168, 76, 0.5), 0 0 60px 18px rgba(227, 168, 76, 0.18); }
-  50% { box-shadow: 0 0 26px 9px rgba(227, 168, 76, 0.7), 0 0 76px 24px rgba(227, 168, 76, 0.3); }
+  0%, 100% { box-shadow: 0 0 24px 7px rgba(227, 168, 76, 0.5), 0 0 74px 22px rgba(227, 168, 76, 0.18); }
+  50% { box-shadow: 0 0 32px 11px rgba(227, 168, 76, 0.7), 0 0 94px 30px rgba(227, 168, 76, 0.3); }
 }
 
 .orbit {
@@ -595,10 +605,10 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   transform: translate(-50%, -50%);
 }
 
-.orbit-1 { width: 96px;  height: 96px; }
-.orbit-2 { width: 158px; height: 158px; }
-.orbit-3 { width: 216px; height: 216px; border-style: dashed; opacity: 0.35; }
-.orbit-4 { width: 280px; height: 280px; opacity: 0.28; }
+.orbit-1 { width: 120px; height: 120px; }
+.orbit-2 { width: 198px; height: 198px; }
+.orbit-3 { width: 270px; height: 270px; border-style: dashed; opacity: 0.35; }
+.orbit-4 { width: 350px; height: 350px; opacity: 0.28; }
 
 /* Each body sits on an absolutely-positioned "arm" the same size
    as its orbit, and the arm itself rotates — so the body traces a
@@ -627,20 +637,20 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 }
 
 .arm-1 { animation: orbit-spin 7s linear infinite; }
-.arm-1 .body { width: 10px; height: 10px; margin: -5px 0 0 43px; background: #b8c4cf; box-shadow: 0 0 6px 1px rgba(184, 196, 207, 0.6); }
+.arm-1 .body { width: 13px; height: 13px; margin: -6.5px 0 0 54px; background: #b8c4cf; box-shadow: 0 0 7px 1px rgba(184, 196, 207, 0.6); }
 
 .arm-2 { animation: orbit-spin 13s linear infinite; }
-.arm-2 .body { width: 14px; height: 14px; margin: -7px 0 0 72px; background: radial-gradient(circle at 35% 30%, #7fe8da, var(--teal) 70%); box-shadow: 0 0 10px 2px rgba(53, 214, 196, 0.55); }
+.arm-2 .body { width: 18px; height: 18px; margin: -9px 0 0 90px; background: radial-gradient(circle at 35% 30%, #7fe8da, var(--teal) 70%); box-shadow: 0 0 12px 3px rgba(53, 214, 196, 0.55); }
 
 .arm-3 { animation: orbit-spin-reverse 21s linear infinite; }
-.arm-3 .body { width: 9px; height: 9px; margin: -4.5px 0 0 101px; background: var(--alert); box-shadow: 0 0 8px 2px rgba(196, 69, 46, 0.5); }
+.arm-3 .body { width: 11px; height: 11px; margin: -5.5px 0 0 126px; background: var(--alert); box-shadow: 0 0 9px 2px rgba(196, 69, 46, 0.5); }
 
 .arm-4 { animation: orbit-spin 34s linear infinite; }
-.arm-4 .body { width: 20px; height: 20px; margin: -10px 0 0 133px; background: radial-gradient(circle at 35% 30%, #f2d9ad, #c98f3c 75%); box-shadow: 0 0 10px 2px rgba(227, 168, 76, 0.35); }
+.arm-4 .body { width: 25px; height: 25px; margin: -12.5px 0 0 166px; background: radial-gradient(circle at 35% 30%, #f2d9ad, #c98f3c 75%); box-shadow: 0 0 12px 3px rgba(227, 168, 76, 0.35); }
 .arm-4 .body::after {
   content: '';
   position: absolute;
-  inset: -6px -14px;
+  inset: -7px -17px;
   border: 1px solid rgba(227, 168, 76, 0.55);
   border-radius: 50%;
   transform: rotate(-18deg) scaleY(0.35);
@@ -673,8 +683,8 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -9px 0 0 118px;
-  font-size: 16px;
+  margin: -11px 0 0 148px;
+  font-size: 20px;
   transform: rotate(90deg) translateZ(0);
   filter: drop-shadow(0 0 6px rgba(53, 214, 196, 0.8));
 }
@@ -684,7 +694,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   position: absolute;
   top: 50%;
   right: 100%;
-  width: 60px;
+  width: 74px;
   height: 1.5px;
   transform: translateY(-50%);
   transform-origin: right center;
@@ -714,7 +724,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .orrery-wrap.auto-pulse .orrery-sun { transform: scale(1.12); }
 
 @media (max-width: 768px) {
-  .orrery-wrap { width: 240px; height: 240px; margin-top: 26px; }
+  .orrery-wrap { width: 300px; height: 300px; margin-top: 22px; }
   .orbit-4 { display: none; }
   .arm-4 { display: none; }
 }
@@ -725,11 +735,12 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .cv {
   display: inline-block;
   width: auto;
-  padding: 14px 34px;
+  padding: 18px 46px;
   text-align: center;
-  border-radius: 30px;
+  border-radius: 34px;
   font-family: var(--font-display);
   font-weight: 600;
+  font-size: 1.12em;
   letter-spacing: 0.02em;
   border: 2px solid var(--teal);
   background-color: transparent;
@@ -767,7 +778,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .rr {
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 1.1em;
+  font-size: 1.25em;
   margin: 2em 0 0.6em;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -800,11 +811,11 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   display: inline-block !important;
   float: none !important;
   position: static !important;
-  width: 2.6em;
-  margin: 0 8px !important;
+  width: 3.3em;
+  margin: 0 10px !important;
   border-radius: 50%;
   background: var(--panel);
-  padding: 8px;
+  padding: 9px;
   border: 1px solid var(--line);
   transition: transform 0.25s ease, border-color 0.25s ease;
 }
@@ -1040,7 +1051,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
    ========================================================= */
 .orrery-egypt {
   position: absolute;
-  inset: 40px;
+  inset: 50px;
   border-radius: 50%;
   background-image: url('mare.jpg');
   background-size: 220% 220%;
