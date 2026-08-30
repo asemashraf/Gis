@@ -7,8 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- v9: background photo split onto its own layer so hover/tap zoom only moves the image, never the hero text/orrery -->
-  <link rel="stylesheet" href="HTML_1.css?v=9">
+  <!-- v10: wireframe rotating globe with a zoom-to-Giza moment, new
+       Core Disciplines cards, CV transmission notice, GIS mini-tools
+       section removed -->
+  <link rel="stylesheet" href="HTML_1.css?v=10">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
@@ -20,6 +22,15 @@
   <div class="stars stars-3"></div>
   <div class="stars stars-4"></div>
   <div class="stars stars-5"></div>
+</div>
+
+<!-- CV transmission notice -->
+<div class="cv-toast" id="cvToast" role="status" aria-live="polite">
+  <span class="cv-toast-icon" aria-hidden="true">📡</span>
+  <div class="cv-toast-text">
+    <strong>Transmission notice</strong>
+    <span>Sorry — please contact me directly to send the CV.</span>
+  </div>
 </div>
 
 <!-- =========================================================
@@ -37,28 +48,18 @@
     <li><a class="menu-item" href="#hero">Home</a></li>
     <li><a class="menu-item" href="#pharaoh-gis">🔺&nbsp;Ancient GIS</a></li>
     <li>
-      <a class="menu-item" href="#developers">Stack</a>
+      <a class="menu-item" href="#services">Services</a>
       <div class="sup-contant">
         <div class="sup-drop">
           <ul>
-            <li><a href="#developers">// GIS scripting</a></li>
-            <li><a href="#developers">// Web development</a></li>
-            <li><a href="#developers">// Field apps</a></li>
+            <li><a href="#services">// Web GIS development</a></li>
+            <li><a href="#services">// Database development</a></li>
+            <li><a href="#services">// Remote sensing</a></li>
           </ul>
         </div>
       </div>
     </li>
-    <li>
-      <a class="menu-item" href="#map-section">Routing</a>
-      <div class="sup-contant">
-        <div class="sup-drop">
-          <ul>
-            <li><a href="#map-section">// Shortest route</a></li>
-            <li><a href="#tools-section">// GIS tools</a></li>
-          </ul>
-        </div>
-      </div>
-    </li>
+    <li><a class="menu-item" href="#map-section">Routing</a></li>
     <li><a class="menu-item" href="#gis-overlay">Contact</a></li>
   </ul>
 </nav>
@@ -78,38 +79,46 @@
             <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
           </div>
 
-          <!-- Orrery: sun + orbiting bodies + satellite, replacing the
-               single rotating Earth globe. -->
-          <div class="orrery-wrap" id="orreryWrap" aria-hidden="true">
-            <div class="orbit orbit-1"></div>
-            <div class="orbit orbit-2"></div>
-            <div class="orbit orbit-3"></div>
-            <div class="orbit orbit-4"></div>
+          <!-- Wireframe globe: rotating meridians + drifting landmasses,
+               with a Giza pin that zooms into the pyramids photo either
+               automatically every ~14s, or on click/tap. -->
+          <div class="globe-wrap" id="globeWrap">
+            <div class="globe-atmosphere" aria-hidden="true"></div>
+            <div class="globe-sphere">
+              <div class="meridian"></div>
+              <div class="meridian"></div>
+              <div class="meridian"></div>
+              <div class="meridian"></div>
+              <div class="meridian"></div>
 
-            <div class="orrery-sun"></div>
-            <div class="orrery-egypt"></div>
+              <div class="parallel parallel-1"></div>
+              <div class="parallel parallel-2"></div>
+              <div class="parallel parallel-3"></div>
 
-            <div class="orbit-arm arm-1"><div class="body"></div></div>
-            <div class="orbit-arm arm-2"><div class="body"></div></div>
-            <div class="orbit-arm arm-3"><div class="body"></div></div>
-            <div class="orbit-arm arm-4"><div class="body"></div></div>
+              <div class="landmass land-1"></div>
+              <div class="landmass land-2"></div>
+              <div class="landmass land-3"></div>
 
-            <div class="orrery-sat-arm">
-              <div class="orrery-sat">🛰️</div>
+              <div class="globe-shade" aria-hidden="true"></div>
+
+              <button class="globe-pin" id="globePin" type="button" aria-label="Zoom in on Giza, Egypt">
+                <span class="pin-pulse" aria-hidden="true"></span>
+                <span class="pin-dot" aria-hidden="true"></span>
+              </button>
+
+              <div class="globe-zoom-photo" aria-hidden="true"></div>
+              <div class="globe-zoom-caption" aria-hidden="true">Giza, Egypt — 29.9792°N</div>
             </div>
           </div>
+          <div class="globe-pin-label">Tracking <strong>Giza, Egypt</strong></div>
         </div>
 
         <div class="hero-divider" aria-hidden="true"><span></span></div>
 
-        <!-- =========================================================
-             CV / typewriter / contact — now docked beside the orrery
-             as its own "console panel" rather than a full-width block
-             underneath the hero.
-             ========================================================= -->
+        <!-- CV / typewriter / contact console panel -->
         <div class="hero-panel" id="gis-overlay">
           <span class="eyebrow">// transmission</span>
-          <button class="cv" type="button" onclick="window.open('cv.pdf', '_blank')">Download my CV</button>
+          <button class="cv" type="button" onclick="showCvToast()">Download my CV</button>
 
           <div class="typewriter-container" id="typewriter">
             <span id="typed-text"></span>
@@ -217,19 +226,32 @@
     <div class="contour-divider" aria-hidden="true"></div>
 
     <!-- =========================================================
-         Developers section
+         Core Disciplines — three animated capability cards
          ========================================================= -->
-    <section class="gis-section2 reveal-up" id="developers">
-      <div class="gis-overlay2">
-        <span class="eyebrow">// stack</span>
-        <h2>Developers</h2>
-        <p>
-          Programmers need to be focused because you're going to be writing, examining, and error-checking code.
-          GIS developers need to learn fast on their feet. GIS programming skills like learning
-          <span>Python, .NET, and C++</span> are essential. Alternatively, you could be building web applications
-          using <span>JavaScript, HTML, and CSS</span>. There is also potential to design geospatial applications
-          for field collection, reporting, and other GIS-related activities.
-        </p>
+    <section class="services-section" id="services">
+      <div class="section-heading reveal-up">
+        <span class="eyebrow">// what I build</span>
+        <h2>Core Disciplines</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card" data-n="01">
+          <div class="service-icon" aria-hidden="true">🌐</div>
+          <h3>Web GIS Development</h3>
+          <p>Interactive maps and geospatial dashboards built with Leaflet, ArcGIS JS API, and modern front-end
+            stacks — turning raw spatial data into tools people can actually click, drag, and query.</p>
+        </div>
+        <div class="service-card" data-n="02">
+          <div class="service-icon" aria-hidden="true">🗄️</div>
+          <h3>Database Development</h3>
+          <p>Spatial databases designed to scale — PostGIS schemas, indexing, and query optimization that keep
+            millions of features fast to store, search, and serve to a map in real time.</p>
+        </div>
+        <div class="service-card" data-n="03">
+          <div class="service-icon" aria-hidden="true">🛰️</div>
+          <h3>Remote Sensing</h3>
+          <p>Satellite and drone imagery processed into usable insight — classification, change detection, and
+            index analysis such as NDVI and NDWI for land, water, and urban monitoring.</p>
+        </div>
       </div>
     </section>
 
@@ -247,66 +269,6 @@
         <button type="button" id="modeFoot" onclick="setTravelMode('foot')">🚶 Walking</button>
       </div>
       <div id="map" class="reveal-slit"></div>
-    </section>
-
-    <!-- =========================================================
-         Online GIS mini-tools
-         ========================================================= -->
-    <section class="tools-section reveal-up" id="tools-section">
-      <div class="section-heading">
-        <span class="eyebrow">// online tools</span>
-        <h2>GIS Mini-Tools</h2>
-      </div>
-      <p class="map-hint">Small geospatial utilities, calculated live in your browser — no server round-trip.</p>
-
-      <div class="tools-grid">
-
-        <div class="tool-card reveal-up">
-          <h3>📍 Coordinate Converter</h3>
-          <p class="tool-desc">Decimal Degrees ⇄ Degrees/Minutes/Seconds</p>
-
-          <div class="tool-row">
-            <label for="ddLat">Latitude (DD)</label>
-            <input type="text" id="ddLat" placeholder="e.g. 30.0444">
-          </div>
-          <div class="tool-row">
-            <label for="ddLon">Longitude (DD)</label>
-            <input type="text" id="ddLon" placeholder="e.g. 31.2357">
-          </div>
-          <button type="button" onclick="convertDDtoDMS()">Convert to DMS</button>
-          <div class="tool-output" id="dmsOutput"></div>
-
-          <div class="tool-divider"></div>
-
-          <div class="tool-row">
-            <label for="dmsLat">Latitude (DMS)</label>
-            <input type="text" id="dmsLat" placeholder="e.g. 30°02'39.8&quot;N">
-          </div>
-          <div class="tool-row">
-            <label for="dmsLon">Longitude (DMS)</label>
-            <input type="text" id="dmsLon" placeholder="e.g. 31°14'08.5&quot;E">
-          </div>
-          <button type="button" onclick="convertDMStoDD()">Convert to DD</button>
-          <div class="tool-output" id="ddOutput"></div>
-        </div>
-
-        <div class="tool-card reveal-up">
-          <h3>🛰️ UTM Zone Finder</h3>
-          <p class="tool-desc">Find the UTM zone and EPSG code for any lat/lon</p>
-
-          <div class="tool-row">
-            <label for="utmLat">Latitude</label>
-            <input type="text" id="utmLat" placeholder="e.g. 30.0444">
-          </div>
-          <div class="tool-row">
-            <label for="utmLon">Longitude</label>
-            <input type="text" id="utmLon" placeholder="e.g. 31.2357">
-          </div>
-          <button type="button" onclick="findUTMZone()">Find Zone</button>
-          <div class="tool-output" id="utmOutput"></div>
-        </div>
-
-      </div>
     </section>
 
   </article>
@@ -350,33 +312,27 @@
 </script>
 
 <!-- =========================================================
-     Auto "pulse" for touch devices — mobile stand-in for hover.
+     CV download — shows a "transmission notice" instead of
+     opening the file.
      ========================================================= -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const orreryWrap = document.getElementById('orreryWrap');
-    if (!isTouch || !orreryWrap) return;
-
-    setInterval(() => {
-      orreryWrap.classList.add('auto-pulse');
-      setTimeout(() => orreryWrap.classList.remove('auto-pulse'), 1200);
-    }, 6000);
-  });
+  function showCvToast() {
+    const toast = document.getElementById('cvToast');
+    if (!toast) return;
+    toast.classList.remove('show');
+    void toast.offsetWidth;
+    toast.classList.add('show');
+    clearTimeout(showCvToast._t);
+    showCvToast._t = setTimeout(() => toast.classList.remove('show'), 4200);
+  }
 </script>
 
 <!-- =========================================================
      Scroll reveal + typewriter tagline
-     ---------------------------------------------------------
-     A single IntersectionObserver drives every `.reveal-up` and
-     `.reveal-slit` element on the page, so text blocks fade/rise
-     into place and feature images slide out from behind a masked
-     "gap" as they scroll into view, instead of the whole section
-     just being visible from the start.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const revealTargets = document.querySelectorAll('.reveal-up, .reveal-slit');
+    const revealTargets = document.querySelectorAll('.reveal-up, .reveal-slit, .service-card');
     if ('IntersectionObserver' in window && revealTargets.length) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -433,25 +389,37 @@
 </script>
 
 <!-- =========================================================
-     Hero orrery — periodic "zoom to Giza" signature moment.
-     Every ~16s the sun cross-fades into the pyramids-at-sunset
-     scene from the Ancient GIS banner image, holds briefly, then
-     fades back into the orbiting bodies. Runs regardless of hover
-     state — it's timed, not hover-triggered.
+     Hero globe — periodic "zoom to Giza" signature moment,
+     also triggerable on demand by clicking/tapping the pin.
      ========================================================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const orreryWrap = document.getElementById('orreryWrap');
-    if (!orreryWrap) return;
+    const globeWrap = document.getElementById('globeWrap');
+    const globePin = document.getElementById('globePin');
+    if (!globeWrap) return;
 
-    const EGYPT_ZOOM_EVERY_MS = 16000;
-    const EGYPT_ZOOM_DURATION_MS = 4200;
+    const ZOOM_EVERY_MS = 14000;
+    const ZOOM_DURATION_MS = 4400;
+    let zoomTimer = null;
 
-    setInterval(() => {
-      if (document.hidden) return;
-      orreryWrap.classList.add('egypt-zoom');
-      setTimeout(() => orreryWrap.classList.remove('egypt-zoom'), EGYPT_ZOOM_DURATION_MS);
-    }, EGYPT_ZOOM_EVERY_MS);
+    function triggerGlobeZoom() {
+      if (globeWrap.classList.contains('zooming')) return;
+      globeWrap.classList.add('zooming');
+      setTimeout(() => globeWrap.classList.remove('zooming'), ZOOM_DURATION_MS);
+    }
+
+    function scheduleAutoZoom() {
+      zoomTimer = setInterval(() => {
+        if (document.hidden) return;
+        triggerGlobeZoom();
+      }, ZOOM_EVERY_MS);
+    }
+
+    if (globePin) {
+      globePin.addEventListener('click', triggerGlobeZoom);
+    }
+
+    scheduleAutoZoom();
   });
 </script>
 
@@ -463,7 +431,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
 
-    // Subtle 3D tilt on the pharaoh feature images (mouse/trackpad only)
     function attachTilt(el) {
       if (!el || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       el.addEventListener('mousemove', (e) => {
@@ -477,7 +444,6 @@
     attachTilt(document.getElementById('pharaohMedia1'));
     attachTilt(document.getElementById('pharaohMedia2'));
 
-    // Ancient vs Modern GIS toggle
     window.setCompareMode = function setCompareMode(mode) {
       document.querySelectorAll('.compare-toggle button').forEach((btn) => {
         btn.classList.toggle('active', btn.dataset.mode === mode);
@@ -486,10 +452,6 @@
       document.getElementById('compareModern').classList.toggle('active', mode === 'modern');
     };
 
-    // A short, synthesized "Pharaonic" phrase (Web Audio — no audio file
-    // needed), played once the first time the Ancient GIS section is
-    // scrolled into view. Most browsers require a user gesture before
-    // audio can play, so the AudioContext is unlocked on first tap/click.
     let audioCtx = null;
     function unlockAudio() {
       if (!audioCtx) {
@@ -507,7 +469,6 @@
       if (!audioCtx) return;
       try {
         const now = audioCtx.currentTime;
-        // Phrygian-dominant-flavoured phrase — an "exotic" ancient feel
         const notes = [293.66, 311.13, 369.99, 392.0, 440.0, 466.16, 554.37, 587.33];
         const noteDur = 0.16;
         const master = audioCtx.createGain();
@@ -546,69 +507,6 @@
       soundIo.observe(pharaohSection);
     }
   });
-</script>
-
-<!-- =========================================================
-     GIS mini-tools logic (coordinate converter / UTM)
-     ========================================================= -->
-<script>
-  function toRad(deg) { return deg * Math.PI / 180; }
-
-  function ddToDms(deg, isLat) {
-    const dir = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
-    const abs = Math.abs(deg);
-    const d = Math.floor(abs);
-    const minFloat = (abs - d) * 60;
-    const m = Math.floor(minFloat);
-    const s = ((minFloat - m) * 60).toFixed(1);
-    return `${d}°${String(m).padStart(2, '0')}'${s}"${dir}`;
-  }
-
-  function convertDDtoDMS() {
-    const lat = parseFloat(document.getElementById('ddLat').value);
-    const lon = parseFloat(document.getElementById('ddLon').value);
-    const out = document.getElementById('dmsOutput');
-    if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-      out.textContent = '⚠️ من فضلك ادخل إحداثيات صحيحة (Lat -90..90 / Lon -180..180)';
-      return;
-    }
-    out.innerHTML = `<strong>${ddToDms(lat, true)}</strong>, <strong>${ddToDms(lon, false)}</strong>`;
-  }
-
-  function convertDMStoDD() {
-    const latStr = document.getElementById('dmsLat').value.trim();
-    const lonStr = document.getElementById('dmsLon').value.trim();
-    const out = document.getElementById('ddOutput');
-    const re = /(\d+)[°\s]+(\d+)['\s]+([\d.]+)["\s]*([NSEW])/i;
-    const latMatch = latStr.match(re);
-    const lonMatch = lonStr.match(re);
-    if (!latMatch || !lonMatch) {
-      out.textContent = '⚠️ الصيغة المطلوبة مثال: 30°02\'39.8"N';
-      return;
-    }
-    const parseOne = (m) => {
-      let dd = parseInt(m[1], 10) + parseInt(m[2], 10) / 60 + parseFloat(m[3]) / 3600;
-      if (/[SW]/i.test(m[4])) dd *= -1;
-      return dd;
-    };
-    const lat = parseOne(latMatch).toFixed(6);
-    const lon = parseOne(lonMatch).toFixed(6);
-    out.innerHTML = `<strong>Lat: ${lat}</strong>, <strong>Lon: ${lon}</strong>`;
-  }
-
-  function findUTMZone() {
-    const lat = parseFloat(document.getElementById('utmLat').value);
-    const lon = parseFloat(document.getElementById('utmLon').value);
-    const out = document.getElementById('utmOutput');
-    if (isNaN(lat) || isNaN(lon) || lat < -80 || lat > 84 || lon < -180 || lon > 180) {
-      out.textContent = '⚠️ من فضلك ادخل إحداثيات صحيحة (UTM يغطي Lat -80..84)';
-      return;
-    }
-    const zone = Math.floor((lon + 180) / 6) + 1;
-    const hemisphere = lat >= 0 ? 'North' : 'South';
-    const epsg = lat >= 0 ? 32600 + zone : 32700 + zone;
-    out.innerHTML = `<strong>Zone ${zone}${lat >= 0 ? 'N' : 'S'}</strong> — ${hemisphere} hemisphere<br>EPSG:${epsg}`;
-  }
 </script>
 
 <!-- =========================================================
