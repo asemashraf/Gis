@@ -7,12 +7,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- v10: wireframe rotating globe with a zoom-to-Giza moment, new
-       Core Disciplines cards, CV transmission notice, GIS mini-tools
-       section removed -->
-  <link rel="stylesheet" href="HTML_1.css?v=10">
+  <!-- v11: replaced the CSS wireframe globe with a real WebGL 3D globe
+       (Three.js) — drag to spin, scroll/pinch to zoom, click anywhere to
+       fly in, plus an orbiting satellite that periodically scans the
+       surface with a laser pulse. -->
+  <link rel="stylesheet" href="HTML_1.css?v=11">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+  <!-- Three.js (module build) + OrbitControls, for the hero globe -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -79,38 +90,17 @@
             <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
           </div>
 
-          <!-- Wireframe globe: rotating meridians + drifting landmasses,
-               with a Giza pin that zooms into the pyramids photo either
-               automatically every ~14s, or on click/tap. -->
+          <!-- Real 3D globe: drag to spin it yourself, scroll / pinch to
+               zoom, click any point on Earth to fly the camera in, and
+               watch the little satellite orbit and "scan" the surface. -->
           <div class="globe-wrap" id="globeWrap">
             <div class="globe-atmosphere" aria-hidden="true"></div>
-            <div class="globe-sphere">
-              <div class="meridian"></div>
-              <div class="meridian"></div>
-              <div class="meridian"></div>
-              <div class="meridian"></div>
-              <div class="meridian"></div>
-
-              <div class="parallel parallel-1"></div>
-              <div class="parallel parallel-2"></div>
-              <div class="parallel parallel-3"></div>
-
-              <div class="landmass land-1"></div>
-              <div class="landmass land-2"></div>
-              <div class="landmass land-3"></div>
-
-              <div class="globe-shade" aria-hidden="true"></div>
-
-              <button class="globe-pin" id="globePin" type="button" aria-label="Zoom in on Giza, Egypt">
-                <span class="pin-pulse" aria-hidden="true"></span>
-                <span class="pin-dot" aria-hidden="true"></span>
-              </button>
-
-              <div class="globe-zoom-photo" aria-hidden="true"></div>
-              <div class="globe-zoom-caption" aria-hidden="true">Giza, Egypt — 29.9792°N</div>
+            <div id="globeCanvasHost" aria-label="Interactive 3D globe — drag to rotate, scroll to zoom, click to fly to a location">
+              <div class="globe-loading" id="globeLoading">Loading globe…</div>
+              <div class="globe-tooltip" id="globeTooltip"></div>
             </div>
           </div>
-          <div class="globe-pin-label">Tracking <strong>Giza, Egypt</strong></div>
+          <div class="globe-pin-label">Drag to spin · scroll to zoom · click to fly in — tracking <strong>Giza, Egypt</strong></div>
         </div>
 
         <div class="hero-divider" aria-hidden="true"><span></span></div>
@@ -389,38 +379,382 @@
 </script>
 
 <!-- =========================================================
-     Hero globe — periodic "zoom to Giza" signature moment,
-     also triggerable on demand by clicking/tapping the pin.
+     Hero globe — real 3D Earth (Three.js)
+     ---------------------------------------------------------
+     - Textured sphere (continents + oceans) that auto-rotates,
+       can be dragged to spin freely, and zoomed with the wheel
+       or a pinch gesture (OrbitControls).
+     - Click anywhere on the sphere: the camera flies in toward
+       that point and a coordinate readout appears.
+     - A small satellite orbits the globe on a tilted path and,
+       every few seconds, fires a laser pulse straight down to
+       the point beneath it — a little photographing/scanning
+       moment — with a flash where the beam lands.
+     - Falls back to hiding the loading label and doing nothing
+       further if WebGL / the module import fails, so the rest
+       of the page is unaffected.
      ========================================================= -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const globeWrap = document.getElementById('globeWrap');
-    const globePin = document.getElementById('globePin');
-    if (!globeWrap) return;
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    const ZOOM_EVERY_MS = 14000;
-    const ZOOM_DURATION_MS = 4400;
-    let zoomTimer = null;
+  const host = document.getElementById('globeCanvasHost');
+  const loadingEl = document.getElementById('globeLoading');
+  const tooltipEl = document.getElementById('globeTooltip');
 
-    function triggerGlobeZoom() {
-      if (globeWrap.classList.contains('zooming')) return;
-      globeWrap.classList.add('zooming');
-      setTimeout(() => globeWrap.classList.remove('zooming'), ZOOM_DURATION_MS);
+  if (host) {
+    try {
+      const EARTH_RADIUS = 1;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.set(0, 0.15, 3.1);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      host.appendChild(renderer.domElement);
+
+      // ---- lighting -------------------------------------------------
+      scene.add(new THREE.AmbientLight(0x8fa6b8, 0.6));
+      const sunLight = new THREE.DirectionalLight(0xffffff, 1.25);
+      sunLight.position.set(4, 2.4, 4.5);
+      scene.add(sunLight);
+      const rimLight = new THREE.DirectionalLight(0x35d6c4, 0.4);
+      rimLight.position.set(-4, -1.5, -3.5);
+      scene.add(rimLight);
+
+      // ---- earth group (planet + clouds + marker + satellite all
+      // spin together with drag / auto-rotate) ------------------------
+      const earthGroup = new THREE.Group();
+      scene.add(earthGroup);
+
+      const texLoader = new THREE.TextureLoader();
+      texLoader.crossOrigin = 'anonymous';
+
+      const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+      const earthMat = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        shininess: 6,
+        specular: 0x223247
+      });
+      const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+      earthGroup.add(earthMesh);
+
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          earthMat.map = tex;
+          earthMat.needsUpdate = true;
+        },
+        undefined,
+        () => { /* texture failed to load — flat shaded sphere remains */ }
+      );
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-water.png',
+        (tex) => {
+          earthMat.specularMap = tex;
+          earthMat.needsUpdate = true;
+        },
+        undefined,
+        () => {}
+      );
+
+      // thin cloud shell
+      const cloudGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.008, 64, 64);
+      const cloudMat = new THREE.MeshPhongMaterial({
+        transparent: true,
+        opacity: 0.16,
+        depthWrite: false,
+        color: 0xffffff
+      });
+      const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+      earthGroup.add(cloudMesh);
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/fair_clouds_4k.png',
+        (tex) => { cloudMat.map = tex; cloudMat.needsUpdate = true; },
+        undefined,
+        () => {}
+      );
+
+      // outer atmosphere glow (rim-light shader, additive, backside)
+      const atmoGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.14, 64, 64);
+      const atmoMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
+            gl_FragColor = vec4(0.208, 0.839, 0.769, 1.0) * clamp(intensity, 0.0, 1.0);
+          }
+        `,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        depthWrite: false
+      });
+      scene.add(new THREE.Mesh(atmoGeo, atmoMat));
+
+      // ---- helper: lat/lng -> position on (or above) the sphere -----
+      function latLngToVector3(lat, lng, radius) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lng + 180) * (Math.PI / 180);
+        return new THREE.Vector3(
+          -radius * Math.sin(phi) * Math.cos(theta),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta)
+        );
+      }
+      function vector3ToLatLng(v) {
+        const radius = v.length();
+        const lat = 90 - (Math.acos(v.y / radius) * 180 / Math.PI);
+        let lng = (Math.atan2(v.z, -v.x) * 180 / Math.PI) - 180;
+        if (lng < -180) lng += 360;
+        if (lng > 180) lng -= 360;
+        return { lat, lng };
+      }
+
+      // Giza marker (amber pin + soft pulsing halo)
+      const GIZA = { lat: 29.9792, lng: 31.1342 };
+      const gizaPos = latLngToVector3(GIZA.lat, GIZA.lng, EARTH_RADIUS * 1.006);
+      const pinDot = new THREE.Mesh(
+        new THREE.SphereGeometry(0.013, 12, 12),
+        new THREE.MeshBasicMaterial({ color: 0xe3a84c })
+      );
+      pinDot.position.copy(gizaPos);
+      earthGroup.add(pinDot);
+
+      const pinHalo = new THREE.Mesh(
+        new THREE.RingGeometry(0.016, 0.028, 24),
+        new THREE.MeshBasicMaterial({ color: 0xe3a84c, transparent: true, opacity: 0.65, side: THREE.DoubleSide })
+      );
+      pinHalo.position.copy(gizaPos);
+      pinHalo.lookAt(gizaPos.clone().multiplyScalar(2));
+      earthGroup.add(pinHalo);
+
+      // ---- orbiting, scanning satellite ------------------------------
+      const orbitTilt = new THREE.Object3D();
+      orbitTilt.rotation.z = THREE.MathUtils.degToRad(28);
+      orbitTilt.rotation.x = THREE.MathUtils.degToRad(8);
+      scene.add(orbitTilt);
+
+      const orbitSpin = new THREE.Object3D();
+      orbitTilt.add(orbitSpin);
+
+      const ORBIT_RADIUS = EARTH_RADIUS * 1.55;
+
+      // faint orbit path ring
+      const orbitRing = new THREE.Mesh(
+        new THREE.RingGeometry(ORBIT_RADIUS - 0.003, ORBIT_RADIUS + 0.003, 128),
+        new THREE.MeshBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0.22, side: THREE.DoubleSide })
+      );
+      orbitRing.rotation.x = Math.PI / 2;
+      orbitTilt.add(orbitRing);
+
+      const satellite = new THREE.Group();
+      const satBody = new THREE.Mesh(
+        new THREE.BoxGeometry(0.045, 0.045, 0.07),
+        new THREE.MeshPhongMaterial({ color: 0xe7eef3, emissive: 0x111a24, shininess: 40 })
+      );
+      satellite.add(satBody);
+      const panelMat = new THREE.MeshPhongMaterial({ color: 0x35d6c4, emissive: 0x0c2b28, shininess: 10, side: THREE.DoubleSide });
+      const panelGeo = new THREE.BoxGeometry(0.16, 0.005, 0.05);
+      const panelL = new THREE.Mesh(panelGeo, panelMat);
+      panelL.position.x = -0.13;
+      const panelR = new THREE.Mesh(panelGeo, panelMat);
+      panelR.position.x = 0.13;
+      satellite.add(panelL, panelR);
+      satellite.position.set(ORBIT_RADIUS, 0, 0);
+      orbitSpin.add(satellite);
+
+      // laser beam from satellite down to its nadir point on Earth
+      const laserGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0, 0, 0)
+      ]);
+      const laserMat = new THREE.LineBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0 });
+      const laserLine = new THREE.Line(laserGeo, laserMat);
+      scene.add(laserLine);
+
+      const scanFlash = new THREE.Mesh(
+        new THREE.RingGeometry(0.001, 0.05, 32),
+        new THREE.MeshBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0, side: THREE.DoubleSide })
+      );
+      earthGroup.add(scanFlash);
+
+      let scanState = 'idle'; // idle | firing
+      let scanTimer = 0;
+      const SCAN_INTERVAL = 4.5;
+      const SCAN_DURATION = 0.9;
+
+      function updateSatelliteScan(dt) {
+        scanTimer += dt;
+
+        // world-space satellite position + its nadir point on the sphere
+        const satWorldPos = new THREE.Vector3();
+        satellite.getWorldPosition(satWorldPos);
+        const nadirLocal = satWorldPos.clone().normalize().multiplyScalar(EARTH_RADIUS * 1.004);
+        // convert nadir (world) into earthGroup local space, since the
+        // flash/pin live inside the rotating earthGroup
+        const nadirLocalInEarth = earthGroup.worldToLocal(nadirLocal.clone());
+
+        if (scanState === 'idle' && scanTimer >= SCAN_INTERVAL) {
+          scanState = 'firing';
+          scanTimer = 0;
+        }
+
+        if (scanState === 'firing') {
+          const t = Math.min(scanTimer / SCAN_DURATION, 1);
+          const pulse = Math.sin(t * Math.PI); // 0 -> 1 -> 0
+
+          const positions = laserLine.geometry.attributes.position;
+          positions.setXYZ(0, satWorldPos.x, satWorldPos.y, satWorldPos.z);
+          positions.setXYZ(1, nadirLocal.x, nadirLocal.y, nadirLocal.z);
+          positions.needsUpdate = true;
+          laserMat.opacity = 0.85 * pulse;
+
+          scanFlash.position.copy(nadirLocalInEarth);
+          scanFlash.lookAt(nadirLocalInEarth.clone().multiplyScalar(2));
+          scanFlash.scale.setScalar(0.6 + pulse * 1.1);
+          scanFlash.material.opacity = 0.55 * pulse;
+
+          if (t >= 1) {
+            scanState = 'idle';
+            scanTimer = 0;
+            laserMat.opacity = 0;
+            scanFlash.material.opacity = 0;
+          }
+        }
+      }
+
+      // ---- controls: drag to rotate, wheel/pinch to zoom -------------
+      camera.lookAt(0, 0, 0);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enablePan = false;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.minDistance = 1.7;
+      controls.maxDistance = 6.5;
+      controls.rotateSpeed = 0.55;
+      controls.zoomSpeed = 0.8;
+      controls.autoRotate = !reduceMotion;
+      controls.autoRotateSpeed = 0.7;
+
+      renderer.domElement.addEventListener('pointerdown', () => host.classList.add('is-dragging'));
+      window.addEventListener('pointerup', () => host.classList.remove('is-dragging'));
+
+      // ---- click / tap anywhere on the globe: fly the camera in ------
+      const raycaster = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2();
+      let dragStart = null;
+      let flight = null; // { fromPos, toPos, fromTarget, toTarget, t, duration }
+
+      function setPointerFromEvent(e) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      renderer.domElement.addEventListener('pointerdown', (e) => {
+        dragStart = { x: e.clientX, y: e.clientY };
+      });
+
+      renderer.domElement.addEventListener('pointerup', (e) => {
+        if (!dragStart) return;
+        const moved = Math.hypot(e.clientX - dragStart.x, e.clientY - dragStart.y);
+        dragStart = null;
+        if (moved > 6) return; // was a drag, not a click
+
+        setPointerFromEvent(e);
+        raycaster.setFromCamera(pointerNdc, camera);
+        const hit = raycaster.intersectObject(earthMesh, false)[0];
+        if (!hit) return;
+
+        // point in earthGroup-local space (accounts for current spin)
+        const localPoint = earthGroup.worldToLocal(hit.point.clone());
+        const { lat, lng } = vector3ToLatLng(localPoint);
+
+        // fly the camera toward this point, closer in
+        const dir = hit.point.clone().normalize();
+        const targetDistance = Math.max(controls.minDistance + 0.15, camera.position.length() * 0.55);
+        const toPos = dir.multiplyScalar(targetDistance);
+
+        flight = {
+          fromPos: camera.position.clone(),
+          toPos,
+          t: 0,
+          duration: 1.1
+        };
+        controls.autoRotate = false;
+
+        // coordinate readout near the click
+        if (tooltipEl) {
+          const rect = renderer.domElement.getBoundingClientRect();
+          tooltipEl.style.left = (e.clientX - rect.left) + 'px';
+          tooltipEl.style.top = (e.clientY - rect.top) + 'px';
+          const latDir = lat >= 0 ? 'N' : 'S';
+          const lngDir = lng >= 0 ? 'E' : 'W';
+          tooltipEl.textContent = `${Math.abs(lat).toFixed(2)}°${latDir}, ${Math.abs(lng).toFixed(2)}°${lngDir}`;
+          tooltipEl.classList.add('show');
+          clearTimeout(setPointerFromEvent._tt);
+          setPointerFromEvent._tt = setTimeout(() => tooltipEl.classList.remove('show'), 2600);
+        }
+      });
+
+      // ---- sizing ------------------------------------------------------
+      function resize() {
+        const w = host.clientWidth || 1;
+        const h = host.clientHeight || 1;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(resize).observe(host);
+      } else {
+        window.addEventListener('resize', resize);
+      }
+
+      // ---- animation loop ------------------------------------------------
+      const clock = new THREE.Clock();
+      function tick() {
+        const dt = Math.min(clock.getDelta(), 0.05);
+
+        if (!reduceMotion) {
+          orbitSpin.rotation.y += dt * 0.5; // satellite orbital speed
+          cloudMesh.rotation.y += dt * 0.02;
+          pinHalo.material.opacity = 0.4 + Math.sin(clock.elapsedTime * 2.4) * 0.25;
+          updateSatelliteScan(dt);
+        }
+
+        if (flight) {
+          flight.t = Math.min(flight.t + dt / flight.duration, 1);
+          const ease = 1 - Math.pow(1 - flight.t, 3);
+          camera.position.lerpVectors(flight.fromPos, flight.toPos, ease);
+          if (flight.t >= 1) flight = null;
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      if (loadingEl) loadingEl.classList.add('hide');
+    } catch (err) {
+      if (loadingEl) loadingEl.textContent = 'Globe unavailable';
+      console.error('Hero globe failed to initialize:', err);
     }
-
-    function scheduleAutoZoom() {
-      zoomTimer = setInterval(() => {
-        if (document.hidden) return;
-        triggerGlobeZoom();
-      }, ZOOM_EVERY_MS);
-    }
-
-    if (globePin) {
-      globePin.addEventListener('click', triggerGlobeZoom);
-    }
-
-    scheduleAutoZoom();
-  });
+  }
 </script>
 
 <!-- =========================================================
