@@ -1054,16 +1054,15 @@ input:focus-visible {
 }
 
 /* =========================================================
-   Hero globe — wireframe rotating Earth with a periodic
-   "zoom to Giza" moment that reveals the pyramids.
+   Hero globe — REAL 3D globe (WebGL / Three.js)
    ---------------------------------------------------------
-   Rotation is faked with the classic CSS-globe trick: thin
-   meridian ellipses oscillate their horizontal scale between
-   full-width and edge-on, staggered, so the wireframe reads
-   as a sphere turning in place. Landmasses are soft blobs
-   drifting the same path with a perspective fade at the limb.
-   A pin marks Giza; tapping it (or waiting ~14s) triggers a
-   clip-path zoom into the pyramids photo, then back out.
+   .globe-wrap is just the sizing/positioning shell now.
+   .globe-atmosphere stays as a soft CSS glow ring sitting
+   behind the canvas. The canvas itself (#globeCanvasHost)
+   is filled by Three.js: a textured, rotating sphere the
+   user can drag to spin and scroll/pinch to zoom, an orbiting
+   satellite that periodically "scans" the surface with a
+   laser pulse, and a click-anywhere zoom-to-location flight.
    ========================================================= */
 .globe-wrap {
   position: relative;
@@ -1085,6 +1084,7 @@ input:focus-visible {
     inset 0 0 60px 10px rgba(53, 214, 196, 0.06);
   animation: atmosphere-breathe 6s ease-in-out infinite;
   pointer-events: none;
+  z-index: 0;
 }
 
 @keyframes atmosphere-breathe {
@@ -1092,189 +1092,65 @@ input:focus-visible {
   50% { opacity: 1; transform: scale(1.015); }
 }
 
-.globe-sphere {
+#globeCanvasHost {
   position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 32% 28%, rgba(53, 214, 196, 0.22), transparent 46%),
-    radial-gradient(circle at 68% 74%, rgba(227, 168, 76, 0.10), transparent 55%),
-    radial-gradient(circle at 50% 50%, #16233f 0%, #0d1826 62%, #060c14 100%);
-  box-shadow:
-    inset -30px -22px 60px rgba(0, 0, 0, 0.65),
-    inset 18px 14px 40px rgba(53, 214, 196, 0.08),
-    0 20px 60px rgba(0, 0, 0, 0.5);
-  isolation: isolate;
-  transition: transform 0.4s ease;
+  cursor: grab;
+  touch-action: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .globe-wrap:hover .globe-sphere { transform: scale(1.02); }
+#globeCanvasHost.is-dragging { cursor: grabbing; }
+
+#globeCanvasHost canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.meridian {
+.globe-loading {
   position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(53, 214, 196, 0.35);
-  border-radius: 50%;
-  transform: translateX(-50%) scaleX(1);
-  animation: meridian-spin 10s linear infinite;
-  z-index: 1;
-}
-.meridian:nth-child(2) { animation-delay: -2s; border-color: rgba(53, 214, 196, 0.22); }
-.meridian:nth-child(3) { animation-delay: -4s; border-color: rgba(53, 214, 196, 0.28); }
-.meridian:nth-child(4) { animation-delay: -6s; border-color: rgba(53, 214, 196, 0.18); }
-.meridian:nth-child(5) { animation-delay: -8s; border-color: rgba(53, 214, 196, 0.30); }
-
-@keyframes meridian-spin {
-  0%   { transform: translateX(-50%) scaleX(1); }
-  50%  { transform: translateX(-50%) scaleX(0.02); }
-  100% { transform: translateX(-50%) scaleX(1); }
-}
-
-.parallel {
-  position: absolute;
-  left: 50%;
-  border: 1px solid rgba(143, 166, 184, 0.16);
-  border-radius: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-.parallel-1 { top: 20%; width: 86%; height: 30%; }
-.parallel-2 { top: 50%; width: 100%; height: 2px; margin-top: -1px; border-radius: 0; opacity: 0.35; }
-.parallel-3 { top: 68%; width: 86%; height: 30%; }
-
-.landmass {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 46% 54% 60% 40% / 50% 45% 55% 50%;
-  background: radial-gradient(circle at 35% 30%, rgba(53, 214, 196, 0.5), rgba(53, 214, 196, 0.08) 70%);
-  filter: blur(1px);
-  animation: land-drift 10s linear infinite;
+  inset: 0;
   z-index: 2;
-}
-.land-1 { width: 70px; height: 46px; margin: -23px 0 0 -35px; animation-delay: -1s; }
-.land-2 {
-  width: 46px; height: 60px; margin: -30px 0 0 -23px; animation-delay: -4.3s;
-  background: radial-gradient(circle at 35% 30%, rgba(227, 168, 76, 0.45), rgba(227, 168, 76, 0.06) 70%);
-}
-.land-3 { width: 54px; height: 34px; margin: -17px 0 0 -27px; animation-delay: -7s; }
-
-@keyframes land-drift {
-  0%   { transform: translateX(-160px) scale(0.5); opacity: 0; }
-  15%  { opacity: 0.9; }
-  50%  { transform: translateX(0) scale(1.05); opacity: 1; }
-  85%  { opacity: 0.9; }
-  100% { transform: translateX(160px) scale(0.5); opacity: 0; }
-}
-
-.globe-shade {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 25%, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
-  pointer-events: none;
-  z-index: 4;
-}
-
-.globe-pin {
-  position: absolute;
-  top: 47%;
-  left: 44%;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  z-index: 5;
-  transform: translate(-50%, -50%);
-}
-
-.pin-dot {
-  position: absolute;
-  inset: 9px;
-  border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 10px 3px rgba(227, 168, 76, 0.7);
-}
-
-.pin-pulse {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1.5px solid var(--amber);
-  animation: pin-ping 2.2s ease-out infinite;
-}
-
-@keyframes pin-ping {
-  0%   { transform: scale(0.4); opacity: 0.9; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-.globe-zoom-photo {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 6;
-  pointer-events: none;
-  clip-path: circle(0% at 44% 47%);
-  background:
-    linear-gradient(180deg, rgba(10, 18, 28, 0.15) 0%, rgba(10, 18, 28, 0.7) 100%),
-    url('mare.jpg') center 38% / cover no-repeat;
-}
-
-.globe-wrap.zooming .globe-zoom-photo {
-  animation: globe-zoom-reveal 4.4s cubic-bezier(0.65, 0, 0.35, 1) 1;
-}
-
-.globe-wrap.zooming .meridian,
-.globe-wrap.zooming .landmass {
-  animation-play-state: paused;
-}
-
-@keyframes globe-zoom-reveal {
-  0%   { clip-path: circle(0% at 44% 47%); }
-  30%  { clip-path: circle(75% at 44% 47%); }
-  75%  { clip-path: circle(75% at 44% 47%); }
-  100% { clip-path: circle(0% at 44% 47%); }
-}
-
-.globe-zoom-caption {
-  position: absolute;
-  left: 50%;
-  bottom: 15%;
-  transform: translateX(-50%) translateY(6px);
-  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
   font-size: 0.72em;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  text-align: center;
+  padding: 0 30px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.globe-loading.hide { opacity: 0; }
+
+/* Coordinate readout — appears near the last clicked point */
+.globe-tooltip {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -130%);
+  font-family: var(--font-mono);
+  font-size: 0.68em;
+  letter-spacing: 0.04em;
   color: var(--ink);
-  background: rgba(10, 18, 28, 0.6);
-  border: 1px solid rgba(227, 168, 76, 0.5);
-  padding: 4px 10px;
+  background: rgba(10, 18, 28, 0.7);
+  border: 1px solid rgba(53, 214, 196, 0.5);
+  padding: 4px 9px;
   border-radius: 20px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.globe-wrap.zooming .globe-zoom-caption {
-  animation: caption-fade 4.4s ease 1;
-}
-
-@keyframes caption-fade {
-  0%, 28%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
-  36%, 72%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-  85%, 100% { opacity: 0; transform: translateX(-50%) translateY(6px); }
-}
+.globe-tooltip.show { opacity: 1; transform: translate(-50%, -150%); }
 
 .globe-pin-label {
   margin-top: 16px;
@@ -1290,11 +1166,7 @@ input:focus-visible {
   .globe-wrap { width: 260px; height: 260px; margin-top: 24px; }
 }
 
-/* Signature motion stays alive even under reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  .meridian { animation: meridian-spin 10s linear infinite !important; }
-  .landmass { animation: land-drift 10s linear infinite !important; }
-  .pin-pulse { animation: pin-ping 2.2s ease-out infinite !important; }
   .globe-atmosphere { animation: atmosphere-breathe 6s ease-in-out infinite !important; }
   .stars-1 { animation: twinkle 6s ease-in-out infinite !important; }
   .stars-2 { animation: twinkle 8s ease-in-out infinite 1.5s !important; }
