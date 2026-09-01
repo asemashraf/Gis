@@ -226,10 +226,10 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   left: 0;
   width: 100%;
   height: var(--nav-h);
-  background: linear-gradient(180deg, rgba(10, 18, 28, 0.5) 0%, rgba(10, 18, 28, 0.22) 100%);
-  backdrop-filter: blur(10px) saturate(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(1.15);
-  border-bottom: 1px solid rgba(53, 214, 196, 0.08);
+  background: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: none;
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -261,6 +261,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .menu > ul > li { position: relative; }
 
 .menu-item {
+  position: relative;
   display: inline-block;
   padding: 0 22px;
   height: var(--nav-h);
@@ -274,10 +275,30 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   transition: color 0.2s ease;
 }
 
+.menu-item::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--teal);
+  box-shadow: 0 0 8px 1px rgba(53, 214, 196, 0.5);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
 .menu-item:hover,
 .menu-item:focus {
   color: var(--teal);
   background-color: transparent;
+}
+
+.menu-item:hover::after,
+.menu-item:focus::after {
+  transform: scaleX(1);
 }
 
 .sup-contant {
@@ -1100,6 +1121,81 @@ input:focus-visible {
   box-shadow: 0 6px 20px rgba(53, 214, 196, 0.2);
 }
 
+/* Real-rotation-speed explainer — hidden until the "Real rotation
+   speed" globe control is switched on, then unfolds neatly right
+   under the Contact Me icons. */
+.rotation-info {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, margin-top 0.5s ease;
+}
+
+.rotation-info.show {
+  max-height: 260px;
+  opacity: 1;
+  margin-top: 20px;
+}
+
+.rotation-info-inner {
+  text-align: left;
+  background: rgba(16, 27, 43, 0.4);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(53, 214, 196, 0.22);
+  border-radius: 12px;
+  padding: 14px 16px 16px;
+}
+
+.rotation-info-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.92em;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+
+.rotation-info-inner p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.76em;
+  line-height: 1.75;
+  color: var(--ink-dim);
+}
+
+.rotation-info-inner strong { color: var(--ink); font-weight: 500; }
+
+.rotation-info-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(143, 166, 184, 0.15);
+}
+
+.rotation-info-stats .stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rotation-info-stats strong {
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.3;
+}
+
+.rotation-info-stats span {
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+}
+
 /* =========================================================
    Hero globe — REAL 3D globe (WebGL / Three.js)
    ---------------------------------------------------------
@@ -1209,14 +1305,18 @@ input:focus-visible {
 }
 .globe-pin-label strong { color: var(--amber); font-weight: 500; }
 
-/* Earthquake simulator control, sat just under the globe label */
+/* Globe control buttons: earthquake simulator + real-rotation-speed
+   toggle, sat just under the globe label */
 .globe-controls {
   margin-top: 14px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 10px;
 }
 
-.quake-btn {
+.quake-btn,
+.speed-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1225,12 +1325,13 @@ input:focus-visible {
   letter-spacing: 0.04em;
   color: var(--ink-dim);
   background: var(--panel-soft);
-  border: 1px solid rgba(196, 69, 46, 0.35);
   border-radius: 22px;
   padding: 8px 16px;
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
+
+.quake-btn { border: 1px solid rgba(196, 69, 46, 0.35); }
 
 .quake-btn:hover {
   border-color: var(--alert);
@@ -1238,7 +1339,8 @@ input:focus-visible {
   box-shadow: 0 0 0 1px rgba(196, 69, 46, 0.2), 0 0 20px rgba(196, 69, 46, 0.15);
 }
 
-.quake-btn:active { transform: scale(0.97); }
+.quake-btn:active,
+.speed-btn:active { transform: scale(0.97); }
 
 .quake-btn .quake-icon {
   font-size: 1.05em;
@@ -1254,6 +1356,33 @@ input:focus-visible {
 }
 
 .quake-btn:disabled { opacity: 0.55; cursor: default; }
+
+/* Real-rotation-speed toggle */
+.speed-btn { border: 1px solid rgba(53, 214, 196, 0.35); }
+
+.speed-btn:hover {
+  border-color: var(--teal);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px rgba(53, 214, 196, 0.2), 0 0 20px rgba(53, 214, 196, 0.15);
+}
+
+.speed-btn .speed-icon {
+  font-size: 1.05em;
+  display: inline-block;
+  animation: speed-icon-spin 3.6s linear infinite;
+}
+
+@keyframes speed-icon-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.speed-btn.active {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+  box-shadow: 0 0 0 1px rgba(53, 214, 196, 0.25), 0 0 22px rgba(53, 214, 196, 0.2);
+}
 
 /* Red seismic-alert variant of the transmission toast */
 .cv-toast.alert { border-color: var(--alert); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(196, 69, 46, 0.12); }
