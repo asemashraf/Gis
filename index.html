@@ -105,9 +105,52 @@
 
         <div class="hero-main">
           <div class="overlay-text">
-            <h1><span class="accent">Hello</span>, World</h1>
-            <p class="tagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
+            <h1 id="heroTitle"><span class="accent">Hello</span>, World</h1>
+            <p class="tagline" id="heroTagline">The&nbsp;&nbsp;Science&nbsp;&nbsp;of&nbsp;&nbsp;Where</p>
           </div>
+          <noscript>
+            <style>#heroTitle, #heroTagline { opacity: 1 !important; }</style>
+          </noscript>
+          <script>
+            // Runs immediately (no DOMContentLoaded wait) so the raw
+            // text never flashes before it's split into the animated
+            // word spans — see the matching CSS reveal rules.
+            (function () {
+              var title = document.getElementById('heroTitle');
+              var tagline = document.getElementById('heroTagline');
+              var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              var i = 0;
+
+              function wrapWords(node) {
+                if (node.nodeType === 3) {
+                  var frag = document.createDocumentFragment();
+                  var parts = node.textContent.split(/(\s+)/);
+                  parts.forEach(function (part) {
+                    if (part === '') return;
+                    if (/^\s+$/.test(part)) {
+                      frag.appendChild(document.createTextNode(part));
+                    } else {
+                      var span = document.createElement('span');
+                      span.className = 'reveal-word';
+                      span.textContent = part;
+                      if (!reduceMotion) span.style.animationDelay = (i * 0.09) + 's';
+                      i++;
+                      frag.appendChild(span);
+                    }
+                  });
+                  node.parentNode.replaceChild(frag, node);
+                } else if (node.nodeType === 1) {
+                  Array.prototype.slice.call(node.childNodes).forEach(wrapWords);
+                }
+              }
+
+              [title, tagline].forEach(function (el) {
+                if (!el) return;
+                Array.prototype.slice.call(el.childNodes).forEach(wrapWords);
+                el.classList.add('reveal-ready');
+              });
+            })();
+          </script>
 
           <!-- Real 3D globe: drag to spin it yourself, scroll / pinch to
                zoom, click any point on Earth to fly the camera in, and
@@ -119,15 +162,10 @@
               <div class="globe-tooltip" id="globeTooltip"></div>
             </div>
           </div>
-          <div class="globe-pin-label">Drag to spin · scroll to zoom · click to fly in — tracking <strong>Giza, Egypt</strong></div>
 
           <div class="globe-controls">
             <button class="quake-btn" id="quakeBtn" type="button">
               <span class="quake-icon" aria-hidden="true">🌎</span> Simulate an earthquake
-            </button>
-            <button class="speed-btn" id="speedBtn" type="button" aria-expanded="false" aria-controls="rotationInfo">
-              <span class="speed-icon" aria-hidden="true">🌐</span>
-              <span id="speedBtnLabel">Real rotation speed</span>
             </button>
           </div>
         </div>
@@ -147,24 +185,6 @@
             <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
             <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
           </div>
-
-          <!-- Hidden until "Real rotation speed" is switched on -->
-          <div class="rotation-info" id="rotationInfo" aria-hidden="true">
-            <div class="rotation-info-inner">
-              <div class="rotation-info-title">🌍 Real-World Rotation</div>
-              <p>
-                Earth completes one full spin — a <strong>sidereal day</strong> — every
-                <strong>23h 56m 4s</strong>, about <strong>15.04°</strong> per hour. The globe
-                above is now turning at that exact real-world rate, so don't expect to see much
-                movement — that slowness is the whole point.
-              </p>
-              <div class="rotation-info-stats">
-                <div class="stat"><strong>23h 56m 4s</strong><span>period</span></div>
-                <div class="stat"><strong>15.04°/hr</strong><span>angular speed</span></div>
-                <div class="stat"><strong>~1,670 km/h</strong><span>equatorial speed</span></div>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -174,6 +194,38 @@
 
 <main>
   <article>
+
+    <div class="contour-divider" aria-hidden="true"></div>
+
+    <!-- =========================================================
+         Core Disciplines — three animated capability cards
+         ========================================================= -->
+    <section class="services-section" id="services">
+      <div class="section-heading reveal-up">
+        <span class="eyebrow">// what I build</span>
+        <h2>Core Disciplines</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card" data-n="01">
+          <div class="service-icon" aria-hidden="true">🌐</div>
+          <h3>Web GIS Development</h3>
+          <p>Interactive maps and geospatial dashboards built with Leaflet, ArcGIS JS API, and modern front-end
+            stacks — turning raw spatial data into tools people can actually click, drag, and query.</p>
+        </div>
+        <div class="service-card" data-n="02">
+          <div class="service-icon" aria-hidden="true">🗄️</div>
+          <h3>Database Development</h3>
+          <p>Spatial databases designed to scale — PostGIS schemas, indexing, and query optimization that keep
+            millions of features fast to store, search, and serve to a map in real time.</p>
+        </div>
+        <div class="service-card" data-n="03">
+          <div class="service-icon" aria-hidden="true">🛰️</div>
+          <h3>Remote Sensing</h3>
+          <p>Satellite and drone imagery processed into usable insight — classification, change detection, and
+            index analysis such as NDVI and NDWI for land, water, and urban monitoring.</p>
+        </div>
+      </div>
+    </section>
 
     <div class="contour-divider" aria-hidden="true"></div>
 
@@ -258,38 +310,6 @@
       </div>
     </section>
 
-    <div class="contour-divider" aria-hidden="true"></div>
-
-    <!-- =========================================================
-         Core Disciplines — three animated capability cards
-         ========================================================= -->
-    <section class="services-section" id="services">
-      <div class="section-heading reveal-up">
-        <span class="eyebrow">// what I build</span>
-        <h2>Core Disciplines</h2>
-      </div>
-      <div class="services-grid">
-        <div class="service-card" data-n="01">
-          <div class="service-icon" aria-hidden="true">🌐</div>
-          <h3>Web GIS Development</h3>
-          <p>Interactive maps and geospatial dashboards built with Leaflet, ArcGIS JS API, and modern front-end
-            stacks — turning raw spatial data into tools people can actually click, drag, and query.</p>
-        </div>
-        <div class="service-card" data-n="02">
-          <div class="service-icon" aria-hidden="true">🗄️</div>
-          <h3>Database Development</h3>
-          <p>Spatial databases designed to scale — PostGIS schemas, indexing, and query optimization that keep
-            millions of features fast to store, search, and serve to a map in real time.</p>
-        </div>
-        <div class="service-card" data-n="03">
-          <div class="service-icon" aria-hidden="true">🛰️</div>
-          <h3>Remote Sensing</h3>
-          <p>Satellite and drone imagery processed into usable insight — classification, change detection, and
-            index analysis such as NDVI and NDWI for land, water, and urban monitoring.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- =========================================================
          Interactive route map
          ========================================================= -->
@@ -336,20 +356,22 @@
     function rand(min, max) { return Math.random() * (max - min) + min; }
 
     function initStars() {
-      const count = Math.min(240, Math.max(90, Math.floor((w * h) / 9000)));
+      const count = Math.min(340, Math.max(120, Math.floor((w * h) / 6500)));
       stars = new Array(count).fill(0).map(() => {
         const roll = Math.random();
-        const color = roll > 0.93 ? '227,168,76' : roll > 0.8 ? '53,214,196' : '231,238,243';
+        const color = roll > 0.92 ? '227,168,76' : roll > 0.78 ? '53,214,196' : '231,238,243';
+        const bright = Math.random() > 0.965; // a handful of "hero" stars with a sparkle cross
         return {
           x: Math.random() * w,
           y: Math.random() * h,
-          r: rand(0.4, 1.7),
-          baseAlpha: rand(0.3, 0.95),
+          r: bright ? rand(1.8, 2.7) : rand(0.5, 1.6),
+          baseAlpha: bright ? rand(0.75, 1) : rand(0.35, 0.95),
           phase: rand(0, Math.PI * 2),
-          speed: rand(0.4, 1.5),
-          vx: rand(-0.01, 0.01),
-          vy: rand(0.006, 0.024),
-          color
+          speed: rand(0.35, 1.4),
+          vx: rand(-0.009, 0.009),
+          vy: rand(0.005, 0.02),
+          color,
+          bright
         };
       });
     }
@@ -379,18 +401,45 @@
         }
         const alpha = reduceMotion
           ? s.baseAlpha
-          : s.baseAlpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+          : s.baseAlpha * (0.45 + 0.55 * Math.sin(t * s.speed + s.phase));
+        const a = Math.max(0, alpha);
 
+        // soft glow halo behind every star (subtle bloom)
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${s.color},${Math.max(0, alpha)})`;
+        ctx.fillStyle = `rgba(${s.color},${a * 0.16})`;
+        ctx.arc(s.x, s.y, s.r * (s.bright ? 5 : 3), 0, Math.PI * 2);
+        ctx.fill();
+
+        // the star itself
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${s.color},${a})`;
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
 
-        if (s.r > 1.15) {
+        // four-point sparkle cross on the brightest stars — the
+        // classic "professional astrophotography" touch
+        if (s.bright) {
+          const len = s.r * 8;
+          const hGrad = ctx.createLinearGradient(s.x - len, s.y, s.x + len, s.y);
+          hGrad.addColorStop(0, `rgba(${s.color},0)`);
+          hGrad.addColorStop(0.5, `rgba(${s.color},${a * 0.55})`);
+          hGrad.addColorStop(1, `rgba(${s.color},0)`);
+          ctx.strokeStyle = hGrad;
+          ctx.lineWidth = 0.8;
           ctx.beginPath();
-          ctx.fillStyle = `rgba(${s.color},${Math.max(0, alpha * 0.22)})`;
-          ctx.arc(s.x, s.y, s.r * 3.2, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(s.x - len, s.y);
+          ctx.lineTo(s.x + len, s.y);
+          ctx.stroke();
+
+          const vGrad = ctx.createLinearGradient(s.x, s.y - len, s.x, s.y + len);
+          vGrad.addColorStop(0, `rgba(${s.color},0)`);
+          vGrad.addColorStop(0.5, `rgba(${s.color},${a * 0.55})`);
+          vGrad.addColorStop(1, `rgba(${s.color},0)`);
+          ctx.strokeStyle = vGrad;
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y - len);
+          ctx.lineTo(s.x, s.y + len);
+          ctx.stroke();
         }
       }
     }
@@ -830,14 +879,7 @@
       controls.rotateSpeed = 0.55;
       controls.zoomSpeed = 0.8;
       controls.autoRotate = true;
-
-      // OrbitControls' autoRotate covers 2π per (60 / autoRotateSpeed)
-      // seconds. The "demo" speed is a nice, readable pace; the "real"
-      // speed matches Earth's actual sidereal day (23h 56m 4s ≈ 86164s)
-      // exactly, at whatever scale this globe is being viewed at.
-      const DEMO_ROTATE_SPEED = 0.7;
-      const REAL_ROTATE_SPEED = 60 / 86164;
-      controls.autoRotateSpeed = DEMO_ROTATE_SPEED;
+      controls.autoRotateSpeed = 0.7;
 
       // ---- earthquake simulator ---------------------------------------
       // Displaces the sphere's own vertices with a short-lived rumble,
@@ -945,30 +987,6 @@
           controls.autoRotate = true;
         }
       }
-
-      // ---- real-rotation-speed toggle ---------------------------------
-      // Switches the globe's own spin to Earth's exact real-world rate
-      // and unfolds a short explainer under the Contact Me icons.
-      const speedBtn = document.getElementById('speedBtn');
-      const speedBtnLabel = document.getElementById('speedBtnLabel');
-      const rotationInfo = document.getElementById('rotationInfo');
-      let realSpeedActive = false;
-
-      function setRealSpeed(active) {
-        realSpeedActive = active;
-        controls.autoRotateSpeed = active ? REAL_ROTATE_SPEED : DEMO_ROTATE_SPEED;
-        if (speedBtn) {
-          speedBtn.classList.toggle('active', active);
-          speedBtn.setAttribute('aria-expanded', active ? 'true' : 'false');
-        }
-        if (speedBtnLabel) speedBtnLabel.textContent = active ? 'Back to demo speed' : 'Real rotation speed';
-        if (rotationInfo) {
-          rotationInfo.classList.toggle('show', active);
-          rotationInfo.setAttribute('aria-hidden', active ? 'false' : 'true');
-        }
-      }
-
-      if (speedBtn) speedBtn.addEventListener('click', () => setRealSpeed(!realSpeedActive));
 
       renderer.domElement.addEventListener('pointerdown', () => host.classList.add('is-dragging'));
       window.addEventListener('pointerup', () => host.classList.remove('is-dragging'));
