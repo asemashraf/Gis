@@ -125,6 +125,10 @@
             <button class="quake-btn" id="quakeBtn" type="button">
               <span class="quake-icon" aria-hidden="true">🌎</span> Simulate an earthquake
             </button>
+            <button class="speed-btn" id="speedBtn" type="button" aria-expanded="false" aria-controls="rotationInfo">
+              <span class="speed-icon" aria-hidden="true">🌐</span>
+              <span id="speedBtnLabel">Real rotation speed</span>
+            </button>
           </div>
         </div>
 
@@ -142,6 +146,24 @@
             <a href="https://www.linkedin.com/in/asem-ashraf-7ba5791ab/" target="_blank" rel="noopener"><img src="linked.png" alt="LinkedIn"></a>
             <a href="https://wa.me/+201027400764" target="_blank" rel="noopener"><img src="whatsapp.png" alt="WhatsApp"></a>
             <a href="mailto:asemashraf133@gmail.com"><img src="gmail.png" alt="Email"></a>
+          </div>
+
+          <!-- Hidden until "Real rotation speed" is switched on -->
+          <div class="rotation-info" id="rotationInfo" aria-hidden="true">
+            <div class="rotation-info-inner">
+              <div class="rotation-info-title">🌍 Real-World Rotation</div>
+              <p>
+                Earth completes one full spin — a <strong>sidereal day</strong> — every
+                <strong>23h 56m 4s</strong>, about <strong>15.04°</strong> per hour. The globe
+                above is now turning at that exact real-world rate, so don't expect to see much
+                movement — that slowness is the whole point.
+              </p>
+              <div class="rotation-info-stats">
+                <div class="stat"><strong>23h 56m 4s</strong><span>period</span></div>
+                <div class="stat"><strong>15.04°/hr</strong><span>angular speed</span></div>
+                <div class="stat"><strong>~1,670 km/h</strong><span>equatorial speed</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -808,7 +830,14 @@
       controls.rotateSpeed = 0.55;
       controls.zoomSpeed = 0.8;
       controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.7;
+
+      // OrbitControls' autoRotate covers 2π per (60 / autoRotateSpeed)
+      // seconds. The "demo" speed is a nice, readable pace; the "real"
+      // speed matches Earth's actual sidereal day (23h 56m 4s ≈ 86164s)
+      // exactly, at whatever scale this globe is being viewed at.
+      const DEMO_ROTATE_SPEED = 0.7;
+      const REAL_ROTATE_SPEED = 60 / 86164;
+      controls.autoRotateSpeed = DEMO_ROTATE_SPEED;
 
       // ---- earthquake simulator ---------------------------------------
       // Displaces the sphere's own vertices with a short-lived rumble,
@@ -913,8 +942,33 @@
           quakeFlash.material.opacity = 0;
           cameraShakeOffset.set(0, 0, 0);
           if (quakeBtn) quakeBtn.disabled = false;
+          controls.autoRotate = true;
         }
       }
+
+      // ---- real-rotation-speed toggle ---------------------------------
+      // Switches the globe's own spin to Earth's exact real-world rate
+      // and unfolds a short explainer under the Contact Me icons.
+      const speedBtn = document.getElementById('speedBtn');
+      const speedBtnLabel = document.getElementById('speedBtnLabel');
+      const rotationInfo = document.getElementById('rotationInfo');
+      let realSpeedActive = false;
+
+      function setRealSpeed(active) {
+        realSpeedActive = active;
+        controls.autoRotateSpeed = active ? REAL_ROTATE_SPEED : DEMO_ROTATE_SPEED;
+        if (speedBtn) {
+          speedBtn.classList.toggle('active', active);
+          speedBtn.setAttribute('aria-expanded', active ? 'true' : 'false');
+        }
+        if (speedBtnLabel) speedBtnLabel.textContent = active ? 'Back to demo speed' : 'Real rotation speed';
+        if (rotationInfo) {
+          rotationInfo.classList.toggle('show', active);
+          rotationInfo.setAttribute('aria-hidden', active ? 'false' : 'true');
+        }
+      }
+
+      if (speedBtn) speedBtn.addEventListener('click', () => setRealSpeed(!realSpeedActive));
 
       renderer.domElement.addEventListener('pointerdown', () => host.classList.add('is-dragging'));
       window.addEventListener('pointerup', () => host.classList.remove('is-dragging'));
@@ -1007,7 +1061,10 @@
           flight.t = Math.min(flight.t + dt / flight.duration, 1);
           const ease = 1 - Math.pow(1 - flight.t, 3);
           camera.position.lerpVectors(flight.fromPos, flight.toPos, ease);
-          if (flight.t >= 1) flight = null;
+          if (flight.t >= 1) {
+            flight = null;
+            controls.autoRotate = true;
+          }
         }
 
         controls.update();
