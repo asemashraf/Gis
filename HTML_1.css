@@ -182,26 +182,25 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   z-index: -1;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 55% 40% at 18% 8%, rgba(53, 214, 196, 0.10), transparent 55%),
-    radial-gradient(ellipse 50% 45% at 88% 22%, rgba(227, 168, 76, 0.07), transparent 52%),
-    radial-gradient(ellipse 60% 50% at 65% 85%, rgba(99, 91, 214, 0.13), transparent 60%),
-    radial-gradient(ellipse 45% 55% at 8% 78%, rgba(53, 90, 214, 0.10), transparent 58%),
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(53, 214, 196, 0.05), transparent 62%),
+    radial-gradient(ellipse 60% 45% at 22% 10%, rgba(53, 214, 196, 0.05), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 82% 88%, rgba(99, 91, 214, 0.06), transparent 64%),
     var(--bg);
 }
 
 /* Faint diffuse band, angled across the sky — a low-key nod to the
-   Milky Way, just enough to read as "deep space" rather than flat navy. */
+   Milky Way, just enough to read as "deep space" rather than flat navy.
+   Kept very subtle so it never sits as an opaque layer over the canvas
+   stars/nebulae below it. */
 .space-bg::after {
   content: '';
   position: absolute;
   inset: -20%;
   background: linear-gradient(115deg,
-    transparent 38%,
-    rgba(143, 166, 184, 0.05) 47%,
-    rgba(227, 168, 76, 0.04) 50%,
-    rgba(143, 166, 184, 0.05) 53%,
-    transparent 62%);
+    transparent 42%,
+    rgba(143, 166, 184, 0.03) 48%,
+    rgba(227, 168, 76, 0.025) 50%,
+    rgba(143, 166, 184, 0.03) 52%,
+    transparent 58%);
   pointer-events: none;
 }
 
@@ -420,10 +419,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse 60% 45% at 24% 20%, rgba(53, 214, 196, 0.14), transparent 60%),
-    radial-gradient(ellipse 55% 40% at 78% 70%, rgba(227, 168, 76, 0.10), transparent 62%),
-    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(53, 214, 196, 0.08), transparent 65%),
-    linear-gradient(180deg, rgba(10, 18, 28, 0.2) 0%, rgba(10, 18, 28, 0.55) 100%);
+    radial-gradient(ellipse 55% 40% at 50% 28%, rgba(53, 214, 196, 0.06), transparent 70%);
   transition: transform 2.3s ease, opacity 2.3s ease;
 }
 
@@ -637,11 +633,78 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .hero-panel .cv { width: 100%; }
 
 .hero-panel .typewriter-container {
-  padding: 18px 0 0;
+  padding: 0;
   font-size: 1.02em;
   text-align: left;
   min-height: 3.4em;
   line-height: 1.6;
+}
+
+/* =========================================================
+   Route-reveal tagline — "See how I combine maps, code, and
+   smart solutions" now sits above "// transmission" and reads
+   as a little route being plotted: the text types out (same
+   typewriter JS as before), a dashed line draws itself in
+   underneath in sync, and a pin drops onto the end once the
+   line/typing finish — echoing the routing map further down
+   the page.
+   ========================================================= */
+.route-tagline {
+  position: relative;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.route-tagline .typewriter-container {
+  min-height: 3.2em;
+}
+
+.route-tagline .route-pin {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 0.95em;
+  opacity: 0;
+  transform: translateY(-14px) scale(0.5);
+  filter: drop-shadow(0 0 6px rgba(227, 168, 76, 0.6));
+}
+
+.route-tagline.pin-dropped .route-pin {
+  animation: route-pin-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes route-pin-drop {
+  0%   { opacity: 0; transform: translateY(-14px) scale(0.5); }
+  60%  { opacity: 1; transform: translateY(2px) scale(1.15); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.route-line {
+  display: block;
+  width: 100%;
+  height: 14px;
+  overflow: visible;
+  margin-top: 2px;
+}
+
+.route-line path {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 6;
+  stroke-dashoffset: 320;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 4px rgba(53, 214, 196, 0.5));
+}
+
+.route-tagline.drawing path {
+  transition: stroke-dashoffset 2.8s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-line path { stroke-dashoffset: 0 !important; transition: none !important; }
+  .route-tagline .route-pin { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
 
 .hero-panel .rr {
@@ -808,6 +871,21 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 }
 
 .pharaoh-media:hover::after { left: 130%; }
+
+/* Touch devices have no :hover, so the sheen sweep above never used to
+   fire there — this plays the same sweep automatically on a loop so
+   phones/tablets get the same polish without needing a hover state. */
+@media (hover: none) {
+  .pharaoh-media::after {
+    animation: pharaoh-sheen-auto 3.4s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+}
+
+@keyframes pharaoh-sheen-auto {
+  0%, 68%, 100% { left: -60%; }
+  34% { left: 130%; }
+}
 
 .pharaoh-media img {
   width: 100%;
@@ -1452,6 +1530,22 @@ input:focus-visible {
   z-index: 1;
 }
 .service-card:hover::after { transform: skewX(-18deg) translateX(420%); }
+
+/* Same touch fix as the pharaoh media sheen — no :hover on phones, so
+   loop the radar sweep automatically, staggered per card. */
+@media (hover: none) {
+  .service-card::after {
+    animation: card-sheen-auto 3.8s ease-in-out infinite;
+  }
+  .services-grid .service-card:nth-child(1)::after { animation-delay: 0.4s; }
+  .services-grid .service-card:nth-child(2)::after { animation-delay: 1.3s; }
+  .services-grid .service-card:nth-child(3)::after { animation-delay: 2.2s; }
+}
+
+@keyframes card-sheen-auto {
+  0%, 68%, 100% { transform: skewX(-18deg) translateX(0); }
+  34% { transform: skewX(-18deg) translateX(420%); }
+}
 
 .service-icon {
   position: relative;
