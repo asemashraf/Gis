@@ -172,17 +172,12 @@
 
         <!-- CV / typewriter / contact console panel -->
         <div class="hero-panel" id="gis-overlay">
-          <div class="route-tagline" id="routeTagline">
-            <div class="typewriter-container" id="typewriter">
-              <span id="typed-text"></span><span class="route-pin" id="routePin" aria-hidden="true">📍</span>
-            </div>
-            <svg class="route-line" id="routeLine" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true">
-              <path d="M2,7 L298,7"></path>
-            </svg>
-          </div>
-
           <span class="eyebrow">// transmission</span>
           <button class="cv" type="button" onclick="showCvToast()">Download my CV</button>
+
+          <div class="typewriter-container" id="typewriter">
+            <span id="typed-text"></span>
+          </div>
 
           <div class="rr">Contact Me</div>
           <div class="icon3">
@@ -398,26 +393,26 @@
 
       const anchored = brightStars
         .sort(() => Math.random() - 0.5)
-        .slice(0, Math.min(6, brightStars.length));
+        .slice(0, Math.min(5, brightStars.length));
       anchored.forEach((s) => {
         nebulae.push({
           x: s.x + rand(-40, 40),
           y: s.y + rand(-30, 30),
-          r: rand(Math.min(w, h) * 0.1, Math.min(w, h) * 0.19),
+          r: rand(Math.min(w, h) * 0.09, Math.min(w, h) * 0.16),
           color: NEBULA_COLORS[Math.floor(Math.random() * NEBULA_COLORS.length)],
-          alpha: rand(0.11, 0.19),
+          alpha: rand(0.06, 0.12),
           vx: rand(-0.002, 0.002),
           vy: rand(-0.002, 0.002)
         });
       });
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 3; i++) {
         nebulae.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: rand(Math.min(w, h) * 0.18, Math.min(w, h) * 0.3),
+          r: rand(Math.min(w, h) * 0.16, Math.min(w, h) * 0.28),
           color: NEBULA_COLORS[Math.floor(Math.random() * NEBULA_COLORS.length)],
-          alpha: rand(0.07, 0.12),
+          alpha: rand(0.04, 0.08),
           vx: rand(-0.0015, 0.0015),
           vy: rand(-0.0015, 0.0015)
         });
@@ -600,12 +595,9 @@
       revealTargets.forEach((el) => el.classList.add('show'));
     }
 
-    // Typewriter effect for the route-reveal tagline above "// transmission" —
-    // the dashed route line draws itself in as typing starts, and the pin
-    // drops onto the end once the sentence finishes typing.
+    // Typewriter effect for the tagline under the CV button
     const text = 'See how I combine maps, code, and smart solutions';
     const el = document.getElementById('typed-text');
-    const routeTagline = document.getElementById('routeTagline');
     let index = 0;
     let started = false;
 
@@ -614,8 +606,6 @@
         el.textContent += text.charAt(index);
         index++;
         setTimeout(typeWriter, 60);
-      } else if (routeTagline) {
-        routeTagline.classList.add('pin-dropped');
       }
     }
 
@@ -626,7 +616,6 @@
       const visible = rect.top < viewportHeight && rect.bottom > 0;
       if (visible) {
         started = true;
-        if (routeTagline) routeTagline.classList.add('drawing');
         typeWriter();
       }
     }
@@ -645,6 +634,540 @@
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     document.documentElement.classList.add('custom-cursor');
   });
+</script>
+
+<!-- =========================================================
+     Hero globe — real 3D Earth (Three.js)
+     ---------------------------------------------------------
+     - Textured sphere (continents + oceans) that auto-rotates,
+       can be dragged to spin freely, and zoomed with the wheel
+       or a pinch gesture (OrbitControls).
+     - Click anywhere on the sphere: the camera flies in toward
+       that point and a coordinate readout appears.
+     - A small satellite orbits the globe on a tilted path and,
+       every few seconds, fires a laser pulse straight down to
+       the point beneath it — a little photographing/scanning
+       moment — with a flash where the beam lands.
+     - Falls back to hiding the loading label and doing nothing
+       further if WebGL / the module import fails, so the rest
+       of the page is unaffected.
+     ========================================================= -->
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  const host = document.getElementById('globeCanvasHost');
+  const loadingEl = document.getElementById('globeLoading');
+  const tooltipEl = document.getElementById('globeTooltip');
+
+  if (host) {
+    try {
+      const EARTH_RADIUS = 1;
+      // Only used to trim decorative extras (cloud shell) on phones —
+      // the globe's own rotation always runs, on every device.
+      const isMobile = window.matchMedia('(max-width: 768px)').matches
+        || (('ontouchstart' in window) && window.innerWidth < 900);
+      const sphereSegments = isMobile ? 40 : 64;
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.set(0, 0.15, 3.1);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.6 : 2));
+      host.appendChild(renderer.domElement);
+
+      // ---- lighting -------------------------------------------------
+      scene.add(new THREE.AmbientLight(0x8fa6b8, 0.6));
+      const sunLight = new THREE.DirectionalLight(0xffffff, 1.25);
+      sunLight.position.set(4, 2.4, 4.5);
+      scene.add(sunLight);
+      const rimLight = new THREE.DirectionalLight(0x35d6c4, 0.4);
+      rimLight.position.set(-4, -1.5, -3.5);
+      scene.add(rimLight);
+
+      // ---- earth group (planet + clouds + marker + satellite all
+      // spin together with drag / auto-rotate) ------------------------
+      const earthGroup = new THREE.Group();
+      scene.add(earthGroup);
+
+      const texLoader = new THREE.TextureLoader();
+      texLoader.crossOrigin = 'anonymous';
+
+      const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, sphereSegments, sphereSegments);
+      const earthMat = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        shininess: 6,
+        specular: 0x223247
+      });
+      const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+      earthGroup.add(earthMesh);
+
+      // keep a pristine copy of the sphere's vertex positions — the
+      // earthquake simulator displaces these, then this is what it
+      // settles back to.
+      const basePositions = earthGeo.attributes.position.array.slice();
+
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          earthMat.map = tex;
+          earthMat.needsUpdate = true;
+        },
+        undefined,
+        () => { /* texture failed to load — flat shaded sphere remains */ }
+      );
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-water.png',
+        (tex) => {
+          earthMat.specularMap = tex;
+          earthMat.needsUpdate = true;
+        },
+        undefined,
+        () => {}
+      );
+
+      // thin cloud shell (skipped on phones — the 4k cloud texture is
+      // the heaviest asset in the scene and isn't worth the GPU/memory
+      // cost on small devices, where it was making rotation stutter)
+      let cloudMesh = null;
+      if (!isMobile) {
+        const cloudGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.008, sphereSegments, sphereSegments);
+        const cloudMat = new THREE.MeshPhongMaterial({
+          transparent: true,
+          opacity: 0.16,
+          depthWrite: false,
+          color: 0xffffff
+        });
+        cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+        earthGroup.add(cloudMesh);
+        texLoader.load(
+          'https://unpkg.com/three-globe/example/img/fair_clouds_4k.png',
+          (tex) => { cloudMat.map = tex; cloudMat.needsUpdate = true; },
+          undefined,
+          () => {}
+        );
+      }
+
+      // outer atmosphere glow (rim-light shader, additive, backside)
+      const atmoGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.14, sphereSegments, sphereSegments);
+      const atmoMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
+            gl_FragColor = vec4(0.208, 0.839, 0.769, 1.0) * clamp(intensity, 0.0, 1.0);
+          }
+        `,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        depthWrite: false
+      });
+      scene.add(new THREE.Mesh(atmoGeo, atmoMat));
+
+      // ---- helper: lat/lng -> position on (or above) the sphere -----
+      function latLngToVector3(lat, lng, radius) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lng + 180) * (Math.PI / 180);
+        return new THREE.Vector3(
+          -radius * Math.sin(phi) * Math.cos(theta),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta)
+        );
+      }
+      function vector3ToLatLng(v) {
+        const radius = v.length();
+        const lat = 90 - (Math.acos(v.y / radius) * 180 / Math.PI);
+        let lng = (Math.atan2(v.z, -v.x) * 180 / Math.PI) - 180;
+        if (lng < -180) lng += 360;
+        if (lng > 180) lng -= 360;
+        return { lat, lng };
+      }
+
+      // Giza marker (amber pin + soft pulsing halo)
+      const GIZA = { lat: 29.9792, lng: 31.1342 };
+      const gizaPos = latLngToVector3(GIZA.lat, GIZA.lng, EARTH_RADIUS * 1.006);
+      const pinDot = new THREE.Mesh(
+        new THREE.SphereGeometry(0.013, 12, 12),
+        new THREE.MeshBasicMaterial({ color: 0xe3a84c })
+      );
+      pinDot.position.copy(gizaPos);
+      earthGroup.add(pinDot);
+
+      const pinHalo = new THREE.Mesh(
+        new THREE.RingGeometry(0.016, 0.028, 24),
+        new THREE.MeshBasicMaterial({ color: 0xe3a84c, transparent: true, opacity: 0.65, side: THREE.DoubleSide })
+      );
+      pinHalo.position.copy(gizaPos);
+      pinHalo.lookAt(gizaPos.clone().multiplyScalar(2));
+      earthGroup.add(pinHalo);
+
+      // ---- orbiting, scanning satellite ------------------------------
+      const orbitTilt = new THREE.Object3D();
+      orbitTilt.rotation.z = THREE.MathUtils.degToRad(28);
+      orbitTilt.rotation.x = THREE.MathUtils.degToRad(8);
+      scene.add(orbitTilt);
+
+      const orbitSpin = new THREE.Object3D();
+      orbitTilt.add(orbitSpin);
+
+      const ORBIT_RADIUS = EARTH_RADIUS * 1.55;
+
+      // The orbit path itself, made clearly legible as its own distinct
+      // element: a soft outer glow ring, a bright core ring, and a
+      // dashed "tracking line" on top so it reads as a flight path
+      // rather than just a faint circle.
+      const orbitGlow = new THREE.Mesh(
+        new THREE.RingGeometry(ORBIT_RADIUS - 0.028, ORBIT_RADIUS + 0.028, 128),
+        new THREE.MeshBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0.08, side: THREE.DoubleSide })
+      );
+      orbitGlow.rotation.x = Math.PI / 2;
+      orbitTilt.add(orbitGlow);
+
+      const orbitRing = new THREE.Mesh(
+        new THREE.RingGeometry(ORBIT_RADIUS - 0.004, ORBIT_RADIUS + 0.004, 128),
+        new THREE.MeshBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
+      );
+      orbitRing.rotation.x = Math.PI / 2;
+      orbitTilt.add(orbitRing);
+
+      const orbitDashPoints = [];
+      const DASH_SEGMENTS = 180;
+      for (let i = 0; i <= DASH_SEGMENTS; i++) {
+        const a = (i / DASH_SEGMENTS) * Math.PI * 2;
+        orbitDashPoints.push(new THREE.Vector3(Math.cos(a) * ORBIT_RADIUS, 0, Math.sin(a) * ORBIT_RADIUS));
+      }
+      const orbitDashGeo = new THREE.BufferGeometry().setFromPoints(orbitDashPoints);
+      const orbitDashLine = new THREE.Line(
+        orbitDashGeo,
+        new THREE.LineDashedMaterial({ color: 0xe7eef3, transparent: true, opacity: 0.75, dashSize: 0.05, gapSize: 0.045 })
+      );
+      orbitDashLine.computeLineDistances();
+      orbitTilt.add(orbitDashLine);
+
+      const satellite = new THREE.Group();
+      const satBody = new THREE.Mesh(
+        new THREE.BoxGeometry(0.045, 0.045, 0.07),
+        new THREE.MeshPhongMaterial({ color: 0xe7eef3, emissive: 0x111a24, shininess: 40 })
+      );
+      satellite.add(satBody);
+      const panelMat = new THREE.MeshPhongMaterial({ color: 0x35d6c4, emissive: 0x0c2b28, shininess: 10, side: THREE.DoubleSide });
+      const panelGeo = new THREE.BoxGeometry(0.16, 0.005, 0.05);
+      const panelL = new THREE.Mesh(panelGeo, panelMat);
+      panelL.position.x = -0.13;
+      const panelR = new THREE.Mesh(panelGeo, panelMat);
+      panelR.position.x = 0.13;
+      satellite.add(panelL, panelR);
+      satellite.position.set(ORBIT_RADIUS, 0, 0);
+      orbitSpin.add(satellite);
+
+      // laser beam from satellite down to its nadir point on Earth
+      const laserGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0, 0, 0)
+      ]);
+      const laserMat = new THREE.LineBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0 });
+      const laserLine = new THREE.Line(laserGeo, laserMat);
+      scene.add(laserLine);
+
+      const scanFlash = new THREE.Mesh(
+        new THREE.RingGeometry(0.001, 0.05, 32),
+        new THREE.MeshBasicMaterial({ color: 0x35d6c4, transparent: true, opacity: 0, side: THREE.DoubleSide })
+      );
+      earthGroup.add(scanFlash);
+
+      let scanState = 'idle'; // idle | firing
+      let scanTimer = 0;
+      const SCAN_INTERVAL = 4.5;
+      const SCAN_DURATION = 0.9;
+
+      function updateSatelliteScan(dt) {
+        scanTimer += dt;
+
+        // world-space satellite position + its nadir point on the sphere
+        const satWorldPos = new THREE.Vector3();
+        satellite.getWorldPosition(satWorldPos);
+        const nadirLocal = satWorldPos.clone().normalize().multiplyScalar(EARTH_RADIUS * 1.004);
+        // convert nadir (world) into earthGroup local space, since the
+        // flash/pin live inside the rotating earthGroup
+        const nadirLocalInEarth = earthGroup.worldToLocal(nadirLocal.clone());
+
+        if (scanState === 'idle' && scanTimer >= SCAN_INTERVAL) {
+          scanState = 'firing';
+          scanTimer = 0;
+        }
+
+        if (scanState === 'firing') {
+          const t = Math.min(scanTimer / SCAN_DURATION, 1);
+          const pulse = Math.sin(t * Math.PI); // 0 -> 1 -> 0
+
+          const positions = laserLine.geometry.attributes.position;
+          positions.setXYZ(0, satWorldPos.x, satWorldPos.y, satWorldPos.z);
+          positions.setXYZ(1, nadirLocal.x, nadirLocal.y, nadirLocal.z);
+          positions.needsUpdate = true;
+          laserMat.opacity = 0.85 * pulse;
+
+          scanFlash.position.copy(nadirLocalInEarth);
+          scanFlash.lookAt(nadirLocalInEarth.clone().multiplyScalar(2));
+          scanFlash.scale.setScalar(0.6 + pulse * 1.1);
+          scanFlash.material.opacity = 0.55 * pulse;
+
+          if (t >= 1) {
+            scanState = 'idle';
+            scanTimer = 0;
+            laserMat.opacity = 0;
+            scanFlash.material.opacity = 0;
+          }
+        }
+      }
+
+      // ---- controls: drag to rotate, wheel/pinch to zoom -------------
+      // Auto-rotate always runs, on phones included — this is the
+      // globe's signature motion, not a decorative extra, so it isn't
+      // gated behind prefers-reduced-motion the way the ambient
+      // background sparkle is.
+      camera.lookAt(0, 0, 0);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enablePan = false;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.minDistance = 1.7;
+      controls.maxDistance = 6.5;
+      controls.rotateSpeed = 0.55;
+      controls.zoomSpeed = 0.8;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.7;
+
+      // ---- earthquake simulator ---------------------------------------
+      // Displaces the sphere's own vertices with a short-lived rumble,
+      // fires off a red shockwave ring from a random epicenter, flashes
+      // the planet, and gives the camera a bit of a shake — then
+      // settles the globe back to its normal shape.
+      const quakeBtn = document.getElementById('quakeBtn');
+      const quakeToast = document.getElementById('quakeToast');
+      const quakeToastTitle = document.getElementById('quakeToastTitle');
+      const quakeToastBody = document.getElementById('quakeToastBody');
+
+      let quakeActive = false;
+      let quakeT = 0;
+      const QUAKE_DURATION = 3.4;
+      const QUAKE_AMPLITUDE = 0.045;
+      const cameraShakeOffset = new THREE.Vector3();
+      const quakeTmp = new THREE.Vector3();
+
+      const shockRing = new THREE.Mesh(
+        new THREE.RingGeometry(0.001, 0.02, 48),
+        new THREE.MeshBasicMaterial({ color: 0xc4452e, transparent: true, opacity: 0, side: THREE.DoubleSide })
+      );
+      earthGroup.add(shockRing);
+
+      const quakeFlash = new THREE.Mesh(
+        new THREE.SphereGeometry(EARTH_RADIUS * 1.02, 32, 32),
+        new THREE.MeshBasicMaterial({ color: 0xc4452e, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })
+      );
+      earthGroup.add(quakeFlash);
+
+      const quakePosAttr = earthGeo.attributes.position;
+      const quakeVertexCount = quakePosAttr.count;
+
+      function triggerQuake() {
+        if (quakeActive) return;
+        quakeActive = true;
+        quakeT = 0;
+        controls.autoRotate = false;
+        if (quakeBtn) quakeBtn.disabled = true;
+
+        const lat = Math.random() * 140 - 70; // keep away from the poles
+        const lng = Math.random() * 360 - 180;
+        const epicenter = latLngToVector3(lat, lng, EARTH_RADIUS * 1.012);
+        shockRing.position.copy(epicenter);
+        shockRing.lookAt(epicenter.clone().multiplyScalar(2));
+
+        const magnitude = (5.6 + Math.random() * 3.2).toFixed(1);
+        const latDir = lat >= 0 ? 'N' : 'S';
+        const lngDir = lng >= 0 ? 'E' : 'W';
+        if (quakeToastTitle) quakeToastTitle.textContent = `Seismic event — M${magnitude}`;
+        if (quakeToastBody) quakeToastBody.textContent = `Simulating surface rupture near ${Math.abs(lat).toFixed(1)}°${latDir}, ${Math.abs(lng).toFixed(1)}°${lngDir}`;
+        if (quakeToast) {
+          quakeToast.classList.remove('show');
+          void quakeToast.offsetWidth;
+          quakeToast.classList.add('show');
+          clearTimeout(triggerQuake._t);
+          triggerQuake._t = setTimeout(() => quakeToast.classList.remove('show'), QUAKE_DURATION * 1000 + 500);
+        }
+      }
+      if (quakeBtn) quakeBtn.addEventListener('click', triggerQuake);
+
+      function updateQuake(dt) {
+        if (!quakeActive) {
+          cameraShakeOffset.set(0, 0, 0);
+          return;
+        }
+        quakeT += dt;
+        const t = Math.min(quakeT / QUAKE_DURATION, 1);
+        const envelope = Math.sin(Math.PI * t); // ramps 0 -> 1 -> 0
+
+        for (let i = 0; i < quakeVertexCount; i++) {
+          const ix = i * 3;
+          const bx = basePositions[ix], by = basePositions[ix + 1], bz = basePositions[ix + 2];
+          const noise = (
+            Math.sin(bx * 14 + quakeT * 10) +
+            Math.sin(by * 14 + quakeT * 8.3) +
+            Math.sin(bz * 14 + quakeT * 11.7)
+          ) / 3;
+          const disp = envelope * QUAKE_AMPLITUDE * noise;
+          quakeTmp.set(bx, by, bz).normalize();
+          quakePosAttr.setXYZ(i, bx + quakeTmp.x * disp, by + quakeTmp.y * disp, bz + quakeTmp.z * disp);
+        }
+        quakePosAttr.needsUpdate = true;
+        earthGeo.computeVertexNormals();
+
+        shockRing.scale.setScalar(0.6 + envelope * 9 * t);
+        shockRing.material.opacity = 0.5 * envelope;
+        quakeFlash.material.opacity = 0.14 * envelope;
+
+        cameraShakeOffset.set(
+          (Math.random() - 0.5) * 0.024 * envelope,
+          (Math.random() - 0.5) * 0.024 * envelope,
+          0
+        );
+
+        if (t >= 1) {
+          quakeActive = false;
+          quakePosAttr.array.set(basePositions);
+          quakePosAttr.needsUpdate = true;
+          earthGeo.computeVertexNormals();
+          shockRing.material.opacity = 0;
+          quakeFlash.material.opacity = 0;
+          cameraShakeOffset.set(0, 0, 0);
+          if (quakeBtn) quakeBtn.disabled = false;
+          controls.autoRotate = true;
+        }
+      }
+
+      renderer.domElement.addEventListener('pointerdown', () => host.classList.add('is-dragging'));
+      window.addEventListener('pointerup', () => host.classList.remove('is-dragging'));
+
+      // ---- click / tap anywhere on the globe: fly the camera in ------
+      const raycaster = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2();
+      let dragStart = null;
+      let flight = null; // { fromPos, toPos, fromTarget, toTarget, t, duration }
+
+      function setPointerFromEvent(e) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      renderer.domElement.addEventListener('pointerdown', (e) => {
+        dragStart = { x: e.clientX, y: e.clientY };
+      });
+
+      renderer.domElement.addEventListener('pointerup', (e) => {
+        if (!dragStart) return;
+        const moved = Math.hypot(e.clientX - dragStart.x, e.clientY - dragStart.y);
+        dragStart = null;
+        if (moved > 6) return; // was a drag, not a click
+
+        setPointerFromEvent(e);
+        raycaster.setFromCamera(pointerNdc, camera);
+        const hit = raycaster.intersectObject(earthMesh, false)[0];
+        if (!hit) return;
+
+        // point in earthGroup-local space (accounts for current spin)
+        const localPoint = earthGroup.worldToLocal(hit.point.clone());
+        const { lat, lng } = vector3ToLatLng(localPoint);
+
+        // fly the camera toward this point, closer in
+        const dir = hit.point.clone().normalize();
+        const targetDistance = Math.max(controls.minDistance + 0.15, camera.position.length() * 0.55);
+        const toPos = dir.multiplyScalar(targetDistance);
+
+        flight = {
+          fromPos: camera.position.clone(),
+          toPos,
+          t: 0,
+          duration: 1.1
+        };
+        controls.autoRotate = false;
+
+        // coordinate readout near the click
+        if (tooltipEl) {
+          const rect = renderer.domElement.getBoundingClientRect();
+          tooltipEl.style.left = (e.clientX - rect.left) + 'px';
+          tooltipEl.style.top = (e.clientY - rect.top) + 'px';
+          const latDir = lat >= 0 ? 'N' : 'S';
+          const lngDir = lng >= 0 ? 'E' : 'W';
+          tooltipEl.textContent = `${Math.abs(lat).toFixed(2)}°${latDir}, ${Math.abs(lng).toFixed(2)}°${lngDir}`;
+          tooltipEl.classList.add('show');
+          clearTimeout(setPointerFromEvent._tt);
+          setPointerFromEvent._tt = setTimeout(() => tooltipEl.classList.remove('show'), 2600);
+        }
+      });
+
+      // ---- sizing ------------------------------------------------------
+      function resize() {
+        const w = host.clientWidth || 1;
+        const h = host.clientHeight || 1;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(resize).observe(host);
+      } else {
+        window.addEventListener('resize', resize);
+      }
+
+      // ---- animation loop ------------------------------------------------
+      const clock = new THREE.Clock();
+      function tick() {
+        const dt = Math.min(clock.getDelta(), 0.05);
+
+        orbitSpin.rotation.y += dt * 0.5; // satellite orbital speed
+        if (cloudMesh) cloudMesh.rotation.y += dt * 0.02;
+        pinHalo.material.opacity = 0.4 + Math.sin(clock.elapsedTime * 2.4) * 0.25;
+        updateSatelliteScan(dt);
+        updateQuake(dt);
+
+        if (flight) {
+          flight.t = Math.min(flight.t + dt / flight.duration, 1);
+          const ease = 1 - Math.pow(1 - flight.t, 3);
+          camera.position.lerpVectors(flight.fromPos, flight.toPos, ease);
+          if (flight.t >= 1) {
+            flight = null;
+            controls.autoRotate = true;
+          }
+        }
+
+        controls.update();
+
+        if (quakeActive) camera.position.add(cameraShakeOffset);
+        renderer.render(scene, camera);
+        if (quakeActive) camera.position.sub(cameraShakeOffset);
+
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      if (loadingEl) loadingEl.classList.add('hide');
+    } catch (err) {
+      if (loadingEl) loadingEl.textContent = 'Globe unavailable';
+      console.error('Hero globe failed to initialize:', err);
+    }
+  }
 </script>
 
 <!-- =========================================================
