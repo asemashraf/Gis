@@ -28,11 +28,7 @@
 <body>
 
 <div class="space-bg" aria-hidden="true">
-  <div class="stars stars-1"></div>
-  <div class="stars stars-2"></div>
-  <div class="stars stars-3"></div>
-  <div class="stars stars-4"></div>
-  <div class="stars stars-5"></div>
+  <canvas id="starfieldCanvas"></canvas>
 </div>
 
 <!-- CV transmission notice -->
@@ -131,8 +127,6 @@
             </button>
           </div>
         </div>
-
-        <div class="hero-divider" aria-hidden="true"><span></span></div>
 
         <!-- CV / typewriter / contact console panel -->
         <div class="hero-panel" id="gis-overlay">
@@ -297,6 +291,103 @@
 <footer>
   © Asem 2025 — All rights reserved
 </footer>
+
+<!-- =========================================================
+     Realistic starfield — canvas-rendered, page-wide
+     ---------------------------------------------------------
+     Replaces the old repeating-gradient "stars" divs with real
+     per-star randomised twinkle + slow parallax drift, which
+     reads far more like open space. Runs behind everything
+     (inside the fixed .space-bg), completely independent of the
+     3D globe.
+     ========================================================= -->
+<script>
+  (function () {
+    const canvas = document.getElementById('starfieldCanvas');
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0, h = 0, stars = [];
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function initStars() {
+      const count = Math.min(240, Math.max(90, Math.floor((w * h) / 9000)));
+      stars = new Array(count).fill(0).map(() => {
+        const roll = Math.random();
+        const color = roll > 0.93 ? '227,168,76' : roll > 0.8 ? '53,214,196' : '231,238,243';
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: rand(0.4, 1.7),
+          baseAlpha: rand(0.3, 0.95),
+          phase: rand(0, Math.PI * 2),
+          speed: rand(0.4, 1.5),
+          vx: rand(-0.01, 0.01),
+          vy: rand(0.006, 0.024),
+          color
+        };
+      });
+    }
+
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initStars();
+    }
+
+    let t = 0;
+    function draw(step) {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        if (!reduceMotion) {
+          s.x += s.vx * step;
+          s.y += s.vy * step;
+          if (s.x < -4) s.x = w + 4;
+          if (s.x > w + 4) s.x = -4;
+          if (s.y > h + 4) { s.y = -4; s.x = Math.random() * w; }
+        }
+        const alpha = reduceMotion
+          ? s.baseAlpha
+          : s.baseAlpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${s.color},${Math.max(0, alpha)})`;
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (s.r > 1.15) {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(${s.color},${Math.max(0, alpha * 0.22)})`;
+          ctx.arc(s.x, s.y, s.r * 3.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    let last = null;
+    function loop(now) {
+      if (last === null) last = now;
+      const dtMs = Math.min(now - last, 50);
+      last = now;
+      t += dtMs / 1000;
+      draw(dtMs / 16.6667);
+      requestAnimationFrame(loop);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(loop);
+  })();
+</script>
 
 <!-- =========================================================
      Mobile menu toggle
