@@ -637,7 +637,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 .hero-panel .cv { width: 100%; }
 
 .hero-panel .typewriter-container {
-  padding: 18px 0 0;
+  padding: 0 0 18px;
   font-size: 1.02em;
   text-align: left;
   min-height: 3.4em;
@@ -1240,24 +1240,6 @@ input:focus-visible {
   justify-content: center;
 }
 
-.globe-atmosphere {
-  position: absolute;
-  inset: -18px;
-  border-radius: 50%;
-  border: 1px solid rgba(53, 214, 196, 0.25);
-  box-shadow:
-    0 0 40px 6px rgba(53, 214, 196, 0.12),
-    inset 0 0 60px 10px rgba(53, 214, 196, 0.06);
-  animation: atmosphere-breathe 6s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes atmosphere-breathe {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.015); }
-}
-
 #globeCanvasHost {
   position: relative;
   z-index: 1;
@@ -1373,10 +1355,6 @@ input:focus-visible {
 
 @media (max-width: 768px) {
   .globe-wrap { width: 260px; height: 260px; margin-top: 24px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .globe-atmosphere { animation: atmosphere-breathe 6s ease-in-out infinite !important; }
 }
 
 /* =========================================================
