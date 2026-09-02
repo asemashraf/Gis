@@ -156,7 +156,6 @@
                zoom, click any point on Earth to fly the camera in, and
                watch the little satellite orbit and "scan" the surface. -->
           <div class="globe-wrap" id="globeWrap">
-            <div class="globe-atmosphere" aria-hidden="true"></div>
             <div id="globeCanvasHost" aria-label="Interactive 3D globe — drag to rotate, scroll to zoom, click to fly to a location">
               <div class="globe-loading" id="globeLoading">Loading globe…</div>
               <div class="globe-tooltip" id="globeTooltip"></div>
@@ -172,12 +171,12 @@
 
         <!-- CV / typewriter / contact console panel -->
         <div class="hero-panel" id="gis-overlay">
-          <span class="eyebrow">// transmission</span>
-          <button class="cv" type="button" onclick="showCvToast()">Download my CV</button>
-
           <div class="typewriter-container" id="typewriter">
             <span id="typed-text"></span>
           </div>
+
+          <span class="eyebrow">// transmission</span>
+          <button class="cv" type="button" onclick="showCvToast()">Download my CV</button>
 
           <div class="rr">Contact Me</div>
           <div class="icon3">
