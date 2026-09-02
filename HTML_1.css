@@ -1245,8 +1245,6 @@ input:focus-visible {
   z-index: 1;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
   cursor: grab;
   touch-action: none;
 }
