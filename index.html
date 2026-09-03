@@ -670,15 +670,15 @@
 
       const scene = new THREE.Scene();
 
-      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-      // Pulled back enough that the satellite's full orbit ring (radius
-      // ≈1.58) sits inside the camera's own field of view on every side —
-      // at the old distance (3.1) the orbit was actually wider than the
-      // frustum itself, so it was being clipped unevenly by the camera
-      // before any CSS mask even got involved. With this framing nothing
-      // needs to be cropped, so there's no circular/square mask at all —
-      // just the globe and its orbit floating freely against the stars.
-      camera.position.set(0, 0.2, 4.6);
+      const camera = new THREE.PerspectiveCamera(58, 1, 0.1, 100);
+      // Close framing, same as the very first version — but with the
+      // FOV opened up (see PerspectiveCamera above) instead of pulling
+      // the camera back, so the satellite's full orbit ring now fits
+      // inside the frame at this same close distance without any of it
+      // being cut off. No CSS mask on the container either, so there's
+      // no square or circular "frame" at all — the globe and its orbit
+      // just float freely against the starfield.
+      camera.position.set(0, 0.15, 3.1);
 
       const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.6 : 2));
