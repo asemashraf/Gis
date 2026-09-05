@@ -1233,8 +1233,8 @@ input:focus-visible {
 .globe-wrap {
   position: relative;
   margin-top: 34px;
-  width: 380px;
-  height: 380px;
+  width: 480px;
+  height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1522,4 +1522,117 @@ input:focus-visible {
 @media (max-width: 480px) {
   .cv-toast { left: 12px; right: 12px; max-width: none; transform: translateY(-18px); }
   .cv-toast.show { transform: translateY(0); }
+}
+
+/* =========================================================
+   Intro preloader — brief black splash before the portfolio
+   ---------------------------------------------------------
+   A small rotating wireframe globe (pure CSS — reuses the
+   classic "scaleX oscillation" trick to fake a spinning sphere,
+   no WebGL needed for a two-second splash), a GPS-style
+   coordinate lock-on, then a short GIS-flavoured line. Entirely
+   new, self-contained block — nothing above this in the file
+   was changed.
+   ========================================================= */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 42%, rgba(53, 214, 196, 0.10), transparent 65%),
+    #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-globe {
+  position: relative;
+  width: 110px;
+  height: 110px;
+}
+
+.preloader-globe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(53, 214, 196, 0.45);
+  box-shadow: 0 0 34px rgba(53, 214, 196, 0.22), inset 0 0 22px rgba(53, 214, 196, 0.08);
+}
+
+.preloader-meridian {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(53, 214, 196, 0.4);
+  border-radius: 50%;
+  animation: preloader-spin 3.2s linear infinite;
+}
+
+.preloader-meridian:nth-child(2) { animation-delay: -1.07s; border-color: rgba(227, 168, 76, 0.32); }
+.preloader-meridian:nth-child(3) { animation-delay: -2.14s; border-color: rgba(53, 214, 196, 0.25); }
+
+@keyframes preloader-spin {
+  0%   { transform: scaleX(1); }
+  50%  { transform: scaleX(0.04); }
+  100% { transform: scaleX(1); }
+}
+
+.preloader-equator {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  right: 2%;
+  height: 1px;
+  background: rgba(143, 166, 184, 0.3);
+  transform: translateY(-0.5px);
+}
+
+.preloader-coords {
+  font-family: var(--font-mono);
+  font-size: 1em;
+  letter-spacing: 0.09em;
+  color: var(--teal);
+  min-height: 1.4em;
+}
+
+.preloader-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 2px;
+  background: var(--teal);
+  vertical-align: -0.15em;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+.preloader-phrase {
+  font-family: var(--font-display);
+  font-size: 1.1em;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-align: center;
+  padding: 0 24px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.preloader-phrase.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-meridian { animation: none; }
+  .preloader-caret { animation: none; }
 }
