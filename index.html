@@ -27,6 +27,75 @@
 </head>
 <body>
 
+<!-- =========================================================
+     Intro preloader — a brief black splash before the portfolio
+     reveals itself: a small rotating wireframe globe, coordinates
+     that "lock on" like a GPS fix, then a short GIS-flavoured line.
+     Purely additive — doesn't touch or depend on anything else on
+     the page, and removes itself from the DOM once it's done.
+     ========================================================= -->
+<div class="preloader" id="preloader" role="status" aria-label="Loading">
+  <div class="preloader-globe" aria-hidden="true">
+    <span class="preloader-meridian"></span>
+    <span class="preloader-meridian"></span>
+    <span class="preloader-meridian"></span>
+    <span class="preloader-equator"></span>
+  </div>
+  <div class="preloader-coords" id="preloaderCoords" aria-hidden="true"></div>
+  <div class="preloader-phrase" id="preloaderPhrase">Everything Happens Somewhere.</div>
+</div>
+
+<script>
+  (function () {
+    var pre = document.getElementById('preloader');
+    if (!pre) return;
+    var coordsEl = document.getElementById('preloaderCoords');
+    var phraseEl = document.getElementById('preloaderPhrase');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.documentElement.style.overflow = 'hidden';
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      pre.classList.add('hide');
+      document.documentElement.style.overflow = '';
+      window.dispatchEvent(new Event('preloaderDone'));
+      setTimeout(function () { pre.remove(); }, 850);
+    }
+
+    // Never block the page for more than ~5s no matter what.
+    setTimeout(finish, 5000);
+
+    if (reduceMotion) {
+      if (phraseEl) phraseEl.classList.add('show');
+      setTimeout(finish, 600);
+      return;
+    }
+
+    var text = '30.0444° N, 31.2357° E';
+    var i = 0;
+
+    function typeCoord() {
+      if (i <= text.length) {
+        coordsEl.innerHTML = text.slice(0, i) + '<span class="preloader-caret"></span>';
+        i++;
+        setTimeout(typeCoord, 38);
+      } else {
+        setTimeout(function () {
+          var caret = coordsEl.querySelector('.preloader-caret');
+          if (caret) caret.remove();
+          if (phraseEl) phraseEl.classList.add('show');
+          setTimeout(finish, 1200);
+        }, 350);
+      }
+    }
+    setTimeout(typeCoord, 450);
+  })();
+</script>
+
+
 <div class="space-bg" aria-hidden="true">
   <canvas id="starfieldCanvas"></canvas>
 </div>
@@ -112,9 +181,11 @@
             <style>#heroTitle, #heroTagline { opacity: 1 !important; }</style>
           </noscript>
           <script>
-            // Runs immediately (no DOMContentLoaded wait) so the raw
-            // text never flashes before it's split into the animated
-            // word spans — see the matching CSS reveal rules.
+            // Waits for the preloader to finish (see the 'preloaderDone'
+            // event dispatched by its script) before splitting the text
+            // into animated word spans — otherwise the whole reveal would
+            // play out silently behind the black splash screen and the
+            // user would never actually see it happen.
             (function () {
               var title = document.getElementById('heroTitle');
               var tagline = document.getElementById('heroTagline');
@@ -144,11 +215,20 @@
                 }
               }
 
-              [title, tagline].forEach(function (el) {
-                if (!el) return;
-                Array.prototype.slice.call(el.childNodes).forEach(wrapWords);
-                el.classList.add('reveal-ready');
-              });
+              function runReveal() {
+                [title, tagline].forEach(function (el) {
+                  if (!el) return;
+                  Array.prototype.slice.call(el.childNodes).forEach(wrapWords);
+                  el.classList.add('reveal-ready');
+                });
+              }
+
+              var preloader = document.getElementById('preloader');
+              if (preloader) {
+                window.addEventListener('preloaderDone', runReveal, { once: true });
+              } else {
+                runReveal();
+              }
             })();
           </script>
 
@@ -681,6 +761,11 @@
       camera.position.set(0, 0.15, 3.1);
 
       const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
+      // Three.js still clears to OPAQUE black by default even with
+      // alpha:true on the context — that's the actual "square" that's
+      // been showing up: a solid black square behind the scene, not a
+      // CSS border at all. This makes the clear genuinely transparent.
+      renderer.setClearColor(0x000000, 0);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.6 : 2));
       host.appendChild(renderer.domElement);
 
