@@ -1617,22 +1617,35 @@ input:focus-visible {
 
 .preloader-phrase {
   font-family: var(--font-display);
-  font-size: 1.1em;
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  font-size: 2.1em;
+  letter-spacing: 0.02em;
   color: var(--ink);
   text-align: center;
   padding: 0 24px;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  text-shadow: 0 0 22px rgba(53, 214, 196, 0.3), 0 0 46px rgba(53, 214, 196, 0.12);
 }
 
 .preloader-phrase.show {
   opacity: 1;
   transform: translateY(0);
+  animation: preloader-phrase-glow 2.6s ease-in-out infinite;
+}
+
+@keyframes preloader-phrase-glow {
+  0%, 100% { text-shadow: 0 0 18px rgba(53, 214, 196, 0.28), 0 0 42px rgba(53, 214, 196, 0.1); }
+  50% { text-shadow: 0 0 30px rgba(53, 214, 196, 0.55), 0 0 60px rgba(53, 214, 196, 0.22); }
+}
+
+@media (max-width: 480px) {
+  .preloader-phrase { font-size: 1.5em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .preloader-meridian { animation: none; }
   .preloader-caret { animation: none; }
+  .preloader-phrase.show { animation: none; }
 }
