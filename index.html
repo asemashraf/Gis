@@ -11,7 +11,7 @@
        (Three.js) — drag to spin, scroll/pinch to zoom, click anywhere to
        fly in, plus an orbiting satellite that periodically scans the
        surface with a laser pulse. -->
-  <link rel="stylesheet" href="HTML_1.css?v=11">
+  <link rel="stylesheet" href="HTML_1.css?v=12">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 
@@ -24,6 +24,125 @@
     }
   }
   </script>
+
+<style>
+/* ========== Additive styles for new interactive GIS features ========== */
+.layer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.76em;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.layer-btn:hover,
+.layer-btn.active {
+  border-color: var(--teal);
+  color: var(--teal);
+  box-shadow: 0 0 0 1px rgba(53, 214, 196, 0.15);
+}
+
+#lab-map {
+  width: 100%;
+  height: 420px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.lab-result {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  color: var(--teal);
+  text-align: center;
+  min-height: 1.4em;
+}
+
+/* Change Detection slider */
+.cd-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.cd-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  user-select: none;
+  cursor: col-resize;
+}
+.cd-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.cd-before { z-index: 1; }
+.cd-after-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.cd-after {
+  width: 100vw; /* will be constrained by parent */
+  max-width: none;
+  height: 100%;
+}
+.cd-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 36px;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, transparent, rgba(53,214,196,0.15), transparent);
+  color: var(--teal);
+  font-size: 1.1em;
+  cursor: col-resize;
+  border-left: 2px solid var(--teal);
+  border-right: 2px solid var(--teal);
+}
+.cd-label {
+  position: absolute;
+  top: 14px;
+  z-index: 6;
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(10,18,28,0.7);
+  border: 1px solid rgba(53,214,196,0.4);
+  color: var(--ink);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.cd-label-before { left: 14px; }
+.cd-label-after { right: 14px; }
+
+@media (max-width: 768px) {
+  #lab-map, .cd-wrapper { height: 300px; }
+}
+</style>
+
 </head>
 <body>
 
@@ -246,6 +365,9 @@
             <button class="quake-btn" id="quakeBtn" type="button">
               <span class="quake-icon" aria-hidden="true">🌎</span> Simulate an earthquake
             </button>
+            <button class="layer-btn active" id="dayBtn" type="button" title="Day texture">☀️ Day</button>
+            <button class="layer-btn" id="nightBtn" type="button" title="Night lights">🌙 Night</button>
+            <button class="layer-btn" id="resetGlobeBtn" type="button" title="Reset view">↺ Reset</button>
           </div>
         </div>
 
@@ -401,8 +523,55 @@
       <div class="mode-switch">
         <button type="button" class="active" id="modeCar" onclick="setTravelMode('car')">🚗 Driving</button>
         <button type="button" id="modeFoot" onclick="setTravelMode('foot')">🚶 Walking</button>
+        <button type="button" id="basemapOsm" class="active" onclick="setBasemap('osm')">🗺️ Streets</button>
+        <button type="button" id="basemapSat" onclick="setBasemap('sat')">🛰️ Satellite</button>
+        <button type="button" id="clearRouteBtn" onclick="clearRoute()">✕ Clear</button>
       </div>
       <div id="map" class="reveal-slit"></div>
+    </section>
+
+
+    <!-- =========================================================
+         Spatial Analysis Lab — interactive buffer + measure
+         ========================================================= -->
+    <section class="map-section reveal-up" id="spatial-lab">
+      <div class="section-heading">
+        <span class="eyebrow">// spatial analysis</span>
+        <h2>Spatial Analysis Lab</h2>
+      </div>
+      <p class="map-hint">Click the map to place a point, then create a buffer or measure distance between two points.</p>
+      <div class="mode-switch">
+        <button type="button" class="active" id="toolBuffer" onclick="setLabTool('buffer')">⭕ Buffer</button>
+        <button type="button" id="toolMeasure" onclick="setLabTool('measure')">📏 Measure</button>
+        <button type="button" id="clearLabBtn" onclick="clearLab()">✕ Clear</button>
+      </div>
+      <div id="lab-map" class="reveal-slit"></div>
+      <div class="lab-result" id="labResult">Ready — select a tool and click the map.</div>
+    </section>
+
+    <div class="contour-divider" aria-hidden="true"></div>
+
+    <!-- =========================================================
+         Change Detection — before / after slider
+         ========================================================= -->
+    <section class="map-section reveal-up" id="change-detection">
+      <div class="section-heading">
+        <span class="eyebrow">// remote sensing</span>
+        <h2>Change Detection</h2>
+      </div>
+      <p class="map-hint">Drag the slider to compare two satellite views of the same area (demo imagery).</p>
+      <div class="cd-container reveal-slit">
+        <div class="cd-wrapper" id="cdWrapper">
+          <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1200&q=80" alt="Satellite view A" class="cd-img cd-before" id="cdBefore">
+          <div class="cd-after-wrap" id="cdAfterWrap">
+            <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=1200&q=80" alt="Satellite view B" class="cd-img cd-after" id="cdAfter" style="width:900px;max-width:none;">
+          </div>
+          <div class="cd-slider" id="cdSlider"></div>
+          <div class="cd-handle" id="cdHandle">⟷</div>
+          <span class="cd-label cd-label-before">Before</span>
+          <span class="cd-label cd-label-after">After</span>
+        </div>
+      </div>
     </section>
 
   </article>
@@ -903,6 +1072,76 @@
       pinHalo.lookAt(gizaPos.clone().multiplyScalar(2));
       earthGroup.add(pinHalo);
 
+      // Extra project / city markers (Alexandria + Luxor)
+      function addCityMarker(lat, lng, color, label) {
+        const pos = latLngToVector3(lat, lng, EARTH_RADIUS * 1.007);
+        const dot = new THREE.Mesh(
+          new THREE.SphereGeometry(0.011, 10, 10),
+          new THREE.MeshBasicMaterial({ color })
+        );
+        dot.position.copy(pos);
+        earthGroup.add(dot);
+        const halo = new THREE.Mesh(
+          new THREE.RingGeometry(0.014, 0.024, 20),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5, side: THREE.DoubleSide })
+        );
+        halo.position.copy(pos);
+        halo.lookAt(pos.clone().multiplyScalar(2));
+        earthGroup.add(halo);
+        return { dot, halo, label };
+      }
+      addCityMarker(31.2001, 29.9187, 0x35d6c4, 'Alexandria');
+      addCityMarker(25.6872, 32.6396, 0xe3a84c, 'Luxor');
+
+      // Night lights texture support
+      let nightTexture = null;
+      let dayTexture = null;
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          dayTexture = tex;
+          earthMat.map = tex;
+          earthMat.needsUpdate = true;
+        }
+      );
+      texLoader.load(
+        'https://unpkg.com/three-globe/example/img/earth-night.jpg',
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          nightTexture = tex;
+        },
+        undefined,
+        () => {}
+      );
+
+      // Layer controls
+      const dayBtn = document.getElementById('dayBtn');
+      const nightBtn = document.getElementById('nightBtn');
+      const resetGlobeBtn = document.getElementById('resetGlobeBtn');
+
+      if (dayBtn) dayBtn.addEventListener('click', () => {
+        if (dayTexture) {
+          earthMat.map = dayTexture;
+          earthMat.needsUpdate = true;
+          dayBtn.classList.add('active');
+          if (nightBtn) nightBtn.classList.remove('active');
+        }
+      });
+      if (nightBtn) nightBtn.addEventListener('click', () => {
+        if (nightTexture) {
+          earthMat.map = nightTexture;
+          earthMat.needsUpdate = true;
+          nightBtn.classList.add('active');
+          if (dayBtn) dayBtn.classList.remove('active');
+        }
+      });
+      if (resetGlobeBtn) resetGlobeBtn.addEventListener('click', () => {
+        controls.reset();
+        camera.position.set(0, 0.15, 3.1);
+        controls.autoRotate = true;
+      });
+
       // ---- orbiting, scanning satellite ------------------------------
       const orbitTilt = new THREE.Object3D();
       orbitTilt.rotation.z = THREE.MathUtils.degToRad(28);
@@ -1354,13 +1593,22 @@
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 <script>
   const map = L.map('map').setView([30.0444, 31.2357], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(map);
 
+  const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 19
+  });
+  const satLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri',
+    maxZoom: 19
+  });
+  osmLayer.addTo(map);
+
+  let currentBasemap = 'osm';
   let routingControl = null;
   let startMarker = null;
-  let travelMode = 'car'; // 'car' | 'foot'
+  let endMarker = null;
+  let travelMode = 'car';
 
   const startIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', iconSize: [30, 30] });
   const endIcon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize: [30, 30] });
@@ -1374,6 +1622,7 @@
     }
 
     if (routingControl) map.removeControl(routingControl);
+    if (endMarker) map.removeLayer(endMarker);
 
     routingControl = L.Routing.control({
       waypoints: [startMarker.getLatLng(), clickedPoint],
@@ -1398,7 +1647,7 @@
         const distance = (route.summary.totalDistance / 1000).toFixed(2);
         const time = Math.round(route.summary.totalTime / 60);
 
-        L.marker(clickedPoint, { icon: endIcon })
+        endMarker = L.marker(clickedPoint, { icon: endIcon })
           .addTo(map)
           .bindPopup(`🏁 Destination<br>📏 Distance: ${distance} km<br>⏱️ Time: ${time} min`)
           .openPopup();
@@ -1413,7 +1662,168 @@
     document.getElementById('modeCar').classList.toggle('active', mode === 'car');
     document.getElementById('modeFoot').classList.toggle('active', mode === 'foot');
   }
+
+  function setBasemap(type) {
+    if (type === currentBasemap) return;
+    if (currentBasemap === 'osm') map.removeLayer(osmLayer);
+    else map.removeLayer(satLayer);
+
+    if (type === 'osm') {
+      osmLayer.addTo(map);
+      document.getElementById('basemapOsm').classList.add('active');
+      document.getElementById('basemapSat').classList.remove('active');
+    } else {
+      satLayer.addTo(map);
+      document.getElementById('basemapSat').classList.add('active');
+      document.getElementById('basemapOsm').classList.remove('active');
+    }
+    currentBasemap = type;
+  }
+
+  function clearRoute() {
+    if (routingControl) {
+      map.removeControl(routingControl);
+      routingControl = null;
+    }
+    if (startMarker) { map.removeLayer(startMarker); startMarker = null; }
+    if (endMarker) { map.removeLayer(endMarker); endMarker = null; }
+  }
 </script>
+
+<!-- =========================================================
+     Spatial Analysis Lab (Leaflet + Turf.js)
+     ========================================================= -->
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script>
+  (function () {
+    const labMap = L.map('lab-map').setView([30.0444, 31.2357], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(labMap);
+
+    let labTool = 'buffer';
+    let labMarkers = [];
+    let labLayers = [];
+    let measurePoints = [];
+
+    const resultEl = document.getElementById('labResult');
+
+    window.setLabTool = function (tool) {
+      labTool = tool;
+      document.getElementById('toolBuffer').classList.toggle('active', tool === 'buffer');
+      document.getElementById('toolMeasure').classList.toggle('active', tool === 'measure');
+      resultEl.textContent = tool === 'buffer'
+        ? 'Buffer mode — click the map to place a center point.'
+        : 'Measure mode — click two points to measure distance.';
+    };
+
+    window.clearLab = function () {
+      labMarkers.forEach(m => labMap.removeLayer(m));
+      labLayers.forEach(l => labMap.removeLayer(l));
+      labMarkers = [];
+      labLayers = [];
+      measurePoints = [];
+      resultEl.textContent = 'Cleared. Select a tool and click the map.';
+    };
+
+    labMap.on('click', function (e) {
+      const latlng = e.latlng;
+
+      if (labTool === 'buffer') {
+        clearLab();
+        const marker = L.marker(latlng).addTo(labMap);
+        labMarkers.push(marker);
+
+        const pt = turf.point([latlng.lng, latlng.lat]);
+        const buffered = turf.buffer(pt, 2, { units: 'kilometers' });
+        const layer = L.geoJSON(buffered, {
+          style: {
+            color: '#35d6c4',
+            weight: 2,
+            fillColor: '#35d6c4',
+            fillOpacity: 0.18
+          }
+        }).addTo(labMap);
+        labLayers.push(layer);
+        labMap.fitBounds(layer.getBounds(), { padding: [30, 30] });
+        resultEl.textContent = `Buffer created — 2 km radius around ${latlng.lat.toFixed(4)}°, ${latlng.lng.toFixed(4)}°`;
+      } else {
+        // measure
+        if (measurePoints.length >= 2) {
+          clearLab();
+        }
+        const marker = L.marker(latlng).addTo(labMap);
+        labMarkers.push(marker);
+        measurePoints.push([latlng.lng, latlng.lat]);
+
+        if (measurePoints.length === 2) {
+          const from = turf.point(measurePoints[0]);
+          const to = turf.point(measurePoints[1]);
+          const dist = turf.distance(from, to, { units: 'kilometers' });
+          const line = turf.lineString(measurePoints);
+          const layer = L.geoJSON(line, {
+            style: { color: '#e3a84c', weight: 3, dashArray: '6 4' }
+          }).addTo(labMap);
+          labLayers.push(layer);
+          resultEl.textContent = `Distance: ${dist.toFixed(2)} km`;
+        } else {
+          resultEl.textContent = 'First point set — click the second point.';
+        }
+      }
+    });
+  })();
+</script>
+
+<!-- =========================================================
+     Change Detection slider
+     ========================================================= -->
+<script>
+  (function () {
+    const wrapper = document.getElementById('cdWrapper');
+    const afterWrap = document.getElementById('cdAfterWrap');
+    const handle = document.getElementById('cdHandle');
+    const afterImg = document.getElementById('cdAfter');
+    if (!wrapper || !afterWrap || !handle) return;
+
+    function syncWidths() {
+      const w = wrapper.offsetWidth;
+      if (afterImg) afterImg.style.width = w + 'px';
+    }
+    syncWidths();
+    window.addEventListener('resize', syncWidths);
+
+    let isDragging = false;
+
+    function updateSlider(x) {
+      const rect = wrapper.getBoundingClientRect();
+      let pct = ((x - rect.left) / rect.width) * 100;
+      pct = Math.max(5, Math.min(95, pct));
+      afterWrap.style.width = pct + '%';
+      handle.style.left = pct + '%';
+    }
+
+    handle.addEventListener('mousedown', () => { isDragging = true; });
+    handle.addEventListener('touchstart', (e) => { isDragging = true; e.preventDefault(); }, { passive: false });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      updateSlider(e.clientX);
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      updateSlider(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+    wrapper.addEventListener('click', (e) => {
+      if (e.target === handle) return;
+      updateSlider(e.clientX);
+    });
+  })();
+</script>
+
 
 </body>
 </html>
