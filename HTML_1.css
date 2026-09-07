@@ -1360,9 +1360,20 @@ input:focus-visible {
    (replaces the old text-only "Developers" block)
    ========================================================= */
 .services-section {
+  position: relative;
   max-width: 1100px;
   margin: 70px auto;
-  padding: 0 20px;
+  padding: 56px 20px 64px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background-image:
+    linear-gradient(180deg, rgba(10, 18, 28, 0.82) 0%, rgba(10, 18, 28, 0.9) 100%),
+    url('3333.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
 }
 
 .services-section .section-heading { text-align: center; margin-bottom: 8px; }
@@ -1738,8 +1749,85 @@ input:focus-visible {
   .layer-btn { padding: 7px 11px; font-size: 0.72em; }
 }
 
+/* =========================================================
+   Remote Sensing — distinctive feature section
+   ---------------------------------------------------------
+   Same "highlighted feature" treatment as the Ancient GIS
+   block: a bordered, glowing panel around the satellite
+   slider, with the explanation of remote sensing overlaid
+   directly on the imagery itself rather than sitting apart
+   from it in plain text.
+   ========================================================= */
+.remote-sensing-section {
+  position: relative;
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
 
+.remote-sensing-section .section-heading {
+  text-align: center;
+  margin-bottom: 6px;
+}
 
+.rs-feature {
+  margin-top: 28px;
+  padding: 20px;
+  background: var(--panel-soft);
+  border: 1px solid rgba(53, 214, 196, 0.3);
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(53, 214, 196, 0.06);
+}
 
+.rs-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  padding: 60px 26px 24px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 12, 20, 0.78) 42%, rgba(6, 12, 20, 0.94) 100%);
+}
 
+.rs-overlay-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  letter-spacing: 0.05em;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
 
+.rs-overlay p {
+  color: var(--ink);
+  font-size: 0.92em;
+  line-height: 1.65;
+  max-width: 640px;
+  margin: 0 0 10px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.rs-overlay p:last-child { margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .rs-overlay { padding: 40px 16px 18px; }
+  .rs-overlay p { font-size: 0.85em; }
+}
+
+/* Icon-only globe layer buttons (Night / Reset / Day), arranged
+   left / centre / right beneath the earthquake button — no text
+   labels, just the icon in a compact round control. */
+.globe-controls-layers {
+  margin-top: 10px;
+  gap: 22px;
+}
+
+.layer-btn.icon-only {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  font-size: 0.95em;
+}
