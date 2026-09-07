@@ -263,7 +263,7 @@
         </div>
       </div>
     </li>
-    <li><a class="menu-item" href="#map-section">Routing</a></li>
+    <li><a class="menu-item" href="#change-detection">Remote Sensing</a></li>
     <li><a class="menu-item" href="#gis-overlay">Contact</a></li>
   </ul>
 </nav>
@@ -365,9 +365,12 @@
             <button class="quake-btn" id="quakeBtn" type="button">
               <span class="quake-icon" aria-hidden="true">🌎</span> Simulate an earthquake
             </button>
-            <button class="layer-btn active" id="dayBtn" type="button" title="Day texture">☀️ Day</button>
-            <button class="layer-btn" id="nightBtn" type="button" title="Night lights">🌙 Night</button>
-            <button class="layer-btn" id="resetGlobeBtn" type="button" title="Reset view">↺ Reset</button>
+          </div>
+
+          <div class="globe-controls globe-controls-layers">
+            <button class="layer-btn icon-only" id="nightBtn" type="button" title="Night lights">🌙</button>
+            <button class="layer-btn icon-only" id="resetGlobeBtn" type="button" title="Reset view">↺</button>
+            <button class="layer-btn icon-only active" id="dayBtn" type="button" title="Day texture">☀️</button>
           </div>
         </div>
 
@@ -401,7 +404,7 @@
     <!-- =========================================================
          Core Disciplines — three animated capability cards
          ========================================================= -->
-    <section class="services-section" id="services">
+    <section class="services-section reveal-slit" id="services">
       <div class="section-heading reveal-up">
         <span class="eyebrow">// what I build</span>
         <h2>Core Disciplines</h2>
@@ -512,64 +515,42 @@
     </section>
 
     <!-- =========================================================
-         Interactive route map
+         Remote Sensing — signature feature: satellite before/after
+         slider with the explanation overlaid directly on the image,
+         given the same distinctive "feature section" treatment as
+         the Ancient GIS block above (bordered panel + accent glow)
+         so it reads as a highlighted section rather than a plain
+         map utility.
          ========================================================= -->
-    <section class="map-section reveal-up" id="map-section">
-      <div class="section-heading">
-        <span class="eyebrow">// 30.0444° N, 31.2357° E</span>
-        <h2>Find the Shortest Route</h2>
-      </div>
-      <p class="map-hint">Click a start point, then a destination, to draw the shortest route between them.</p>
-      <div class="mode-switch">
-        <button type="button" class="active" id="modeCar" onclick="setTravelMode('car')">🚗 Driving</button>
-        <button type="button" id="modeFoot" onclick="setTravelMode('foot')">🚶 Walking</button>
-        <button type="button" id="basemapOsm" class="active" onclick="setBasemap('osm')">🗺️ Streets</button>
-        <button type="button" id="basemapSat" onclick="setBasemap('sat')">🛰️ Satellite</button>
-        <button type="button" id="clearRouteBtn" onclick="clearRoute()">✕ Clear</button>
-      </div>
-      <div id="map" class="reveal-slit"></div>
-    </section>
-
-
-    <!-- =========================================================
-         Spatial Analysis Lab — interactive buffer + measure
-         ========================================================= -->
-    <section class="map-section reveal-up" id="spatial-lab">
-      <div class="section-heading">
-        <span class="eyebrow">// spatial analysis</span>
-        <h2>Spatial Analysis Lab</h2>
-      </div>
-      <p class="map-hint">Click the map to place a point, then create a buffer or measure distance between two points.</p>
-      <div class="mode-switch">
-        <button type="button" class="active" id="toolBuffer" onclick="setLabTool('buffer')">⭕ Buffer</button>
-        <button type="button" id="toolMeasure" onclick="setLabTool('measure')">📏 Measure</button>
-        <button type="button" id="clearLabBtn" onclick="clearLab()">✕ Clear</button>
-      </div>
-      <div id="lab-map" class="reveal-slit"></div>
-      <div class="lab-result" id="labResult">Ready — select a tool and click the map.</div>
-    </section>
-
-    <div class="contour-divider" aria-hidden="true"></div>
-
-    <!-- =========================================================
-         Change Detection — before / after slider
-         ========================================================= -->
-    <section class="map-section reveal-up" id="change-detection">
-      <div class="section-heading">
+    <section class="remote-sensing-section reveal-up" id="change-detection">
+      <div class="section-heading reveal-up">
         <span class="eyebrow">// remote sensing</span>
-        <h2>Change Detection</h2>
+        <h2>Reading the Land from Orbit</h2>
       </div>
       <p class="map-hint">Drag the slider to compare two satellite views of the same area (demo imagery).</p>
-      <div class="cd-container reveal-slit">
-        <div class="cd-wrapper" id="cdWrapper">
-          <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1200&q=80" alt="Satellite view A" class="cd-img cd-before" id="cdBefore">
-          <div class="cd-after-wrap" id="cdAfterWrap">
-            <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=1200&q=80" alt="Satellite view B" class="cd-img cd-after" id="cdAfter" style="width:900px;max-width:none;">
+
+      <div class="rs-feature">
+        <div class="cd-container reveal-slit">
+          <div class="cd-wrapper" id="cdWrapper">
+            <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1200&q=80" alt="Satellite view A" class="cd-img cd-before" id="cdBefore">
+            <div class="cd-after-wrap" id="cdAfterWrap">
+              <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=1200&q=80" alt="Satellite view B" class="cd-img cd-after" id="cdAfter" style="width:900px;max-width:none;">
+            </div>
+            <div class="cd-slider" id="cdSlider"></div>
+            <div class="cd-handle" id="cdHandle">⟷</div>
+            <span class="cd-label cd-label-before">Before</span>
+            <span class="cd-label cd-label-after">After</span>
+
+            <!-- Explanation overlaid directly on the satellite imagery -->
+            <div class="rs-overlay">
+              <span class="rs-overlay-eyebrow">🛰️ What is remote sensing?</span>
+              <p>Remote sensing is the practice of reading the Earth's surface from satellites and drones instead of
+                walking it on foot. Sensors capture light across many bands — visible, infrared, thermal — and that
+                raw signal turns into maps of vegetation health, water extent, urban growth, and change over time.</p>
+              <p>The slider above shows the core idea: two images of the same place, captured at different times,
+                compared pixel by pixel to reveal exactly what changed on the ground.</p>
+            </div>
           </div>
-          <div class="cd-slider" id="cdSlider"></div>
-          <div class="cd-handle" id="cdHandle">⟷</div>
-          <span class="cd-label cd-label-before">Before</span>
-          <span class="cd-label cd-label-after">After</span>
         </div>
       </div>
     </section>
@@ -1071,27 +1052,6 @@
       pinHalo.position.copy(gizaPos);
       pinHalo.lookAt(gizaPos.clone().multiplyScalar(2));
       earthGroup.add(pinHalo);
-
-      // Extra project / city markers (Alexandria + Luxor)
-      function addCityMarker(lat, lng, color, label) {
-        const pos = latLngToVector3(lat, lng, EARTH_RADIUS * 1.007);
-        const dot = new THREE.Mesh(
-          new THREE.SphereGeometry(0.011, 10, 10),
-          new THREE.MeshBasicMaterial({ color })
-        );
-        dot.position.copy(pos);
-        earthGroup.add(dot);
-        const halo = new THREE.Mesh(
-          new THREE.RingGeometry(0.014, 0.024, 20),
-          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5, side: THREE.DoubleSide })
-        );
-        halo.position.copy(pos);
-        halo.lookAt(pos.clone().multiplyScalar(2));
-        earthGroup.add(halo);
-        return { dot, halo, label };
-      }
-      addCityMarker(31.2001, 29.9187, 0x35d6c4, 'Alexandria');
-      addCityMarker(25.6872, 32.6396, 0xe3a84c, 'Luxor');
 
       // Night lights texture support
       let nightTexture = null;
