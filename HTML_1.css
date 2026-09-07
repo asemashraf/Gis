@@ -176,6 +176,24 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
 /* =========================================================
    Deep-space background
    ========================================================= */
+/* Full-page fixed photo background — 3333.png, darkened.
+   position: fixed keeps it pinned to the viewport while every
+   section scrolls over it, so it reads as though it's already
+   sitting there and simply gets revealed from underneath the
+   content as you scroll — the same effect as the reference site. */
+.page-photo-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(180deg, rgba(6, 12, 20, 0.72) 0%, rgba(6, 12, 20, 0.86) 100%),
+    url('3333.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .space-bg {
   position: fixed;
   inset: 0;
@@ -186,8 +204,7 @@ p { max-width: 100%; overflow: visible; white-space: normal; word-break: break-w
     radial-gradient(ellipse 50% 45% at 88% 22%, rgba(227, 168, 76, 0.07), transparent 52%),
     radial-gradient(ellipse 60% 50% at 65% 85%, rgba(99, 91, 214, 0.13), transparent 60%),
     radial-gradient(ellipse 45% 55% at 8% 78%, rgba(53, 90, 214, 0.10), transparent 58%),
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(53, 214, 196, 0.05), transparent 62%),
-    var(--bg);
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(53, 214, 196, 0.05), transparent 62%);
 }
 
 /* Faint diffuse band, angled across the sky — a low-key nod to the
@@ -1363,17 +1380,7 @@ input:focus-visible {
   position: relative;
   max-width: 1100px;
   margin: 70px auto;
-  padding: 56px 20px 64px;
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  background-image:
-    linear-gradient(180deg, rgba(10, 18, 28, 0.82) 0%, rgba(10, 18, 28, 0.9) 100%),
-    url('3333.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  padding: 0 20px;
 }
 
 .services-section .section-heading { text-align: center; margin-bottom: 8px; }
